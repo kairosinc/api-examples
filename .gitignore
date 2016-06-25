@@ -1,0 +1,21 @@
+# Project Settings
+.idea
+.buildpath
+.project
+.settings
+
+# Repo Files
+/vendor
+/logs/*
+/build
+
+
+# Temporary Ignoring these files 
+#app/assets/less/*
+
+# Not sure if this should be ignored
+cache/assetic/*
+
+# node_modules/*
+
+demo/config-local.php

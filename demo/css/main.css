@@ -1,0 +1,43 @@
+/* 
+	main CSS 		
+ 	created:; March 2016 
+	author: Steve Rucker
+*/
+
+body { 
+	font-family: 'ProximaNova-Regular' !important; 
+	color: #333;
+}
+a, a:visited, a:focus  {
+	color: #139C8A;
+	text-decoration: none!important;
+	font-family: 'ProximaNova-Bold';
+}
+a:hover {
+	color: #2C3444;
+	text-decoration: none!important;
+	font-family: 'ProximaNova-Bold';
+}
+.main-container {
+	margin-top: 10px;
+	clear: both;
+}
+.btn-kairos {
+	background-color: #139C8A;
+	color: #FFF!important;
+	border-radius: 0;
+	font-weight: bold;
+	padding: 12px;
+}
+.landing-page nav {
+	    padding: 20px;
+    margin: 0 auto;
+    width: 424px;
+}
+.landing-page h2 {
+	width: 400px;
+	text-align: center;
+	margin: 20px auto;
+}
+
+

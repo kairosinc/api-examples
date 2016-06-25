@@ -1,0 +1,333 @@
+/* 
+	detect CSS 		
+ 	created:; June 2016 
+	author: Steve Rucker
+*/
+#image-left, #image-right {
+	width: 475px;
+}
+.thumbnails {
+	margin-top: 15px;
+}
+.thumbnails > div {
+	float: left;
+	margin-right: 10px;
+}
+.thumbnails > div:last-child {
+	margin-right: 0;
+}
+.photo-thumbnail img {
+	width: 87px;
+    margin: 0 4px 0 0;
+	opacity: 0.5;
+}
+.photo-thumbnail:last-child img {
+	margin-right: 0;
+}
+.image-group {
+	position: relative;
+}
+.image-group.active img {
+	opacity: 1!important;
+}
+.btn-kairos {
+	background-color: #139C8A;
+	color: #FFF!important;
+	border-radius: 0;
+	font-weight: bold;
+	padding: 12px;
+}
+	.btn:hover {
+		background-color: #0d6f62;
+		color: #FFF!important;
+	}
+.main-container {
+	width: 980px;
+	margin: 0 auto;
+	padding: 50px 0;
+}
+.left-image-container {
+	padding-right: 0;
+	height: 475px;
+	overflow: hidden;
+}
+.right-image-container {
+	padding-left: 0;
+	width: 475px;
+	height: 475px;
+	overflow: hidden;
+	position: relative;
+}
+/* UPLOAD MODULE */
+.upload-form {
+	margin: 0;
+}
+.canvas-container-left, .canvas-container-right {
+	width: 475px;
+    height: 475px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 15px;
+    background-color: #2c3444; 
+    display: none;
+}
+.canvas-container-right {
+    left: -2px;
+}
+.upload-button {
+    position: relative;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff!important;
+    height: 46px;
+    width: 100%;
+    line-height: 45px;
+    cursor: pointer;
+    text-align: center;
+    padding: 0;
+}
+.upload-button input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+    z-index: 9999;
+    margin: 0;
+    padding: 12px;
+}
+.upload-value {
+	position: absolute;
+	top: 7px;
+    left: 104px;
+	color: #fff;
+}
+.url-error {
+	color: #ff0000;
+	padding: 10px 0 0 10px;
+	font-size: 12px;
+}
+.ui-buttons {
+	margin-top: 15px;
+	position: relative;
+}
+.ui-buttons .upload {
+	padding-left: 0;
+}
+.ui-buttons .upload:nth-child(2) {
+	margin-left: -5px;
+}
+.ui-buttons .upload.full-width {
+	padding-left: 15px;
+	width: 100%;
+}
+.ui-buttons .url {
+	padding-left: 0;
+	padding-right: 0;
+}
+.ui-buttons div button {
+	width: 100%;
+}
+.ui-buttons input {
+	border: 2px solid #CCC;
+    height: 46px;
+    width: 100%;
+    padding-left: 10px;
+    color: #333;
+}
+.ui-buttons-mask {
+	position: absolute;
+    top: 0;
+    left: 15px;
+    background-color: #000;
+    opacity: 0.3;
+    width: 97%;
+    height: 100%;
+}
+.submit {
+	padding-left: 0;
+}
+/* HANDLEBAR MESSAGES */
+.image-left-template, .image-right-template {
+	height: 80px;
+    position: absolute;
+    top: 0;
+    left: 2px;
+    width: 475px;
+    z-index: 9;
+}
+.image-left-template {
+	left: 15px;
+}
+.header-bkg-left, .header-bkg-right {
+	background-color: #000;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    left: -2px;
+    width: 475px;
+    opacity: 0.6;
+    z-index: 8;
+}
+.header-bkg-left {
+    left: 0;
+}
+.message-container{
+	position: relative;
+	z-index: 10;
+}
+.message-container .message{
+	font-size: 14px;
+	clear: both;
+	color: #fff;
+	text-align: center;
+	z-index: 10;
+    padding-top: 30px;
+}
+.processing-spinner {
+	margin-top: 5px;
+	width: 50px; 
+	height: 50px; 
+	margin: 5px auto 3px; 
+	background: transparent url('../images/spinner.svg') no-repeat;
+	position: relative;
+}
+.message-container .spinner-message{
+	font-size: 14px;
+	clear: both;
+	color: #fff;
+	text-align: center;
+	z-index: 10;
+}
+.verify-response {
+    border: 1px solid #fff;
+    padding: 4px;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    right: 20px;
+    top: 24px;
+    position: absolute;
+    z-index: 10;
+}
+
+/* JSON DISPLAY */
+.json-response-container {
+	padding-left: 0;
+	height: 475px;
+	display: none;
+}
+.copy-json-button {
+	position: absolute;
+    top: 22px;
+    right: 65px;
+    display: none;
+    background-color: #1175E3;
+    border-radius: 0;
+}
+	.copy-json-button:hover {
+		background-color: #3178c5;
+		color: #FFF!important;
+		font-weight: normal;
+	}
+.json-title {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	color: #FFF;
+	font-weight: bold;
+	display: none;
+}
+.json-response {
+	clear: both;
+	width: 475px;
+}
+.json-response pre {
+	background-color: #2c3444;
+	/*overflow-y: scroll;
+	overflow-x: hidden;*/
+	height: 400px;
+	color: #f8f8f8;
+	border: none;
+    border-radius: 0;
+    height: 475px;
+    padding: 50px 5px 5px;
+    font-size: 11px;
+    word-wrap: break-word;
+    white-space: pre-wrap; 
+ 	white-space: -moz-pre-wrap; 
+ 	white-space: -o-pre-wrap;   
+}
+.json-response pre span{
+    word-wrap: break-word;
+}
+.show-json, .hide-json {
+	position: absolute;
+    top: 30px;
+    left: 12px;
+    z-index: 10;
+}
+.show-json {
+    display: none;
+}
+.show-json:hover, .hide-json:hover {
+	color: #247769;
+}
+.json-response .string { color: #65b042; }
+.json-response .number { color: #3387cc; }
+.json-response .key { color: #65b042; }
+.json-response .colon { color: #f8f8f8; }
+/* mask */
+.mask {
+	position: absolute;
+    background-color: #000;
+    opacity: 0.3;
+    z-index: 9999;
+}
+.upload-mask-left, .url-mask-left {
+	width: 475px;
+	height: 46px;
+	top: 0;
+    left: 14px;
+    display: none;
+}
+.upload-mask-right, .url-mask-right {
+	width: 475px;
+	height: 46px;
+	top: 0;
+	left: 505px;
+	display: none;
+}
+.hover-title {
+	position: absolute;
+    top: 30px;
+    left: 31px;
+    margin: 0;
+    width: 126px;
+    height: 30px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    box-shadow: 2px 1px 8px #999;
+    z-index: 9999;
+    background-color: #fff;
+    opacity: 0.9;
+    color: #139C8A;
+    text-align: center;
+    padding-top: 8px;
+    display: none; 
+    font-weight: bold;
+    font-size: 10px;
+    cursor: pointer;
+}
+

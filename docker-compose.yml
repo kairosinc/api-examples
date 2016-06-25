@@ -1,0 +1,18 @@
+version: '2'
+services:
+  demo:
+    image: demo
+    expose:
+      - "8080"
+    ports:
+      - "8080:80"
+    environment:
+      STAGE: local
+      APP_ID: ""
+      APP_KEY: ""
+      API_URL: "https://api.kairos.com" 
+      DEMO1_ID: ""
+      DEMO2_ID: ""
+      DEMO3_ID: ""
+    volumes:
+      - ./demo:/var/www/app/demo
