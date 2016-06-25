@@ -10,12 +10,13 @@ The app is basically a single page application, which is viewed at index.php.
 
 The easiest way to get started is to clone or fork the repo, edit the docker-compose.yml and add your APP_ID and API_KEY after signing up at [developer.kairos.com](https://developer.kairos.com) 
 
-Then just run:
+Then just run these commands to run Docker-Compose and start up the app locally on your machine:
 ```
 make build && make run
 ```
 
-This will run Docker-compose and start your app up.  
+
+
 ---
 
 For more detailed documentation see the individual page for each module:
