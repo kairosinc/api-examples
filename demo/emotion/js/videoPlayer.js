@@ -71,6 +71,7 @@ var videoPlayer = {
 		progressTime.html(self.converttoTime(video.currentTime));
 		var widthPercent = 100 - ((video.currentTime / video.duration) * 100);
 		curtain.width( widthPercent  + "%");
+		featurePointAnimation.getFeaturePoints(video.currentTime);
 		if ( widthPercent < 80 || curtain.css("display") == "none") {
 			titles.css("z-index",2);
 		}
@@ -104,4 +105,3 @@ var videoPlayer = {
 	}
 };
 
-videoPlayer.init();

@@ -2,7 +2,7 @@
     //------------------------------------
     // Emotion Demo Module
     // created: March 2016
-    // modified: June 2016
+    // last modified: August 2016
     // author: Steve Rucker
     //------------------------------------
 
@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-md-6 main-video-container">
                 <div class="video-wrapper">
-                    <video id="video" width="100%" videoId="demo1" src="https://media.kairos.com/emodemo/videos/demo1.mp4" muted></video>
+                    <video id="video" width="100%" mediaId="video_1" src="https://media.kairos.com/demo/emotion/videos/video_1.mp4" muted></video>
                     <div class="video-controls">
                         <a href="/" class="play" id="play-pause"></a>
                         <div id="progress">  
@@ -35,20 +35,25 @@
                         </div> 
                         <div id="progress-time">00.00</div>
                     </div>
+                    <div class="canvas-container"><canvas id="displayCanvas" /></div>
                 </div>
                 <div class="webcam-video-container">
                     <div class="face-overlay"></div>
                     <div class="webcam-counter"></div>
                 </div>
+                <img class="show-image" src="">
                 <div class="template-background"></div>
                 <div class="video-container-template"></div>
             </div>
             <div class="col-md-6 highcharts-container">
                 <a href="" class="show-json">SHOW JSON</a>
                 <div class="autoscale-checkbox"><input type="checkbox" id="autoscale" /> Autoscale</div>
+                <div class="featurepoints-checkbox"><input type="checkbox" id="featurepoints" checked /> Featurepoints</div>
                 <div class="highcharts-wrapper">
                     <div id="highcharts-curtain-wrapper">
                         <div id="highcharts-curtain">
+                            <div class="gridlines"></div>
+                            <div class="gridlines"></div>
                             <div class="gridlines"></div>
                             <div class="gridlines"></div>
                             <div class="gridlines"></div>
@@ -58,6 +63,7 @@
                     <div id="highcharts-titles"></div>
                     <div id="highcharts-containers"></div>
                 </div>
+                <div id="highcharts-container-image"></div>
                 <div class="highcharts-template"></div>
             </div>
             <div class="col-md-6 json-response-container">
@@ -68,20 +74,14 @@
         </div>
         <div class="row">
             <div class="col-md-12 thumbnails container">
-                <a href="demo1" class="video-thumbnail">
-                    <img src="https://media.kairos.com/emodemo/thumbnails/demo1_thumbnail.png" />
+                <a href="video_1" class="media-thumbnail">
+                    <img src="https://media.kairos.com/demo/emotion/thumbnails/thumbnail_1.png" />
                 </a>
-                <a href="demo2" class="video-thumbnail">
-                    <img src="https://media.kairos.com/emodemo/thumbnails/demo2_thumbnail.png" />
+                <a href="video_2" class="media-thumbnail">
+                    <img src="https://media.kairos.com/demo/emotion/thumbnails/thumbnail_2.png" />
                 </a>
-                <a href="demo3" class="video-thumbnail">
-                    <img src="https://media.kairos.com/emodemo/thumbnails/demo3_thumbnail.png" />
-                </a>
-                <a href="demo1" class="video-thumbnail">
-                    <img src="https://media.kairos.com/emodemo/thumbnails/demo1_thumbnail.png" />
-                </a>
-                <a href="demo1" class="video-thumbnail">
-                    <img src="https://media.kairos.com/emodemo/thumbnails/demo1_thumbnail.png" />
+                <a href="fullsize_3" class="media-thumbnail image-thumbnail">
+                    <img src="https://media.kairos.com/demo/emotion/thumbnails/thumbnail_3.png" />
                 </a>
             </div>
         </div>
@@ -90,7 +90,7 @@
                 <button class="webcam-button btn btn-kairos">WEBCAM</button>
             </div>
             <div class="upload col-md-6">
-                <form method="post" action="formPost.php" enctype="multipart/form-data" id="mediaUploadForm"> 
+                <form method="post" enctype="multipart/form-data" id="mediaUploadForm"> 
                     <div class="upload-button btn btn-kairos">UPLOAD<input type="file" id="upload" name="upload"></div>
                 </form>
                 <div class="upload-error"></div>
@@ -129,27 +129,38 @@
             <div class="message-container strong">{{message1}}</div>
             <div class="message-container">{{message2}}</div>
         </div>
+        <div class="response-box-container">
+        {{#if gender}}
+            <div class="response-box-gender"></div>
+        {{/if}}
+        {{#if age}}
+            <div class="response-box-age"></div>
+        {{/if}}
+        </div>
     </script>
             
 
-   <!-- hosted libraries -->
+    <!-- hosted libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
     <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
-    <script src="../js/adapter.js"></script>
-    <!-- for copy to clipboard functionality -->
-    <script src="../js/clipboard.min.js"></script>
+    <script src="https://cdn.WebRTC-Experiment.com/gumadapter.js"></script>
+
     <!-- custom libraries -->
-    <script src="../js/MediaStreamRecorder.js"></script>
+    <script src="js/MediaStreamRecorder.js"></script>
+    <script src="js/featurePoints.js"></script>
     <script src="js/emoDemoApp.js"></script>
+    <script src="js/featurePointAnimation.js"></script>
     <script src="js/highchartsApp.js"></script>
+    <script src="js/highchartsAppPhoto.js"></script>
     <script src="js/videoPlayer.js"></script>
     <script src="js/emotionUi.js"></script>
-    <!-- initialize custom libraries -->
+
+    <!-- initialize custom libraries if API credentials are valid -->
     <?php
         if (
             (defined("APP_ID") && APP_ID != "") &&
@@ -158,17 +169,20 @@
         ) {
     ?>
         <script>
-            highchartsApp.init({
-                "colors":<?php echo $configs["highchartsColors"] ?>, 
-                "bkgColor":<?php echo $configs["highchartsBkgColor"] ?>
-            });
             emoDemoApp.init({
-                "uploadFileSize":<?php echo $configs["uploadFileSize"] ?>,
-                "uploadFileTypesVideo":<?php echo $configs["uploadFileTypesVideo"] ?>,
+                "uploadFileTypesEmotion":<?php echo $configs["uploadFileTypesEmotion"] ?>,
+                "uploadFileSizeVideo":<?php echo $configs["uploadFileSizeVideo"] ?>,
                 "pollTimeout":<?php echo $configs["pollTimeout"] ?>,
                 "mediaPath": '<?php echo $configs["mediaPath"] ?>',
-                "demoVideos":<?php print_r(json_encode($configs["demoVideos"]) ) ?>,
+                "demoMedia":<?php print_r(json_encode($configs["demoMedia"]) ) ?>,
                 "apiCredentials":true
+            });
+            videoPlayer.init();
+            highchartsApp.init({
+                "colors":<?php echo $configs["highchartsColors"] ?>
+            });
+            highchartsAppPhoto.init({
+                "colors":<?php echo $configs["highchartsColors"] ?>
             });
         </script>
     <?php

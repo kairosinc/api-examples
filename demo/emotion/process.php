@@ -2,40 +2,16 @@
 
 //------------------------------------
 // process.php
-// processes calls to Kairos API (for examples and webcam modules)
+// processes calls to Kairos API for webcam and URL modules
+// and also for polling mediaId
 // created: March 2016
+// last modified August 2016
 // author: Steve Rucker
 //------------------------------------
 
 $configs = include('../config.php');
 
-if ($_POST['fname'] == "demoVideo") {
-    
-    //------------------------------------
-    // GET REQUEST TO API FOR EXAMPLES
-    //------------------------------------
-
-    $demoVideos = $configs["demoVideos"];
-    $thisDemo = $_POST['demo'];
-
-    $request = curl_init(API_URL . "/media");
-    // set curl options
-    curl_setopt($request, CURLOPT_URL, API_URL . "/media/" . $demoVideos[$thisDemo]);
-    curl_setopt($request, CURLOPT_HTTPHEADER, array(
-            // "Content-type: application/json",
-            "app_id:" . APP_ID,
-            "app_key:" . APP_KEY
-        )
-    );
-    curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-
-    $response = curl_exec($request);
-
-    echo $response;
-    // // close the session
-    curl_close($request);
-
-} else if ($_POST['fname'] == "polling") {
+if ($_POST['fname'] == "polling") {
 
     //------------------------------------
     // GET REQUEST TO API FOR POLLING FUNCTION
@@ -45,10 +21,8 @@ if ($_POST['fname'] == "demoVideo") {
 
     $request = curl_init();
     // set curl options
-    curl_setopt($request, CURLOPT_URL, API_URL . "/media/" . $mediaId);
-    curl_setopt($request, CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($request, CURLOPT_URL, API_URL . "/v2/media/" . $mediaId);
     curl_setopt($request, CURLOPT_HTTPHEADER, array(
-            // "Content-type: application/json",
             "app_id:" . APP_ID,
             "app_key:" . APP_KEY
         )
@@ -62,7 +36,7 @@ if ($_POST['fname'] == "demoVideo") {
     curl_close($request);
 
 }
-else if ($_POST['fname'] == "webUrl") {
+else if ($_POST['fname'] == "url") {
 
     //------------------------------------
     // POST REQUEST TO API WITH URL
@@ -71,7 +45,7 @@ else if ($_POST['fname'] == "webUrl") {
     // get URL from AJAX POST
     $thisUrl = $_POST["url"];
 
-    $request = curl_init(API_URL . "/media?source=" . $thisUrl . "&timeout=1");
+    $request = curl_init(API_URL . "/v2/media?source=" . $thisUrl . "&landmarks=1&timeout=1");
 
     // set curl options
     curl_setopt($request, CURLOPT_POST, true);
@@ -96,6 +70,7 @@ else {
     // POST REQUEST TO API FOR WEBCAM
     //------------------------------------
 
+    
     // pull the raw binary data from the POST array
     $data = substr($_POST['data'], strpos($_POST['data'], ",") + 1);
     // decode it
@@ -105,37 +80,66 @@ else {
     $fullFilename = $filename . ".webm";
     file_put_contents("media/" . $fullFilename, $decodedData);
 
-    function isSSL()
-    {
-        $protocol = "http://";
-        if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) {
-            $protocol = "https://";
-        }
-        return $protocol;
+    // check if valid file (mime type and length)
+    $validFile = true;
+    if (file_mime_type("media/" . $fullFilename) != "application/octet-stream" &&
+        file_mime_type("media/" . $fullFilename) != "video/webm") {
+        $validFile = false;
+    }
+    if (filesize("media/" . $fullFilename) < 200000) {
+        $validFile = false;
     }
 
-    $mediaPath = isSSL() . $_SERVER['HTTP_HOST'] . "/emotion/media/" . $fullFilename;
-    $queryUrl = API_URL . "/media?source=" . $mediaPath . "&timeout=1";
+    if ($validFile) {
+        function isSSL()
+        {
+            $protocol = "http://";
+            if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) {
+                $protocol = "https://";
+            }
+            return $protocol;
+        }
+        // $mediaPath = "https://steverucker.com/dev/media/emodemo.webm";
+        $mediaPath = isSSL() . $_SERVER['HTTP_HOST'] . "/emotion/media/" . $fullFilename;
 
-    $request = curl_init($queryUrl);
-    // set curl options
-    curl_setopt($request, CURLOPT_POST, true);
-    curl_setopt($request, CURLOPT_HTTPHEADER, array(
-            "app_id:" . APP_ID,
-            "app_key:" . APP_KEY
-        )
-    );
+        $queryUrl = API_URL . "/v2/media?source=" . $mediaPath . "&landmarks=1&timeout=1";
 
-    curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        $request = curl_init($queryUrl);
+        // set curl options
+        curl_setopt($request, CURLOPT_POST, true);
+        curl_setopt($request, CURLOPT_HTTPHEADER, array(
+                "app_id:" . APP_ID,
+                "app_key:" . APP_KEY
+            )
+        );
 
-    $response = curl_exec($request);
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
-    echo $response;
-    // // close the session
-    curl_close($request);
+        $response = curl_exec($request);
+
+        echo $response;
+
+        // close the session
+        curl_close($request);
+    }
+    else {
+        $response = array (
+            "Error" => "Invalid file"
+        );
+        print_r(json_encode($response));
+    }
 
     unlink("media/" . $fullFilename);
 
+}
+
+function file_mime_type($file) {
+    $mime = false;
+
+    $file_info = new finfo(FILEINFO_MIME);
+    $mime = $file_info->buffer(file_get_contents($file));
+
+    return substr($mime, 0, strpos($mime, '; '));
 }
 
 

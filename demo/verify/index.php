@@ -157,17 +157,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-    <!-- for copy to clipboard functionality -->
-    <script src="../js/clipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
+
     <!-- custom libraries -->
     <script src="js/verifyDemoApp.js"></script>
     <script src="js/verifyUi.js"></script>
     <script src="js/imageData.js"></script>
     <script src="js/imageAnalysisData.js"></script>
     <script src="js/jsonData.js"></script>
-    <!-- initialize custom libraries -->
+    
+    <!-- initialize custom libraries if API credentials are valid -->
     <?php
         if (
             (defined("APP_ID") && APP_ID != "") &&
@@ -177,7 +177,7 @@
     ?>
         <script>
             verifyDemoApp.init({
-                "uploadFileSize":<?php echo $configs["uploadFileSize"] ?>,
+                "uploadFileSizeImage":<?php echo $configs["uploadFileSizeImage"] ?>,
                 "uploadFileTypesImage":<?php echo $configs["uploadFileTypesImage"] ?>,
                 "apiCredentials":true
             });

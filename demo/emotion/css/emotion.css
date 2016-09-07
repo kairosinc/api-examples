@@ -1,7 +1,8 @@
 /* 
-	detect CSS 		
+	emotion CSS 		
  	created: May 2016 
- 	modified: June 2016;
+ 	modified: June 2016
+ 	last modified: August 2016
 	author: Steve Rucker
 */
 .btn-kairos {
@@ -22,20 +23,20 @@
 }
 .main-video-container {
 	padding-right: 0;
-	height: 475px;
+	height: 560px;
 }
 .json-response-container {
 	padding-left: 0;
-	height: 475px;
+	height: 560px;
 	display: none;
 }
 /* VIDEO */
 #video {
-	height: 436px;
-    width: 800px;
+	height: 520px;
+    width: 923px;
     overflow: hidden;
     position: absolute;
-    left: -33%;
+    left: -48%;
     z-index: 1;
 }
 /* vertically align video */
@@ -50,7 +51,7 @@
 }
 .video-controls {
 	background-color: #2c3444;
-    width: 120%;
+    width: 100%;
     height: 40px;
     position: absolute;
     bottom: 0;
@@ -69,7 +70,7 @@
 #progress {
 	background-color: #464d5b;
 	height: 20px;
-	width: 57%;
+	width: 65%;
 	float: left;
     margin-top: 10px;
 }
@@ -92,7 +93,7 @@
     cursor: pointer;
     position: absolute;
     display: block;
-    right: -23px;
+    right: -14px;
     top: -4px;
 }
 /* for high resolution display */
@@ -113,69 +114,89 @@ only screen and (min-device-pixel-ratio: 1.5) {
 	text-align: left;
 	margin: 10px 0 0 25px;
 }
+.canvas-container {
+	width: 923px;
+    height: 520px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: -48%;
+    z-index: 9;
+}
 /* Highcharts */
 .highcharts-container {
 	padding-left: 0;
-	height: 475px;
+	height: 560px;
 }
 .highcharts-wrapper {
-	height: 475px;
-	padding-top: 30px;
+	height: 560px;
+	padding-top: 8px;
 	position: relative;
 	border: 1px solid #6c6b6e;
 }
 #highcharts-titles {
 	position: absolute;
 	width: 0;
-	height: 466px;
+	height: 550px;
 	top: 0;
 	left: 0;
 	z-index: 2;
-	padding-left: 10px;
+	padding-left: 13px;
 }
 #highcharts-curtain-wrapper {
 	position: absolute;
     width: 97%;
-    height: 466px;
+    height: 555px;
     top: 0;
     left: 0;
     background-color: #fff;
 }
 #highcharts-curtain {
 	display: none;
-	position: absolute;
-	width: 100%;
-	height: 466px;
-	top: 0;
-	right: 0;
-	z-index: 3;
-	background-color: #fff;
-	padding-top: 15px;
+    position: absolute;
+    width: 100%;
+    height: 555px;
+    top: 0;
+    right: 0;
+    z-index: 3;
+    background-color: #fff;
+    padding-top: 6px;
 }
 #highcharts-curtain .gridlines {
 	width: 100%;
-	height: 58px;
-    margin-top: 54px;
-    border-top: 1px solid #d8d8d8;
+    height: 57px;
+    margin-top: 33px;
     border-bottom: 1px solid #d8d8d8;
 }
 .highchart-title {
-	height: 110px;
-	width: 100%;
-	text-align: left;
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: 12px;
-	padding-top: 44px;
+	font-family: 'ProximaNova-Bold';
+    height: 80px;
+    width: 100%;
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+    padding-top: 32px;
+    margin-bottom: 6px;
 }
 #highcharts-containers {
 	width: 100%;
 	height: 100%;
 }
 #highcharts-containers > div {
-	width: 99%; 
-	height: 112px;
+	width: 99%;
+    height: 85px;
+    margin-bottom: 5px;
+    margin-left: 2px;
 }
+/* tooltip */
+#highcharts-containers > div:nth-child(2) .highcharts-container {
+	height: 130px!important;
+}
+#highcharts-containers > div:nth-child(2) .highcharts-container svg {
+	height: 130px;
+}
+
 #highcharts-containers p {
 	font-size: 20px;
 	font-weight: bold;
@@ -188,33 +209,50 @@ only screen and (min-device-pixel-ratio: 1.5) {
 }
 .autoscale-checkbox {
 	position: absolute;
-    right: 32px;
-    top: 10px;
+    left: 104px;
+    top: 7px;
     z-index: 9;
+}
+.featurepoints-checkbox {
+	position: absolute;
+    left: 185px;
+    top: 7px;
+    z-index: 9;
+    display: none;
+}
+#highcharts-container-image {
+	padding-left: 0;
+	height: 560px;
+	padding-top: 40px;
+	border: 1px solid #6c6b6e;
+	display: none;
 }
 
 .thumbnails {
 	margin-top: 15px;
 }
-.video-thumbnail img {
-	width: 181px;
+.media-thumbnail img {
+	width: 314px;
 	margin-right: 15px;
 	opacity: 0.7;
 }
-.video-thumbnail:last-child img {
+.media-thumbnail:last-child img {
 	margin-right: 0;
 }
-.webcam-video-container {
+.webcam-video-container, .show-image {
 	width: 475px;
-	height: 475px;
+	height: 560px;
 	overflow: hidden;
 	position: absolute;
     top: 0;
     left: 15px;
 }
+.show-image {
+    z-index: 1;
+}
 .template-background {
 	width: 475px;
-    height: 475px;
+    height: 560px;
     overflow: hidden;
     position: absolute;
     top: 0;
@@ -224,20 +262,41 @@ only screen and (min-device-pixel-ratio: 1.5) {
 #webcamVideo {
 	position: absolute;
 	top: 0;
-    left: -65px;
+    left: -140px;
 	z-index: 9;
 }
 .face-overlay{
 	position: absolute;
-	display: block;
-    width: 500px;
-    height: 500px;
+    display: block;
+    width: 560;
+    height: 560;
     margin: 0 auto;
     background: transparent url('../images/face_overlay.png') no-repeat;
     background-size: 50%;
     background-position: 45% 45%;
     z-index: 10;
     display: none;
+    left: -28px;
+    top: 12px;
+}
+/* show age/gender */
+.response-box-container {
+    position: absolute;
+    top: 6px;
+    right: 26px;
+    width: 190px;
+    height: 20px;
+    z-index: 10;
+}
+.response-box-gender, .response-box-age {
+    float: right;
+    border: 1px solid #6c6b6e;
+    padding: 1px 8px;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+    margin-left: 5px;
 }
 /* UPLOAD MODULE */
 #mediaUploadForm {
@@ -287,9 +346,9 @@ only screen and (min-device-pixel-ratio: 1.5) {
 /* PROCESSING STATUS ELEMENTS */
 .spinner-message-container {
 	position: absolute;
-	top: 42%;
-    left: 0;
-    width: 97%;
+    top: 45%;
+    left: 13%;
+    width: 75%;
     /*display: none;*/
 }
 .webcam-video-container .spinner-message-container {
@@ -401,13 +460,13 @@ only screen and (min-device-pixel-ratio: 1.5) {
 	color: #f8f8f8;
 	border: none;
     border-radius: 0;
-    height: 475px;
+    height: 560px;
     padding: 50px 5px 5px;
     font-size: 11px;
 }
 .show-json, .hide-json {
 	position: absolute;
-    top: 10px;
+    top: 7px;
     left: 12px;
     z-index: 9;
 }

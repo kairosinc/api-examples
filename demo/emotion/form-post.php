@@ -1,8 +1,9 @@
 <?php
 //------------------------------------
-// formPost.php
+// form-post.php
 // processes form posts to Kairos API (for upload module)
 // created: March 2016
+// last modified: August 2016
 // author: Steve Rucker
 //------------------------------------
 
@@ -10,7 +11,7 @@
 $configs = include('../config.php');
 
 // make curl request
-$request = curl_init(API_URL . "/media");
+$request = curl_init(API_URL . "/v2/media?landmarks=1");
 
 // set curl options
 curl_setopt($request, CURLOPT_POST, true);
@@ -23,7 +24,7 @@ curl_setopt(
     $request,
     CURLOPT_POSTFIELDS,
     array(
-      "source" => new CurlFile($_FILES["upload"]["tmp_name"]),
+      "source" => new CurlFile($_FILES["file"]["tmp_name"]),
       // API timeout - timeout can be set to config value:
       // "timeout" => $configs["apiTimeout"]
       // or, to use polling, set timout to 1:
@@ -33,6 +34,12 @@ curl_setopt(
 curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
 $response =  curl_exec($request);
+
+// $testRespose = array(
+//       "response" => $response,
+//       "file" => $_FILES["file"]["tmp_name"]
+// );
+// print_r(json_encode($testRespose));
 
 echo $response;
 

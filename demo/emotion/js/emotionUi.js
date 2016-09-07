@@ -3,7 +3,7 @@
 // a collection of javascript functions to enable user interactions
 // dependencies: jquery.js, clipboard.js, highchartsApp.js
 // created: April 2016
-// modified June 2016
+// last modified August 2016
 // author: Steve Rucker
 //------------------------------------
 
@@ -20,20 +20,30 @@ $("#highcharts-containers").mouseout(function () {
 // provide functionality for Copy to Clipboard button
 var clipboard = new Clipboard('.copy-json-button');
 
-$(".video-thumbnail").click(function(e) {
+$(".media-thumbnail").click(function(e) {
 	e.preventDefault();
 	if (emoDemoApp.apiCredentials && !emoDemoApp.processing) {
 		$(".video-wrapper").show();
 		$("#video").attr("src","");
-		$("#highcharts-titles, #highcharts-containers").hide();
-		$(".video-thumbnail img").css("opacity","0.7");
+		$(".show-image").attr("src","");
+		$("#highcharts-titles, #highcharts-containers, .video-controls").hide();
+		$(".media-thumbnail img").css("opacity","0.7");
 		$(this).find("img").css("opacity","1");
-		// show selected preview image
-		$("#video")
-			.attr("videoId",$(this).attr("href"))
-			.show();
+		var mediaType = "video";
+		if ($(this).hasClass("image-thumbnail")) {
+			mediaType = "image";
+			$(".show-image")
+				.attr("mediaId",$(this).attr("href"))
+				.show();
+		}
+		else {
+			$("#video")
+				.attr("mediaId",$(this).attr("href"))
+				.show();
+			$(".video-controls").show();
+		}
 		emoDemoApp.resetElements();
-		emoDemoApp.examplesModule();
+		emoDemoApp.examplesModule(mediaType);
 	}
 });
 
@@ -61,6 +71,15 @@ $("#autoscale").change(function () {
 	$("#highcharts-containers").empty();
 	highchartsApp.trackVideo = false;
 	highchartsApp.displayData();
+});
+// toggle autoscale in Highcharts, depending on Autoscale checkbox
+$("#featurepoints").change(function () {
+	if ($(this).prop("checked")) {
+		$("#displayCanvas").show();
+	}
+	else {
+		$("#displayCanvas").hide();
+	}
 });
 $(".webcam-button").click(function(e){
 	e.preventDefault();

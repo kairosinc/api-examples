@@ -3,6 +3,7 @@
 // javascript object responsible for primary  verify demo functionality
 // dependencies: jquery.js, jquery-ui, verify.php
 // created: June 2016
+// last modified: August 2016
 // author: Steve Rucker
 //------------------------------------
 
@@ -60,7 +61,7 @@ verifyDemoApp =  {
                     // draw box
                     self.createDisplayCanvas("left", self.canvasWidth, self.canvasHeight);
                     $(".canvas-container-left").show();
-                    self.drawMethod(imageAnalysis.images[0], imageData, "left");
+                    self.drawMethod(imageAnalysis.images[0], imageData, "left", false, true);
                     $(".upload-mask-left, .url-mask-left").hide();
                     self.processingLeft = false;
                 }
@@ -77,7 +78,7 @@ verifyDemoApp =  {
                 // draw box
                 self.createDisplayCanvas(position, self.canvasWidth, self.canvasHeight);
                 $(".canvas-container-" + position).show();
-                self.drawMethod(imageAnalysis.images[0], imageData, position);
+                self.drawMethod(imageAnalysis.images[0], imageData, position, false, true);
                 // show json
                 self.getTemplate("image-" + position + "-template","",false,false);
                 $(".show-json").show();
@@ -134,7 +135,7 @@ verifyDemoApp =  {
             data: data,
             dataType: 'text'
         }).done(function(imageAnalysis){
-            self.displayResponse(imageAnalysis, imageData, position, false);
+            self.displayResponse(imageAnalysis, imageData, position, false, false);
         });
     },
     enrollImage: function (position, imageData, sendToDisplay) {
@@ -159,9 +160,13 @@ verifyDemoApp =  {
             data: data,
             dataType: 'text'
         }).done(function(imageAnalysis){
+            console.log("enrollImage")
             if (sendToDisplay) {
                 self.createDisplayCanvas(position, self.canvasWidth, self.canvasHeight);
-                self.displayResponse(imageAnalysis, imageData, position, true);
+                self.displayResponse(imageAnalysis, imageData, position, true, true);
+            }
+            else {
+                self.drawMethod(JSON.parse(imageAnalysis).images[0], imageData, position, false, true);
             }
         });
         canvas = null; 
@@ -210,52 +215,83 @@ verifyDemoApp =  {
                 self.hideMasks();
                 return false;
             }  
-            var ftype = input.files[0].type; // get file type
-            var fileTypeAllowed = false;
-            $(self.config.uploadFileTypesImage).each(function(idx, fileType) {
-                if(fileType == ftype) { 
-                    fileTypeAllowed = true;
-                }
-            }); 
-            if (!fileTypeAllowed) {
-                self.getTemplate("image-" + position + "-template","Wrong file type.  Must be .png, .gif, or .jpg.",false,false);
-                self.hideMasks();
-                return false;
-            }
-            else if (!input) {
-                self.getTemplate("image-" + position + "-template","Couldn't find the file input element.",false,false);
-                self.hideMasks();
-                return false;
-            }
-            else if (!input.files) {
-                self.getTemplate("image-" + position + "-template","This browser doesn't seem to support the `files` property of file inputs.",false,false);
-                self.hideMasks();
-                return false;
-            }
-            else {
-                var file = input.files[0];
-                var reader  = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onloadend = function () {
-                    var imageData = String(reader.result);
-                    $(".canvas-container-" + position).empty();
-                    // show image
-                    $(".canvas-container-" + position).hide();
-                    $("#image-" + position).attr("src", imageData);
-                    var img = new Image();
-                    img.src = imageData;
-                    var imageLoaded = false;
-                    img.onload = function(){
-                        if (!imageLoaded) {
-                            imageLoaded = true;
-                            var resizedImageData = self.imageToData(img, img.width, img.height, position);
-                            self.verifyImage(position, resizedImageData);
-                            self.enrollImage(position, resizedImageData);
+            var fileData = input.files[0]; 
+            var formData = new FormData();                  
+            formData.append('file', fileData);
+            formData.append('fname', 'upload');
+            $.ajax({
+                url: '../get-file-data.php', 
+                dataType: 'text', 
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,                         
+                type: 'post',
+            }).done(function(response) {
+                var response = JSON.parse(response);
+                var mimeType = response;
 
-                        }
-                    };  
-                };
-            } 
+                var fileTypeAllowed = false;
+                var fileTypeList = [];
+                $(self.config.uploadFileTypesImage).each(function(idx, fileType) {
+                    fileTypeList.push(" ." + fileType.toString().split("/")[1])
+                    if(fileType == mimeType) { 
+                        fileTypeAllowed = true;
+                    }
+                }); 
+                var fsize = input.files[0].size;
+                var fileSizeAllowed = false;
+                if(fsize <= self.config.uploadFileSizeImage) { 
+                    fileSizeAllowed = true;
+                } 
+                if (!fileTypeAllowed) {
+                    var filetypeMsg = "Wrong file type.  Must be" + fileTypeList;
+                    self.getTemplate("image-" + position + "-template",filetypeMsg,false,false);
+                    self.hideMasks();
+                    return false;
+                }
+                else if (!fileSizeAllowed) {
+                    var filesizeMsg = "File size is too large.  Must be less than or equal to " + self.config.uploadFileSizeImage/1000000 + "MB";
+                    self.getTemplate("image-" + position + "-template",filesizeMsg,false,false);
+                    self.hideMasks();
+                    return false;
+                }
+                else if (!input) {
+                    self.getTemplate("image-" + position + "-template","Couldn't find the file input element.",false,false);
+                    self.hideMasks();
+                    return false;
+                }
+                else if (!input.files) {
+                    self.getTemplate("image-" + position + "-template","This browser doesn't seem to support the `files` property of file inputs.",false,false);
+                    self.hideMasks();
+                    return false;
+                }
+                else {
+                    var file = input.files[0];
+                    var reader  = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onloadend = function () {
+                        var imageData = String(reader.result);
+                        $(".canvas-container-" + position).empty();
+                        // show image
+                        $(".canvas-container-" + position).hide();
+                        $("#image-" + position).attr("src", imageData);
+                        var img = new Image();
+                        img.src = imageData;
+                        var imageLoaded = false;
+                        img.onload = function(){
+                            if (!imageLoaded) {
+                                imageLoaded = true;
+                                var resizedImageData = self.imageToData(img, img.width, img.height, position);
+                                self.verifyImage(position, resizedImageData);
+                                self.enrollImage(position, resizedImageData);
+
+                            }
+                        };  
+                    };
+                } 
+            });
+                
         };
     },
     //------------------------------------
@@ -279,16 +315,16 @@ verifyDemoApp =  {
                 return false;
             }
             // check to see if both URL fields have been submitted simultaneously
-            var simulaneous = false;
+            var simultaneous = false;
             if (self.validateUrl($("#url-left").val()).length && 
                 self.validateUrl($("#url-right").val()).length &&
                 self.keydown) {
-                simulaneous = true;
+                simultaneous = true;
             }
-            self.getImageData(urlImageSrc, position, simulaneous);
+            self.getImageData(urlImageSrc, position, simultaneous);
         });
     },
-    getImageData: function (urlImageSrc, position, simulaneous) {
+    getImageData: function (urlImageSrc, position, simultaneous) {
         var self = this;
         self.showMasks();
         $(".url-error").html("");
@@ -296,15 +332,17 @@ verifyDemoApp =  {
         self.getTemplate("image-" + position + "-template","Analyzing image...",false,true);
         // POST to php file to get image data
         var data = {};
+        data.fname = "url";
         data.url = urlImageSrc;
         $.ajax({
             type: "POST",
-            url: "../get-image-data.php",
+            url: "../get-file-data.php",
             data: data,
             dataType: "text"
-        }).done(function(response) {
-            if(self.validateJson(response) && JSON.parse(response).imageType !== false && JSON.parse(response).imageType !== null) {
-                self.processUrlImage(JSON.parse(response), position, simulaneous);
+        }).done(function(data) {
+            var response = JSON.parse(data);
+            if(self.validateJson(data) && response.fileType !== false && response.fileType !== null) {
+                self.processUrlImage(response, position, simultaneous);
             }              
             else {
                 self.hideMasks();
@@ -312,17 +350,31 @@ verifyDemoApp =  {
             }
         });
     },
-    processUrlImage: function (response, position, simulaneous) {
+    processUrlImage: function (response, position, simultaneous) {
         var self = this;
-        var ftype = response.imageType.mime;
+        var mimeType = response.fileType;
+        var fileSize = response.fileSize;
         var fileTypeAllowed = false;
+        var fileTypeList = [];
         $(self.config.uploadFileTypesImage).each(function(idx, fileType) {
-            if(fileType == ftype) { 
+            fileTypeList.push(" ." + fileType.toString().split("/")[1])
+            if(fileType == mimeType) { 
                 fileTypeAllowed = true;
             }
         }); 
+        var fileSizeAllowed = false;
+        if(fileSize <= self.config.uploadFileSizeImage) { 
+            fileSizeAllowed = true;
+        } 
         if (!fileTypeAllowed) {
-            verifyDemoApp.getTemplate("image-" + position + "-template","Wrong file type.  Must be .png, .gif, or .jpg.",true,false);
+            var filetypeMsg = "Wrong file type.  Must be" + fileTypeList;
+            verifyDemoApp.getTemplate("image-" + position + "-template",filetypeMsg,true,false);
+            self.hideMasks();
+            return false;
+        }
+        else if (!fileSizeAllowed) {
+            var filesizeMsg = "File size is too large.  Must be less than or equal to " + self.config.uploadFileSizeImage/1000000 + "MB";
+            verifyDemoApp.getTemplate("image-" + position + "-template",filesizeMsg,true,false);
             self.hideMasks();
             return false;
         }
@@ -333,19 +385,19 @@ verifyDemoApp =  {
             $(".canvas-container-" + position).empty();
             // show image
             $(".canvas-container-" + position).hide();
-            $("#image-" + position).attr("src", response.imageData);
+            $("#image-" + position).attr("src", "data:" + mimeType + ";base64," + response.fileData);
             var img = new Image();
-            img.src = response.imageData;
+            img.src = "data:" + mimeType + ";base64," + response.fileData;
             var imageLoaded = false;
             img.onload = function(){
                 if (!imageLoaded) {
                     imageLoaded = true;
                     var resizedImageData = self.imageToData(img, img.width, img.height, position);
-                    if (position == "right" && simulaneous) {
+                    if (position == "right" && simultaneous) {
                         // store data for enroll/verify later
                         self.simultaneousData = resizedImageData;
                     }
-                    else if (position == "left" && simulaneous) {
+                    else if (position == "left" && simultaneous) {
                         self.enrollImage("left", resizedImageData, true);
                     }
                     else {
@@ -359,7 +411,7 @@ verifyDemoApp =  {
     //------------------------------------
     // SHOW VERIFICATION RESPONSE
     //------------------------------------
-    displayResponse: function(imageAnalysis, imageData, position, simulaneous) {
+    displayResponse: function(imageAnalysis, imageData, position, simultaneous, enrolled) {
         var self = this;
         var kairosJSON = JSON.parse(imageAnalysis);
         if (kairosJSON.Errors) {
@@ -380,9 +432,9 @@ verifyDemoApp =  {
             }
             else {
                 self.getTemplate("image-left-template","",false,false);
-                if (simulaneous) {
+                if (simultaneous) {
                     $(".canvas-container-" + position).show();
-                    self.drawMethod(kairosJSON.images[0], imageData, position);
+                    self.drawMethod(kairosJSON.images[0], imageData, position, simultaneous, enrolled);
                     self.getTemplate("image-left-template","",false,false);
                     self.verifyImage("right", self.simultaneousData);
                     self.enrollImage("right", self.simultaneousData);
@@ -393,7 +445,7 @@ verifyDemoApp =  {
                     self.getTemplate("image-right-template","",true,false);
                     $(".show-json").show();
                     $(".canvas-container-" + position).show();
-                    self.drawMethod(kairosJSON.images[0], imageData, position);
+                    self.drawMethod(kairosJSON.images[0], imageData, position, simultaneous, enrolled);
                     var status = kairosJSON.images[0].transaction.status;
                     var confidence = kairosJSON.images[0].transaction.confidence;
                     if (status == "success") {
@@ -476,37 +528,36 @@ verifyDemoApp =  {
     //------------------------------------
     // DRAW FEATURE POINTS ON CANVAS
     //------------------------------------
-    drawMethod: function(imageAnalysis, imageData, position) {
+    drawMethod: function(imageAnalysis, imageData, position, simultaneous, enrolled) {
         var self = this;
         
-        var canvas = $("#displayCanvas" + position)[0];
-
-        var context = canvas.getContext('2d');
-
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        var imageObj = new Image();
-        imageObj.onload = function() {
-            context.drawImage(imageObj, 0, 0);
-            var face = imageAnalysis.transaction;
-            var strokeStyle = '#139C8A';
-            // color code gender
-            // if (imageAnalysis.attributes && imageAnalysis.attributes.gender.type == "F" && parseInt(imageAnalysis.attributes.gender.confidence) > 59) {
-            //     strokeStyle = '#ff99ff';
-            // }
-            // else if (imageAnalysis.attributes && imageAnalysis.attributes.gender.type == "M" && parseInt(imageAnalysis.attributes.gender.confidence) > 59) {
-            //     strokeStyle = '#0033ff';
-            // }
-            // draw face box
-            if (face.topLeftX != -1 && face.topLeftY != -1) {
-                context.beginPath();
-                context.rect(face.topLeftX, face.topLeftY, face.width, face.height);
-                context.lineWidth = 3;
-                context.strokeStyle = strokeStyle;
-                context.stroke();
-            }
-        };
-        imageObj.src = imageData;
-
+        if (enrolled) {
+            var canvas = $("#displayCanvas" + position)[0];
+            var context = canvas.getContext('2d');
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            var imageObj = new Image();
+            imageObj.onload = function() {
+                context.drawImage(imageObj, 0, 0);
+                var face = imageAnalysis.transaction;
+                var strokeStyle = '#139C8A';
+                // color code gender
+                if (imageAnalysis.transaction.attributes && imageAnalysis.transaction.attributes.gender.type == "F" && parseInt(imageAnalysis.transaction.attributes.gender.confidence) >= 50) {
+                    strokeStyle = '#ff99ff';
+                }
+                else if (imageAnalysis.transaction.attributes && imageAnalysis.transaction.attributes.gender.type == "M" && parseInt(imageAnalysis.transaction.attributes.gender.confidence) >= 50) {
+                    strokeStyle = '#0033ff';
+                }
+                // draw face box
+                if (face.topLeftX != -1 && face.topLeftY != -1) {
+                    context.beginPath();
+                    context.rect(face.topLeftX, face.topLeftY, face.width, face.height);
+                    context.lineWidth = 3;
+                    context.strokeStyle = strokeStyle;
+                    context.stroke();
+                }
+            };
+            imageObj.src = imageData;
+        }
     },
     //------------------------------------
     // DISPLAY HANDLEBARS TEMPLATES
@@ -582,7 +633,6 @@ verifyDemoApp =  {
         $(".upload-mask-left, .url-mask-left, .upload-mask-right, .url-mask-right").hide();
     }
 };
-
 
 
 

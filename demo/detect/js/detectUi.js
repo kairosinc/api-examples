@@ -12,29 +12,36 @@ $(".photo-thumbnail img").eq(0).css("opacity","1");
 
 $(".photo-thumbnail").click(function(e) {
 	e.preventDefault();
-	if (!detectDemoApp.processingExample) {
+	if (detectDemoApp.apiCredentials && !detectDemoApp.processing) {
 		$(".photo-thumbnail img").css("opacity","0.7");
 		$(this).find("img").css("opacity","1");
-		if (detectDemoApp.apiCredentials) {
-			// show selected preview image
-			$("#previewImage")
-				.attr("src",$(this).find("img").attr("src"))
-				.show();
-			detectDemoApp.resetElements();
-			detectDemoApp.examplesModule();
-		}
+		// show selected preview image
+		$("#previewImage")
+			.attr("src",$(this).find("img").attr("src"))
+			.show();
+		detectDemoApp.resetElements();
+		detectDemoApp.examplesModule($(this).find("img")[0]);
 	}
 });
 $(".webcam-button").click(function(e){
 	e.preventDefault();
-	// create new video element
-	$( "#webcamVideo" ).remove();
-	$( ".webcam-video-container" ).append( $( '<video id="webcamVideo"></video>' ) );
-	$("#webcamVideo").show();
-	detectDemoApp.resetElements();
-	detectDemoApp.getTemplate("image-container-template","","Waiting for webcam...",true);
-    // start webcam module
-	detectDemoApp.webcamModule();
+	if (!detectDemoApp.processing) {
+		// create new video element
+		$( "#webcamVideo" ).remove();
+		$( ".webcam-video-container" ).append( $( '<video id="webcamVideo"></video>' ) );
+		$("#webcamVideo").show();
+		detectDemoApp.resetElements();
+		detectDemoApp.getTemplate("image-container-template","","Waiting for webcam...",true);
+	    // start webcam module
+		detectDemoApp.webcamModule();
+	}
+});
+// disable upload button if processing is 
+// taking place from another module
+$("#upload").click(function(e) {
+	if(detectDemoApp.processing) {
+		e.preventDefault();
+	}
 });
 $("#upload").change(function(){
     detectDemoApp.resetElements();

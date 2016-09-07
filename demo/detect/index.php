@@ -15,7 +15,7 @@
     <div class="main-container container">
         <div class="row">
             <div class="col-md-6 main-image-container">
-                <img id="previewImage" src="media/Brain_Brackeen.jpeg">
+                <img id="previewImage" src="https://media.kairos.com/team/Brain_Brackeen.jpeg">
                 <div class="webcam-video-container">
                     <div class="face-overlay"></div>
                     <div class="webcam-counter"></div>
@@ -32,20 +32,20 @@
         </div>
         <div class="row">
             <div class="col-md-12 thumbnails container">
-                <a href="image1" class="photo-thumbnail">
-                    <img src="media/Brain_Brackeen.jpeg" />
+                <a href="image1" class="photo-thumbnail image1">
+                    <img src="https://media.kairos.com/team/Brain_Brackeen.jpeg" crossorigin="Anonymous" />
                 </a>
-                <a href="image2" class="photo-thumbnail">
-                    <img src="media/Ben_Virdee-Chapman.jpeg" />
+                <a href="image2" class="photo-thumbnail image2">
+                    <img src="https://media.kairos.com/team/Ben_Virdee-Chapman.jpeg" crossorigin="Anonymous" />
                 </a>
-                <a href="image3" class="photo-thumbnail">
-                    <img src="media/Rajnesah_Belyeu.jpeg" />
+                <a href="image3" class="photo-thumbnail image3">
+                    <img src="https://media.kairos.com/team/Rajnesah_Belyeu.jpeg" crossorigin="Anonymous" />
                 </a>
-                <a href="image4" class="photo-thumbnail">
-                    <img src="media/Cole_Calistra.jpeg" />
+                <a href="image4" class="photo-thumbnail image4">
+                    <img src="https://media.kairos.com/team/Cole_Calistra.jpeg" crossorigin="Anonymous" />
                 </a>
-                <a href="image5" class="photo-thumbnail">
-                    <img src="media/Neil_Pitts.jpeg" />
+                <a href="image5" class="photo-thumbnail image5">
+                    <img src="https://media.kairos.com/team/Neil_Pitts.jpeg" crossorigin="Anonymous" />
                 </a>
             </div>
         </div>
@@ -98,16 +98,15 @@
 
     <!-- hosted libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-    <!-- for copy to clipboard functionality -->
-    <script src="../js/clipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
+
     <!-- custom libraries -->
     <script src="js/detectDemoApp.js"></script>
     <script src="js/detectUi.js"></script>
-    <!-- initialize custom libraries -->
+    
+    <!-- initialize custom libraries if API credentials are valid -->
     <?php
         if (
             (defined("APP_ID") && APP_ID != "") &&
@@ -117,7 +116,7 @@
     ?>
         <script>
             detectDemoApp.init({
-                "uploadFileSize":<?php echo $configs["uploadFileSize"] ?>,
+                "uploadFileSizeImage":<?php echo $configs["uploadFileSizeImage"] ?>,
                 "uploadFileTypesImage":<?php echo $configs["uploadFileTypesImage"] ?>,
                 "apiCredentials":true
             });
