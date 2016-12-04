@@ -54,11 +54,12 @@ detectDemoApp =  {
             context.drawImage(imageElement, 0, 0, self.canvasWidth, self.canvasHeight);
             imageData = canvas.toDataURL();
             self.globalImageData = self.parseImageData(imageData);
+            // set ratio to 1
+            self.newImageSize = self.calculateAspectRatioFit(1,1,1,1);
             var data = {};
             imgObj = { 
                 "image"   : self.globalImageData,
-                "selector" : "FULL", 
-                "minHeadScale" : ".06"
+                "minHeadScale" : ".015"
             };
             data.imgObj = JSON.stringify(imgObj);
             $.ajax({
@@ -154,12 +155,13 @@ detectDemoApp =  {
             context.drawImage(video, 0, 0, self.webcamWidth, self.webcamHeight);
             var imageData = canvas.toDataURL('image/png');
             self.globalImageData = self.parseImageData(imageData);
+            // set ratio to 1
+            self.newImageSize = self.calculateAspectRatioFit(1,1,1,1);
             // send data to Kairos API
             var data = {};
             imgObj = { 
                 "image"   : self.globalImageData,
-                "selector" : "FULL", 
-                "minHeadScale" : ".06"
+                "minHeadScale" : ".015"
             };
             data.imgObj = JSON.stringify(imgObj);
             $.ajax({
@@ -265,20 +267,15 @@ detectDemoApp =  {
                         img.onload = function(){
                             if (!imageLoaded) {
                                 imageLoaded = true;
-                                var maxWidth = self.canvasWidth;
-                                if(img.width > maxWidth) {
-                                    var ratio = maxWidth / img.width;
-                                    imageData = self.imageToDataUri(img, img.width * ratio, img.height * ratio);
-                                    img.src = imageData;
-                                }
+                                self.newImageSize = self.calculateAspectRatioFit(img.width,img.height,self.canvasWidth,self.canvasHeight);
+                                newImageData = self.imageToDataUri(img, self.newImageSize.width, self.newImageSize.height);
                                 context.drawImage(this, 0, 0, self.canvasWidth, self.canvasHeight);
-                                self.globalImageData = self.parseImageData(imageData);
+                                self.globalImageData = self.parseImageData(newImageData);
                                 $("#upload").val("");
                                 var data = {};
                                 imgObj = { 
-                                    "image"   : self.globalImageData,
-                                    "selector" : "FULL", 
-                                    "minHeadScale" : ".06"
+                                    "image"   : self.parseImageData(imageData),
+                                    "minHeadScale" : ".015"
                                 };
                                 data.imgObj = JSON.stringify(imgObj);
                                 $.ajax({
@@ -379,32 +376,27 @@ detectDemoApp =  {
                     img.onload = function(){
                         if (!imageLoaded) {
                             imageLoaded = true;
-                            var maxWidth = self.canvasWidth;
-                            if(img.width > maxWidth) {
-                                var ratio = maxWidth / img.width;
-                                imageData = self.imageToDataUri(img, img.width * ratio, img.height * ratio);
-                                img.src = imageData;
-                            }
+                            self.newImageSize = self.calculateAspectRatioFit(img.width,img.height,self.canvasWidth,self.canvasHeight);
+                            imageData = self.imageToDataUri(img, self.newImageSize.width, self.newImageSize.height);
                             context.drawImage(this, 0, 0, self.canvasWidth, self.canvasHeight);
                             self.globalImageData = self.parseImageData(imageData);
                             $("#upload").val("");
-                            var data = {};
-                            imgObj = { 
-                                "image"   : self.globalImageData,
-                                "selector" : "FULL", 
-                                "minHeadScale" : ".06"
-                            };
-                            data.imgObj = JSON.stringify(imgObj);
-                            $.ajax({
-                                type: 'POST',
-                                url: 'detect.php',
-                                data: data,
-                                dataType: 'text'
-                            }).done(function(response){
-                                self.apiCallback(response);
-                            });
                         }
                     };  
+                    var data = {};
+                    imgObj = { 
+                        "image"   : response.fileData,
+                        "minHeadScale" : ".015"
+                    };
+                    data.imgObj = JSON.stringify(imgObj);
+                    $.ajax({
+                        type: 'POST',
+                        url: 'detect.php',
+                        data: data,
+                        dataType: 'text'
+                    }).done(function(response){
+                        self.apiCallback(response);
+                    });
                 }
             };
         });
@@ -470,8 +462,7 @@ detectDemoApp =  {
                             var data = {};
                             imgObj = { 
                                 "image"   : self.globalImageData,
-                                "selector" : "FULL", 
-                                "minHeadScale" : ".06"
+                                "minHeadScale" : ".015"
                             };
                             data.imgObj = JSON.stringify(imgObj);
                             $.ajax({
@@ -588,117 +579,59 @@ detectDemoApp =  {
         var self = this;
         var canvas = $("#displayCanvas")[0];
         var context = canvas.getContext('2d');
+        self.adjX   = 1;
+        self.adjY   = 1;
+        // adjust aspect ratio of feature points relative to resized image
+        if (self.newImageSize != undefined) {
+            self.adjX   = self.newImageSize.ratio;
+            self.adjY   = self.newImageSize.ratio;
+        }
         context.clearRect(0, 0, canvas.width, canvas.height);
         var imageObj = new Image();
         imageObj.onload = function() {
             context.drawImage(imageObj, 0, 0);
+            
             for (var i = 0; i < image.faces.length; i++) { 
                 var face = image.faces[i];
                 var strokeStyle = '#139C8A';
                 // color code gender
-                if (face.attributes && face.attributes.gender.type == "F" && parseInt(face.attributes.gender.confidence) > 59) {
+                if (face.attributes && face.attributes.gender.type == "F") {
                     strokeStyle = '#ff99ff';
                 }
-                else if (face.attributes && face.attributes.gender.type == "M" && parseInt(face.attributes.gender.confidence) > 59) {
+                else if (face.attributes && face.attributes.gender.type == "M") {
                     strokeStyle = '#0033ff';
                 }
-                // draw face box
-                if (face.topLeftX != -1 && face.topLeftY != -1) {
-                    context.beginPath();
-                    context.rect(face.topLeftX, face.topLeftY, face.width, face.height);
-                    context.lineWidth = 3;
-                    context.strokeStyle = strokeStyle;
-                    context.stroke();
-                }
+                if (face.confidence >= .989) {
+                    
+                    // draw face box
+                    if (face.topLeftX != -1 && face.topLeftY != -1) {
+                        context.beginPath();
+                        context.rect(face.topLeftX * self.adjX, face.topLeftY * self.adjY, face.width * self.adjX , face.height * self.adjY);
+                        context.lineWidth = 2;
+                        context.strokeStyle = strokeStyle;
+                        context.stroke();
+                    }
 
-                // draw left eye
-                if (!negVals(face,"leftEyeCornerLeft","leftEyeCornerRight")) {
-                    context.beginPath();
-                    context.moveTo(face.leftEyeCornerLeftX, face.leftEyeCornerLeftY);
-                    context.lineTo(face.leftEyeCornerRightX, face.leftEyeCornerRightY);
-                    context.stroke();
-                }
+                    if (face.leftEyeCenterX != -1 && face.leftEyeCenterY != -1) {
+                        context.beginPath();
+                        context.moveTo(face.leftEyeCenterX * self.adjX, (face.leftEyeCenterY * self.adjY + (face.height * self.adjY / 25)));
+                        context.lineTo(face.leftEyeCenterX * self.adjX, (face.leftEyeCenterY * self.adjY - (face.height * self.adjY / 25)));
+                        context.stroke();
+                    }
 
-                if (face.leftEyeCenterX != -1 && face.leftEyeCenterY != -1) {
-                    context.beginPath();
-                    context.moveTo(face.leftEyeCenterX, (face.leftEyeCenterY + (face.height / 25)));
-                    context.lineTo(face.leftEyeCenterX, (face.leftEyeCenterY - (face.height / 25)));
-                    context.stroke();
-                }
+                    if (face.rightEyeCenterX != -1 && face.rightEyeCenterY != -1) {
+                        context.beginPath();
+                        context.moveTo(face.rightEyeCenterX * self.adjX, (face.rightEyeCenterY * self.adjY + (face.height * self.adjY / 25)));
+                        context.lineTo(face.rightEyeCenterX * self.adjX, (face.rightEyeCenterY * self.adjY - (face.height * self.adjY / 25)));
+                        context.stroke();
+                    }
 
-                // draw right eye
-                if (!negVals(face,"rightEyeCornerLeft","rightEyeCornerRight")) {
-                    context.beginPath();
-                    context.moveTo(face.rightEyeCornerLeftX, face.rightEyeCornerLeftY);
-                    context.lineTo(face.rightEyeCornerRightX, face.rightEyeCornerRightY);
-                    context.stroke();
-                }
-
-                if (face.rightEyeCenterX != -1 && face.rightEyeCenterY != -1) {
-                    context.beginPath();
-                    context.moveTo(face.rightEyeCenterX, (face.rightEyeCenterY + (face.height / 25)));
-                    context.lineTo(face.rightEyeCenterX, (face.rightEyeCenterY - (face.height / 25)));
-                    context.stroke();
-                }
-
-                // left eyebrow
-                if (!negVals(face,"leftEyeBrowLeft","leftEyeBrowMiddle")) {
-                    context.beginPath();
-                    context.moveTo(face.leftEyeBrowLeftX, face.leftEyeBrowLeftY);
-                    context.lineTo(face.leftEyeBrowMiddleX, face.leftEyeBrowMiddleY);
-                    context.stroke();
-                }
-
-                if (!negVals(face,"leftEyeBrowMiddle","leftEyeBrowRight")) {
-                    context.beginPath();
-                    context.moveTo(face.leftEyeBrowMiddleX, face.leftEyeBrowMiddleY);
-                    context.lineTo(face.leftEyeBrowRightX, face.leftEyeBrowRightY);
-                    context.stroke();
-                }
-
-                // right eyebrow
-                if (!negVals(face,"rightEyeBrowLeft","rightEyeBrowMiddle")) {
-                    context.beginPath();
-                    context.moveTo(face.rightEyeBrowLeftX, face.rightEyeBrowLeftY);
-                    context.lineTo(face.rightEyeBrowMiddleX, face.rightEyeBrowMiddleY);
-                    context.stroke();
-                }
-
-                if (!negVals(face,"rightEyeBrowMiddle","rightEyeBrowRight")) {
-                    context.beginPath();
-                    context.moveTo(face.rightEyeBrowMiddleX, face.rightEyeBrowMiddleY);
-                    context.lineTo(face.rightEyeBrowRightX, face.rightEyeBrowRightY);
-                    context.stroke();
-                }
-
-                // draw mouth
-                if (!negVals(face,"lipCornerLeft","lipLineMiddle")) {
-                    context.beginPath();
-                    context.moveTo(face.lipCornerLeftX, face.lipCornerLeftY);
-                    context.lineTo(face.lipLineMiddleX, face.lipLineMiddleY);
-                    context.stroke();
-                }
-
-                if (!negVals(face,"lipLineMiddle","lipCornerRight")) {
-                    context.beginPath();
-                    context.moveTo(face.lipLineMiddleX, face.lipLineMiddleY);
-                    context.lineTo(face.lipCornerRightX, face.lipCornerRightY);
-                    context.stroke();
-                }
-
-                // draw nose
-                if (!negVals(face,"nostrilLeftSide","nostrilLeftHoleBottom")) {
-                    context.beginPath();
-                    context.moveTo(face.nostrilLeftSideX, face.nostrilLeftSideY);
-                    context.lineTo(face.nostrilLeftHoleBottomX, face.nostrilLeftHoleBottomY);
-                    context.stroke();
-                }
-
-                if (!negVals(face,"nostrilRightSide","nostrilRightHoleBottom")) {
-                    context.beginPath();
-                    context.moveTo(face.nostrilRightSideX, face.nostrilRightSideY);
-                    context.lineTo(face.nostrilRightHoleBottomX, face.nostrilRightHoleBottomY);
-                    context.stroke();
+                    if (face.chinTipX != -1 && face.chinTipY != -1) {
+                        context.beginPath();
+                        context.moveTo(face.chinTipX * self.adjX, (face.chinTipY * self.adjY + (face.height * self.adjY / 25)));
+                        context.lineTo(face.chinTipX * self.adjX, (face.chinTipY * self.adjY - (face.height * self.adjY / 25)));
+                        context.stroke();
+                    }
                 }
             }
         };
@@ -790,7 +723,11 @@ detectDemoApp =  {
         } else {
             return false;
         }
-    }
+    },
+    calculateAspectRatioFit: function(srcWidth, srcHeight, maxWidth, maxHeight) {
+        var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+        return { width: srcWidth*ratio, height: srcHeight*ratio, ratio:ratio };
+    },
 };
 
 

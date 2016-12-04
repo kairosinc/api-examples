@@ -88,10 +88,10 @@ verifyDemoApp =  {
                     var confidence = jsonResponse.images[0].transaction.confidence;
                     if (status == "success") {
                         if (confidence >= .5) {
-                           $(".verify-response").html(Math.round(100 * confidence) + "% MATCH"); 
+                           $(".verify-response").html("MATCH"); 
                         }
                         else {
-                            $(".verify-response").html(Math.round(100 * confidence) + "% NO MATCH");
+                            $(".verify-response").html("NO MATCH");
                         }
                     }
                     else {
@@ -166,6 +166,7 @@ verifyDemoApp =  {
                 self.displayResponse(imageAnalysis, imageData, position, true, true);
             }
             else {
+                console.log(JSON.parse(imageAnalysis))
                 self.drawMethod(JSON.parse(imageAnalysis).images[0], imageData, position, false, true);
             }
         });
@@ -450,10 +451,10 @@ verifyDemoApp =  {
                     var confidence = kairosJSON.images[0].transaction.confidence;
                     if (status == "success") {
                         if (confidence >= .5) {
-                           $(".verify-response").html(Math.round(100 * confidence) + "% MATCH"); 
+                           $(".verify-response").html("MATCH"); 
                         }
                         else {
-                            $(".verify-response").html(Math.round(100 * confidence) + "% NO MATCH");
+                            $(".verify-response").html("NO MATCH");
                         }
                     }
                     else {
@@ -530,7 +531,6 @@ verifyDemoApp =  {
     //------------------------------------
     drawMethod: function(imageAnalysis, imageData, position, simultaneous, enrolled) {
         var self = this;
-        
         if (enrolled) {
             var canvas = $("#displayCanvas" + position)[0];
             var context = canvas.getContext('2d');
@@ -541,17 +541,17 @@ verifyDemoApp =  {
                 var face = imageAnalysis.transaction;
                 var strokeStyle = '#139C8A';
                 // color code gender
-                if (imageAnalysis.transaction.attributes && imageAnalysis.transaction.attributes.gender.type == "F" && parseInt(imageAnalysis.transaction.attributes.gender.confidence) >= 50) {
+                if (imageAnalysis.attributes && imageAnalysis.attributes.gender.type == "F") {
                     strokeStyle = '#ff99ff';
                 }
-                else if (imageAnalysis.transaction.attributes && imageAnalysis.transaction.attributes.gender.type == "M" && parseInt(imageAnalysis.transaction.attributes.gender.confidence) >= 50) {
+                else if (imageAnalysis.attributes && imageAnalysis.attributes.gender.type == "M") {
                     strokeStyle = '#0033ff';
                 }
                 // draw face box
                 if (face.topLeftX != -1 && face.topLeftY != -1) {
                     context.beginPath();
                     context.rect(face.topLeftX, face.topLeftY, face.width, face.height);
-                    context.lineWidth = 3;
+                    context.lineWidth = 2;
                     context.strokeStyle = strokeStyle;
                     context.stroke();
                 }

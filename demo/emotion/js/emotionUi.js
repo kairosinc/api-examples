@@ -52,12 +52,20 @@ $(".show-json").click(function (e) {
 	e.preventDefault();
 	$(".highcharts-container").hide();
 	$(".json-response-container").show();
-	$(".copy-json-button").show();
+	emoDemoApp.getTemplate("json-template","Wait","Retrieving JSON response...",false, false);
+	setTimeout(function() {
+		$(".json-response").html("<pre>" + emoDemoApp.syntaxHighlight(emoDemoApp.jsonResponse) + "</pre>");
+		$(".copy-json-button").show();
+		emoDemoApp.getTemplate("json-template","","",false, false);
+	},200)
 });
 $(".hide-json").click(function (e) {
 	e.preventDefault();
 	$(".highcharts-container").show();
 	$(".json-response-container").hide();
+	setTimeout(function() {
+		$(".json-response").html("");
+	},200)
 	$(".copy-json-button").hide();
 });
 // toggle autoscale in Highcharts, depending on Autoscale checkbox

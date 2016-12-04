@@ -41,8 +41,10 @@ emoDemoApp =  {
     //------------------------------------
     examplesModule: function (mediaType) {
         var self = this; 
+        self.mediaType = mediaType;
         self.processing = true; 
         self.initPostProcessingLayout = false;
+        $(".canvas-container-image").empty()
         if (mediaType == "video") {
             self.getTemplate("video-container-template","","Loading video...",true,false);
             self.getTemplate("highcharts-template","","Analyzing video...",true,false);
@@ -58,7 +60,7 @@ emoDemoApp =  {
             self.getTemplate("video-container-template","","Loading image...",true,false);
             self.getTemplate("highcharts-template","","Analyzing image...",true,false);
             var mediaId = $(".show-image").attr("mediaId");
-            $(".show-image").attr("src",self.config.mediaPath + "fullsize_images/" + mediaId + ".png");
+            $(".show-image").attr("src",self.config.mediaPath + "fullsize_images/" + mediaId + ".jpg");
         }
         var mediaId = self.config["demoMedia"][mediaId];
         self.pollApi(mediaId, "examples");
@@ -82,6 +84,7 @@ emoDemoApp =  {
             };
             var mediaRecorder;
             self.resetElements();
+            $(".canvas-container-image").empty();
             self.resetVideoUI();
             $(".video-wrapper").hide();
             $(".show-image").hide();
@@ -160,7 +163,6 @@ emoDemoApp =  {
                             self.processing = false;
                         }
                         else {
-                            console.log("process")
                            processVideo(videoFile); 
                         }  
                      }
@@ -226,7 +228,6 @@ emoDemoApp =  {
     uploadModule: function () { 
         var self = this;  
         $('#mediaUploadForm').submit(function(e) {
-            console.log(e)
             e.preventDefault();
             $('.show-image')
                 .attr("src","")
@@ -235,6 +236,7 @@ emoDemoApp =  {
             self.initPostProcessingLayout = false;
             self.mimeType = "";
             self.resetElements();
+            $(".canvas-container-image").empty();
             self.getTemplate("video-container-template","","Uploading...",true, false);
             self.getTemplate("highcharts-template","","Please Wait",false, false);
             highchartsApp.parsedData = ""; 
@@ -349,7 +351,10 @@ emoDemoApp =  {
                                     var reader = new FileReader();
                                     reader.onload = function (e) {
                                         img.src = e.target.result;
+                                        self.imgWidth = img.width;
+                                        self.imgHeight = img.height;
                                         newImageSize = self.calculateAspectRatioFit(img.width,img.height,self.viewportWidth,self.viewportHeight);
+                                        self.newImageSize = newImageSize;
                                         $('.show-image')
                                             .attr("src", e.target.result)
                                             .css("z-index",1)
@@ -406,6 +411,8 @@ emoDemoApp =  {
                 self.initPostProcessingLayout = false;
                 $(".url-error").html("");
                 self.resetElements();
+                $(".hide-json").click();
+                $(".canvas-container-image").empty();
                 self.getTemplate("video-container-template","","Uploading...",true, false);
                 self.getTemplate("highcharts-template","","Please Wait",false, false);
                 var data = {};
@@ -543,13 +550,6 @@ emoDemoApp =  {
                 dataType: 'text'
             }).done(function(data){
                 var response = data;
-            // $.ajax({
-            //     url: 'fake-post.php', // fake the AJAX call                         
-            //     type: 'post',
-            // }).done(function(data) {
-            //     self.currData = testData;
-            //     response = JSON.stringify(testData);
-                
                 if(self.validateJson(response)){
                     if (JSON.parse(response).status_code == "3") {
                         var data = {"status_message":"api_error","status_message_text": JSON.parse(response).status_message.replace("Error:", "")};
@@ -559,11 +559,17 @@ emoDemoApp =  {
                     }
                     else if (JSON.parse(response).status_code == "4") {
                         if (!self.initPostProcessingLayout) {
-                            if (JSON.parse(response).frames[0].people[0] != undefined) {
-                                var landmarks = JSON.parse(response).frames[0].people[0].landmarks;
-                                if (landmarks != undefined) {
-                                    $(".featurepoints-checkbox").show();
+                            // make sure response contains at least one
+                            // "people" array, which contains landmark data
+                            var frames = JSON.parse(response).frames;
+                            var containsOnePeopleArray = false;
+                            $.each(frames, function(idx, val){
+                                if (val.people.length) {
+                                    containsOnePeopleArray = true;
                                 }
+                            });
+                            if (containsOnePeopleArray) {
+                                $(".featurepoints-checkbox").show();
                                 self.postProcessingLayout(response, module);
                                 self.initPostProcessingLayout = true;
                             }
@@ -575,6 +581,16 @@ emoDemoApp =  {
                             self.processing = false;
                             clearInterval(self.pollInterval)
                         }
+                    }
+                    else if (JSON.parse(response).code != undefined && JSON.parse(response).message) {
+                        var msg = JSON.parse(response).message;
+                        if (msg == "No faces found in the image.") {
+                            msg = "No faces found in the image, or the face is too close to the camera.";
+                        }
+                        var data = {"status_message": msg};
+                        self.postProcessingLayout(JSON.stringify(data), module);
+                        self.processing = false;
+                        clearInterval(self.pollInterval)
                     }
                     else if (self.timeRemaining <= 0) {
                         var data = {"status_message":"api_error","status_message_text": "timeout"};
@@ -607,8 +623,9 @@ emoDemoApp =  {
     //------------------------------------
     postProcessingLayout: function (data, module) {
         var self = this;
-        featurePointAnimation.init(data);
         var response = JSON.parse(data);
+        // self.mediaType = response.media_info.mime_type.split("/")[0];
+        // featurePointAnimation.init(data);
         $(".hide-json").click();
         $(".json-response").html("");
         if (response.status_message != "Complete") {
@@ -630,6 +647,8 @@ emoDemoApp =  {
             self.getTemplate("highcharts-template","",messageText,false, false);
         }
         else {
+            self.mediaType = response.media_info.mime_type.split("/")[0];
+            featurePointAnimation.init(data);
             if(response.frames[0].people != undefined) {
                 self.resetElements();
                 var genderDefined = false;
@@ -654,8 +673,10 @@ emoDemoApp =  {
                     $(".show-json, .hide-json").show();
                     self.resetVideoUI();
                     $(".video-wrapper").hide();
-                    var str = JSON.stringify(response, undefined, 4);
-                    $(".json-response").html("<pre>" + self.syntaxHighlight(str) + "</pre>");
+                    // feature points on still images not accurate enough to
+                    // show at this time
+                    // featurePointAnimation.getFeaturePoints(0);
+                    self.jsonResponse = JSON.stringify(response, undefined, 4);
                     $(".highcharts-wrapper").hide();
                     $(".autoscale-checkbox").hide();   
                     $(".featurepoints-checkbox").hide();   
@@ -671,80 +692,67 @@ emoDemoApp =  {
                     self.getTemplate("video-container-template","","We have detected a mulit-face video.  Visualization is not available at this time.",false, false);
                     $(".show-json").click();
                     $(".hide-json").hide();
-                    $(".json-response").html("<pre>" + self.syntaxHighlight(str) + "</pre>");
+                    self.jsonResponse = JSON.stringify(response, undefined, 4);
+                    // $(".json-response").html("<pre>" + self.syntaxHighlight(str) + "</pre>");
                     $("#highcharts-titles, #highcharts-containers").show();
                 }
                 else {
-                    var lastFrame = response.frames.length - 1;
                     self.getTemplate("highcharts-template","","",false, false, false, false);
-                    var maleCount = 0;
-                    var femaleCount = 0;
-                    var childCount = 0;
-                    var yadultCount = 0;
-                    var adultCount = 0;
-                    var seniorCount = 0;
-                    $.each(response.frames, function(idx, val){
-                        if(val.people[0].demographics != undefined && val.people[0].demographics.gender == "Male") {
-                            maleCount++;
-                        }
-                        if(val.people[0].demographics != undefined && val.people[0].demographics.gender == "Female") {
-                            femaleCount++;
-                        }
-                        if(val.people[0].demographics != undefined && val.people[0].demographics.age_group == "Child") {
-                            childCount++;
-                        }
-                        if(val.people[0].demographics != undefined && val.people[0].demographics.age_group == "Young Adult") {
-                            yadultCount++;
-                        }
-                        if(val.people[0].demographics != undefined && val.people[0].demographics.age_group == "Adult") {
-                            adultCount++;
-                        }
-                        if(val.people[0].demographics != undefined && val.people[0].demographics.age_group == "Senior") {
-                            seniorCount++;
-                        }
-                    });
-                    var gender = "";
-                    if (maleCount > 0 || femaleCount > 0) {
-                        gender = (maleCount >= femaleCount) ? "MALE" : "FEMALE";
-                    }
-                    if (gender != undefined && gender != "Not Available" && gender != "") {
-                        genderDefined = true;
-                    }
-                    var ageArray = ["Child","Young Adult","Adult","Senior"];
-                    var ageValArray = [childCount,yadultCount,adultCount,seniorCount];
-                    var maxVal = Math.max.apply(Math, ageValArray);
-                    var ageIndex = $.inArray(maxVal,ageValArray);
-                    var age = ageArray[ageIndex];
-                    if (age != undefined && age != "") {
-                        ageDefined = true;
-                    } 
-                    self.getTemplate("highcharts-template","","",false, false, genderDefined, ageDefined);
-                    $(".response-box-gender").html(gender);
-                    $(".response-box-age").html(age);
-                    $(".show-json, .hide-json").show();
-                    $(".autoscale-checkbox").show(); 
-                    $(".featurepoints-checkbox").show();
-                    if (module != "examples") {
-                        if(self.showUploadedVideo) {
-                            self.resetVideoUI();
-                            $(".video-wrapper").show();
-                            $(".video-controls").show();
+                    var fd = {};
+                    fd["fname"] = "analytics";
+                    fd["mediaId"] = response.id;
+                    $.ajax({
+                        type: 'POST',
+                        url: 'process.php',
+                        data: fd,
+                        dataType: 'text'
+                    }).done(function(analyticsData){
+                        var analyticsResponse = JSON.parse(analyticsData);
+                        if (analyticsResponse.id != undefined) {
+                            console.log("a")
+                            var analytics   = analyticsResponse.impressions[0].demographics;
+                            genderDefined   = true;
+                            ageDefined      = true;
+                            gender          = analytics.gender;
+                            age             = analytics.age_group;
                         }
                         else {
-                            self.getTemplate("video-container-template","","Here's your video analysis!",false, false);
+                            console.log("b")
+                            var analytics   = self.getAnalyticsFromJson(response);
+                            genderDefined   = analytics.genderDefined;
+                            ageDefined      = analytics.ageDefined;
+                            gender          = analytics.gender;
+                            age             = analytics.age;
                         }
-                    }
-                    else {
-                        $(".video-wrapper").show();
-                    }
-                    var str = JSON.stringify(response, undefined, 4);
-                    $(".json-response").html("<pre>" + self.syntaxHighlight(str) + "</pre>");
-                    $("#highcharts-titles, #highcharts-containers").show();
-                    $("#highcharts-containers").empty();
-                    highchartsApp.parsedData = JSON.stringify(response.frames);
-                    highchartsApp.autoscale = false;
-                    highchartsApp.displayData();
-                    $(".ui-buttons-mask").hide();
+                        self.getTemplate("highcharts-template","","",false, false, genderDefined, ageDefined);
+                        $(".response-box-gender").html(gender);
+                        $(".response-box-age").html(age);
+                        $(".show-json, .hide-json").show();
+                        $(".autoscale-checkbox").show(); 
+                        $(".featurepoints-checkbox").show();
+                        if (module != "examples") {
+                            if(self.showUploadedVideo) {
+                                self.resetVideoUI();
+                                $(".video-wrapper").show();
+                                $(".video-controls").show();
+                            }
+                            else {
+                                self.getTemplate("video-container-template","","Here's your video analysis!",false, false);
+                            }
+                        }
+                        else {
+                            $(".video-wrapper").show();
+                        }
+                        self.jsonResponse = JSON.stringify(response, undefined, 4);
+                        // var str = JSON.stringify(response, undefined, 4);
+                        // $(".json-response").html("<pre>" + self.syntaxHighlight(str) + "</pre>");
+                        $("#highcharts-titles, #highcharts-containers").show();
+                        $("#highcharts-containers").empty();
+                        highchartsApp.parsedData = JSON.stringify(response.frames);
+                        highchartsApp.autoscale = false;
+                        highchartsApp.displayData();
+                        $(".ui-buttons-mask").hide();
+                    });
                 }
             }
             else {
@@ -846,6 +854,54 @@ emoDemoApp =  {
     calculateAspectRatioFit: function(srcWidth, srcHeight, maxWidth, maxHeight) {
         var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
         return { width: srcWidth*ratio, height: srcHeight*ratio, ratio:ratio };
+    },
+    getAnalyticsFromJson: function(response) {
+        var maleCount = 0;
+        var femaleCount = 0;
+        var childCount = 0;
+        var yadultCount = 0;
+        var adultCount = 0;
+        var seniorCount = 0;
+        var genderDefined = false;
+        var ageDefined = false;
+        $.each(response.frames, function(idx, val){
+            if (val.people[0] != undefined && val.people[0].demographics != undefined) {
+                if( val.people[0].demographics.gender == "Male") {
+                    maleCount++;
+                }
+                if(val.people[0].demographics.gender == "Female") {
+                    femaleCount++;
+                }
+                if(val.people[0].demographics.age_group == "Child") {
+                    childCount++;
+                }
+                if(val.people[0].demographics.age_group == "Young Adult") {
+                    yadultCount++;
+                }
+                if(val.people[0].demographics.age_group == "Adult") {
+                    adultCount++;
+                }
+                if(val.people[0].demographics.age_group == "Senior") {
+                    seniorCount++;
+                }
+            }
+        });
+        var gender = "";
+        if (maleCount > 0 || femaleCount > 0) {
+            gender = (maleCount >= femaleCount) ? "MALE" : "FEMALE";
+        }
+        if (gender != undefined && gender != "Not Available" && gender != "") {
+            genderDefined = true;
+        }
+        var ageArray = ["Child","Young Adult","Adult","Senior"];
+        var ageValArray = [childCount,yadultCount,adultCount,seniorCount];
+        var maxVal = Math.max.apply(Math, ageValArray);
+        var ageIndex = $.inArray(maxVal,ageValArray);
+        var age = ageArray[ageIndex];
+        if (age != undefined && age != "") {
+            ageDefined = true;
+        }
+        return {gender: gender, genderDefined: genderDefined, age: age, ageDefined: ageDefined};
     }
 }
 

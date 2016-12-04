@@ -2,7 +2,7 @@
     //------------------------------------
     // Emotion Demo Module
     // created: March 2016
-    // last modified: August 2016
+    // last modified: October 2016
     // author: Steve Rucker
     //------------------------------------
 
@@ -35,13 +35,14 @@
                         </div> 
                         <div id="progress-time">00.00</div>
                     </div>
-                    <div class="canvas-container"><canvas id="displayCanvas" /></div>
+                    <div class="canvas-container-video"></div>
                 </div>
                 <div class="webcam-video-container">
                     <div class="face-overlay"></div>
                     <div class="webcam-counter"></div>
                 </div>
                 <img class="show-image" src="">
+                <div class="canvas-container-image"></div>
                 <div class="template-background"></div>
                 <div class="video-container-template"></div>
             </div>
@@ -70,19 +71,7 @@
                 <a href="" class="hide-json">HIDE JSON</a>
                 <button class="copy-json-button btn btn-primary" data-clipboard-action="copy" data-clipboard-target=".json-response">COPY</button>
                 <div class="json-response"><pre></pre></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 thumbnails container">
-                <a href="video_1" class="media-thumbnail">
-                    <img src="https://media.kairos.com/demo/emotion/thumbnails/thumbnail_1.png" />
-                </a>
-                <a href="video_2" class="media-thumbnail">
-                    <img src="https://media.kairos.com/demo/emotion/thumbnails/thumbnail_2.png" />
-                </a>
-                <a href="fullsize_3" class="media-thumbnail image-thumbnail">
-                    <img src="https://media.kairos.com/demo/emotion/thumbnails/thumbnail_3.png" />
-                </a>
+                <div class="json-template"></div>
             </div>
         </div>
         <div class="row ui-buttons">
@@ -138,13 +127,19 @@
         {{/if}}
         </div>
     </script>
+    <script id="json-template" type="text/x-handlebars-template">
+        <div class="spinner-message-container">
+            <div class="message-container strong">{{message1}}</div>
+            <div class="message-container">{{message2}}</div>
+        </div>
+    </script>
             
 
     <!-- hosted libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/4.2.2/highcharts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
     <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->

@@ -33,18 +33,35 @@ highchartsApp = {
 		var fearKeyValue = {};
 	    for(var i in obj) {
 	    	time.push(obj[i].time);
-	    	dataJoy.push(obj[i].people[0].emotions.joy);
-	    	dataSurprise.push(obj[i].people[0].emotions.surprise);
-	        dataSadness.push(obj[i].people[0].emotions.sadness);
-	        dataAnger.push(obj[i].people[0].emotions.anger);
-	        dataDisgust.push(obj[i].people[0].emotions.disgust);
-	        dataFear.push(obj[i].people[0].emotions.fear);
-	        joyKeyValue[obj[i].time] = obj[i].people[0].emotions.joy;
-	        surpriseKeyValue[obj[i].time] = obj[i].people[0].emotions.surprise;
-	        sadnessKeyValue[obj[i].time] = obj[i].people[0].emotions.sadness;
-	        angerKeyValue[obj[i].time] = obj[i].people[0].emotions.anger;
-	        disgustKeyValue[obj[i].time] = obj[i].people[0].emotions.disgust;
-	        fearKeyValue[obj[i].time] = obj[i].people[0].emotions.fear;
+	    	if (obj[i].people.length) {
+	    		dataJoy.push(obj[i].people[0].emotions.joy);
+		    	dataSurprise.push(obj[i].people[0].emotions.surprise);
+		        dataSadness.push(obj[i].people[0].emotions.sadness);
+		        dataAnger.push(obj[i].people[0].emotions.anger);
+		        dataDisgust.push(obj[i].people[0].emotions.disgust);
+		        dataFear.push(obj[i].people[0].emotions.fear);
+		        joyKeyValue[obj[i].time] = obj[i].people[0].emotions.joy;
+		        surpriseKeyValue[obj[i].time] = obj[i].people[0].emotions.surprise;
+		        sadnessKeyValue[obj[i].time] = obj[i].people[0].emotions.sadness;
+		        angerKeyValue[obj[i].time] = obj[i].people[0].emotions.anger;
+		        disgustKeyValue[obj[i].time] = obj[i].people[0].emotions.disgust;
+		        fearKeyValue[obj[i].time] = obj[i].people[0].emotions.fear;
+	    	}
+	    	else {
+	    		dataJoy.push(0);
+		    	dataSurprise.push(0);
+		        dataSadness.push(0);
+		        dataAnger.push(0);
+		        dataDisgust.push(0);
+		        dataFear.push(0);
+		        joyKeyValue[obj[i].time] = 0;
+		        surpriseKeyValue[obj[i].time] = 0;
+		        sadnessKeyValue[obj[i].time] = 0;
+		        angerKeyValue[obj[i].time] = 0;
+		        disgustKeyValue[obj[i].time] = 0;
+		        fearKeyValue[obj[i].time] = 0;
+
+	    	}
 	    };
 
 	    datasets = [{

@@ -64,6 +64,31 @@ else if ($_POST['fname'] == "url") {
     curl_close($request);
 
 }
+else if ($_POST['fname'] == "analytics") {
+
+    //------------------------------------
+    // GET REQUEST TO API FOR ANALYTICS
+    //------------------------------------
+
+    $mediaId = $_POST['mediaId'];
+
+    $request = curl_init();
+    // set curl options
+    curl_setopt($request, CURLOPT_URL, API_URL . "/v2/analytics/" . $mediaId);
+    curl_setopt($request, CURLOPT_HTTPHEADER, array(
+            "app_id:" . APP_ID,
+            "app_key:" . APP_KEY
+        )
+    );
+    curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($request);
+
+    echo $response;
+    // // close the session
+    curl_close($request);
+
+}
 else {
 
     //------------------------------------

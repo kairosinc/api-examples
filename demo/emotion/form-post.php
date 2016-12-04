@@ -25,21 +25,12 @@ curl_setopt(
     CURLOPT_POSTFIELDS,
     array(
       "source" => new CurlFile($_FILES["file"]["tmp_name"]),
-      // API timeout - timeout can be set to config value:
-      // "timeout" => $configs["apiTimeout"]
-      // or, to use polling, set timout to 1:
       "timeout" => 1
     ));
 // output the response
 curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
 $response =  curl_exec($request);
-
-// $testRespose = array(
-//       "response" => $response,
-//       "file" => $_FILES["file"]["tmp_name"]
-// );
-// print_r(json_encode($testRespose));
 
 echo $response;
 

@@ -15,7 +15,7 @@
     <div class="main-container container">
         <div class="row">
             <div class="col-md-6 main-image-container">
-                <img id="previewImage" src="https://media.kairos.com/team/Brain_Brackeen.jpeg">
+                <img id="previewImage" src="images/Brain_Brackeen.jpeg">
                 <div class="webcam-video-container">
                     <div class="face-overlay"></div>
                     <div class="webcam-counter"></div>
@@ -33,19 +33,19 @@
         <div class="row">
             <div class="col-md-12 thumbnails container">
                 <a href="image1" class="photo-thumbnail image1">
-                    <img src="https://media.kairos.com/team/Brain_Brackeen.jpeg" crossorigin="Anonymous" />
+                    <img src="images/Brain_Brackeen.jpeg" crossorigin="Anonymous" />
                 </a>
                 <a href="image2" class="photo-thumbnail image2">
                     <img src="https://media.kairos.com/team/Ben_Virdee-Chapman.jpeg" crossorigin="Anonymous" />
                 </a>
                 <a href="image3" class="photo-thumbnail image3">
-                    <img src="https://media.kairos.com/team/Rajnesah_Belyeu.jpeg" crossorigin="Anonymous" />
+                    <img src="https://media.kairos.com/team/Rajnesah_Belyeu2.jpeg" crossorigin="Anonymous" />
                 </a>
                 <a href="image4" class="photo-thumbnail image4">
-                    <img src="https://media.kairos.com/team/Cole_Calistra.jpeg" crossorigin="Anonymous" />
+                    <img src="https://media.kairos.com/team/Neil_Pitts.jpeg" crossorigin="Anonymous" />
                 </a>
                 <a href="image5" class="photo-thumbnail image5">
-                    <img src="https://media.kairos.com/team/Neil_Pitts.jpeg" crossorigin="Anonymous" />
+                    <img src="https://media.kairos.com/team/ben_allison.jpeg" crossorigin="Anonymous" />
                 </a>
             </div>
         </div>
