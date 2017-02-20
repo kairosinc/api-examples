@@ -1,6 +1,7 @@
 /* 
 	detect CSS 		
- 	created:; May 2016 
+ 	created: May 2016 
+ 	last modified: January 2016
 	author: Steve Rucker
 */
 .btn-kairos {
@@ -14,24 +15,38 @@
 		background-color: #0d6f62;
 		color: #FFF!important;
 	}
-.main-container {
-	width: 980px;
-	margin: 0 auto;
-	padding: 50px 0;
-}
-.main-image-container {
-	padding-right: 0;
+.display-image-container {
+	position: relative;
+	width: 100%;
 	height: 475px;
+	overflow: hidden;
 }
-.json-response-container {
-	padding-left: 0;
+.detect.json-response-container {
+    border: none;
+    float: left;
 	height: 475px;
+	padding-left: 15px;
+	display: none;
+}
+.detect.json-response-container .json-response {
+	width: initial;
+}
+.show-hide-json {
+	padding-left: 15px;
+}
+.image-container-template {
+	background-color: #2c3444;
+    width: 100%;
+    height: 475px;
+    position: absolute;
+    top: 0;
+    display: none;
 }
 #previewImage {
 	position: relative;
 	z-index: 1;
-	width: 475px;
-	height: 475px;
+	width: 100%;
+	height: auto;
 }
 #imgCanvas {
 	position: absolute;
@@ -43,16 +58,24 @@
 	margin-top: 15px;
 }
 .photo-thumbnail img {
-	width: 181px;
-	margin-right: 15px;
+	width: 47%;
+	margin-right: 3%;
 	opacity: 0.7;
+}
+.image1 img, .image4 img {
+	float: left;
+}
+.image3 img, .image5 img {
+	margin-right: 0;
+	float: right;
+}
+.image4 img, .image5 img {
+	margin-top: 15px;
 }
 .photo-thumbnail:last-child img {
 	margin-right: 0;
 }
 .webcam-video-container {
-	width: 475px;
-	height: 475px;
 	overflow: hidden;
 	position: absolute;
     top: 0;
@@ -125,13 +148,13 @@
 	color: #fff;
 }
 .canvas-container {
-	width: 475px;
+	width: 100%;
     height: 475px;
     overflow: hidden;
     position: absolute;
     top: 0;
     left: 15px;
-    background-color: #2c3444
+    z-index: 9;
 }
 .url-error {
 	color: #ff0000;
@@ -204,7 +227,7 @@
 	position: relative;
 }
 .ui-buttons .upload {
-	padding-left: 0;
+	margin-top: 15px;
 }
 .ui-buttons .upload.full-width {
 	padding-left: 15px;
@@ -236,45 +259,3 @@
     width: 97%;
     height: 100%;
 }
-/* JSON DISPLAY */
-.copy-json-button {
-	position: absolute;
-    top: 22px;
-    right: 36px;
-    display: none;
-    background-color: #1175E3;
-    border-radius: 0;
-}
-	.copy-json-button:hover {
-		background-color: #3178c5;
-		color: #FFF!important;
-		font-weight: normal;
-	}
-.json-title {
-	position: absolute;
-	top: 20px;
-	left: 20px;
-	color: #FFF;
-	font-weight: bold;
-	display: none;
-}
-.json-response {
-	clear: both;
-}
-.json-response pre {
-	background-color: #2c3444;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	height: 400px;
-	color: #f8f8f8;
-	border: none;
-    border-radius: 0;
-    height: 475px;
-    padding: 50px 5px 5px;
-    font-size: 11px;
-}
-.json-response .string { color: #65b042; }
-.json-response .number { color: #3387cc; }
-.json-response .key { color: #65b042; }
-.json-response .colon { color: #f8f8f8; }
-

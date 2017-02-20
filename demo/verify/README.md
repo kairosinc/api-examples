@@ -44,7 +44,7 @@ The JSON response for the image which has been verified is displayed in the righ
 
 ![JSON Display](/demo/verify/docs/json_display.png?raw=true)
 
-The name/value pairs in the JSON object are color-coded using the syntaxHighlight() function in `detectDemoApp.js`.  The colors are set in emotion.css (`#json-container` response blocks).  A COPY button is provided, which allows the user to copy the JSON response to the clipboard.
+The name/value pairs in the JSON object are color-coded using the syntaxHighlight() function in `verifyDemoApp.js`.  The colors are set in emotion.css (`#json-container` response blocks).  A COPY button is provided, which allows the user to copy the JSON response to the clipboard.
 
 ---
 ## Upload Module
@@ -55,9 +55,9 @@ The user is provided with two upload elements, one for each of the left and righ
 
 These provide the user with the ability to verify images from their local system.  
 
-When a file is selected, Canvas is used to retrieve the image data.  This data is posted to `detect.php' via AJAX, where a PHP cURL POST request is made to the Kairos API with the uploaded file, using the https://api.kairos.com/detect endpoint.
+When a file is selected, Canvas is used to retrieve the image data.  This data is posted to `verify.php' via AJAX, where a PHP cURL POST request is made to the Kairos API with the uploaded file, using the https://api.kairos.com/verify endpoint.
 
-The API response is sent to the `apiCallback()` method in `detectDemoApp.js` which formats the JSON response for viewing, and draws a box around the detected face, along with various other feature points.
+The API response is sent to the `apiCallback()` method in `verifyDemoApp.js` which formats the JSON response for viewing, and draws a box around the detected face, along with various other feature points.
 
 ---
 
@@ -65,16 +65,16 @@ The API response is sent to the `apiCallback()` method in `detectDemoApp.js` whi
 
 The URL of a photo on the web can be entered for analysis.
 
-![URL from the Web](/demo/detect/docs/url_from_the_web.png?raw=true)
+![URL from the Web](/demo/verify/docs/url_from_the_web.png?raw=true)
 
-When an URL is entered, the URL source is posted asynchronously to `get-image-data.php` where the image type is determined.  If the image type is allowable, the image is written to Canvas and the image data is retrieved.  This data is posted to `detect.php' via AJAX, where a PHP cURL POST request is made to the Kairos API with the uploaded file, using the https://api.kairos.com/detect endpoint.
+When an URL is entered, the URL source is posted asynchronously to `get-image-data.php` where the image type is determined.  If the image type is allowable, the image is written to Canvas and the image data is retrieved.  This data is posted to `verify.php' via AJAX, where a PHP cURL POST request is made to the Kairos API with the uploaded file, using the https://api.kairos.com/verify endpoint.
 
 As in the other modules, the API response is sent to the `apiCallback()` method, where the JSON response is formatted for viewing, and a box is drawn around the detected face, along with feature points.
 
 ---
 ## User Interactions
 
-The functionality for a number of user interactions is contained within the `detectUi.js` file.  Among them are:
+The functionality for a number of user interactions is contained within the `verifyUi.js` file.  Among them are:
 
 * Click functionality for Example thumbnails
 * Functionality for Copy to Clipboard button
@@ -132,11 +132,11 @@ Libraries hosted by content delivery networks:
 Note: These dependencies can be also be saved locally.
 
 The following custom javascript libraries are used:
-* detectDemoApp.js - javascript object responsible for primary app functionality
-* detectUi.js - a collection of javascript functions to enable user interactions
+* verifyDemoApp.js - javascript object responsible for primary app functionality
+* verifyUi.js - a collection of javascript functions to enable user interactions
 
 The following custom php files are used:
-* detect.php - processes calls to Kairos API (for examples and webcam modules)
+* verify.php - processes calls to Kairos API (for examples and webcam modules)
 * get-image-data.php - retrieves image information
 
 

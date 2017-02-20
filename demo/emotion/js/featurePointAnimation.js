@@ -18,6 +18,14 @@ featurePointAnimation =  {
         this.adjY   = 1;
         this.subX   = 0;
         this.subY   = 0;
+        var windowWidth = $(window).width();
+        this.featurePointWidth = 2;
+        if (windowWidth < 786) {
+            this.featurePointWidth = 0;
+        }
+        else if (windowWidth < 992) {
+            this.featurePointWidth = 1;
+        }
         if (emoDemoApp.mediaType == "video") {
             this.createDisplayCanvas(emoDemoApp.fullVideoWidth, emoDemoApp.fullVideoHeight);
             
@@ -26,11 +34,8 @@ featurePointAnimation =  {
 
             var videoWidth = this.response.media_info.width;
             var videoHeight = this.response.media_info.height;
-            // fake video dimensions
-            // var videoWidth = 1280;
-            // var videoHeight = 720;
 
-            newVideoSize = emoDemoApp.calculateAspectRatioFit(videoWidth,videoHeight,emoDemoApp.fullVideoWidth,emoDemoApp.fullVideoHeight);
+            newVideoSize = utils.calculateAspectRatioFit(videoWidth,videoHeight,emoDemoApp.fullVideoWidth,emoDemoApp.fullVideoHeight);
 
             // adjust aspect ratio of feature points relative to resized video
             this.adjX   = newVideoSize.ratio;
@@ -112,7 +117,7 @@ featurePointAnimation =  {
             var yPoint = landmarks[idx][val]["y"];
             // console.log(xPoint)
             self.context.beginPath();
-            self.context.rect(xPoint * self.adjX + self.subX, yPoint * self.adjY + self.subY, 2, 1);
+            self.context.rect(xPoint * self.adjX + self.subX, yPoint * self.adjY + self.subY, self.featurePointWidth, 1);
             self.context.stroke();
         }
     },

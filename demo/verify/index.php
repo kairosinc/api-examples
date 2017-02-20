@@ -2,6 +2,7 @@
     //------------------------------------
     // Verify Demo Module
     // created: June 2016
+    // last modified: January 2016
     // author: Steve Rucker
     //------------------------------------
 
@@ -12,26 +13,33 @@
 
 <head>
     <title>Kairos Verify Demo</title>   
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="css/verify.css">
+    <link rel="stylesheet" href="css/verify-mediaqueries.css">
 </head>
 <body>
     <div class="main-container container">
         <div class="row">
-            <div class="col-md-6 left-image-container">
-                <img id="image-left" src="https://media.kairos.com/demo/verify/george1.jpg" subjectId="george1" galleryId="verify-demo">
-                <div class="image-left-template"></div>
+            <div class="col-xs-6 col-sm-6 col-md-6 left-image-container">
                 <div class="canvas-container-left"></div>
+                <div class="display-image-left-container">
+                    <img id="image-left" src="https://media.kairos.com/demo/verify/george1.jpg" subjectId="george1" galleryId="verify-demo">
+                </div>
+                <div class="image-left-template"></div>
             </div>
-            <div class="col-md-6 right-image-container">
+            <div class="col-xs-6 col-sm-6 col-md-6 right-image-container">
                 <a href="" class="show-json">SHOW JSON</a>
-                <img id="image-right" src="https://media.kairos.com/demo/verify/george2.jpg" subjectId="george2" galleryId="verify-demo">
-                <div class="image-right-template"></div>
                 <div class="canvas-container-right"></div>
+                <div class="display-image-right-container">
+                    <img id="image-right" src="https://media.kairos.com/demo/verify/george2.jpg" subjectId="george2" galleryId="verify-demo">
+                </div>
+                <div class="image-right-template"></div>
             </div>
-            <div class="col-md-6 json-response-container">
+            <div class="col-xs-12 col-sm-6 col-md-6 json-response-container verify">
                 <a href="" class="hide-json">HIDE JSON</a>
                 <button class="copy-json-button btn btn-primary" data-clipboard-action="copy" data-clipboard-target=".json-response">COPY</button>
                 <div class="json-response"><pre></pre></div>
@@ -57,7 +65,7 @@
                     </a>
                     <span class="hover-title">ANGELINA AND BRADLEY</span>
                 </div>
-                <div class="image-group">
+                <div class="image-group hidden-xs">
                     <a href="" class="photo-thumbnail">
                         <img src="https://media.kairos.com/demo/verify/brad1.jpg" subjectId="brad1" galleryId="verify-demo" />
                     </a>
@@ -66,7 +74,7 @@
                     </a>
                     <span class="hover-title">BRAD AND ANGELINA</span>
                 </div>
-                <div class="image-group">
+                <div class="image-group hidden-xs">
                     <a href="" class="photo-thumbnail">
                         <img src="https://media.kairos.com/demo/verify/halle1.jpg" subjectId="halle1" galleryId="verify-demo" />
                     </a>
@@ -75,7 +83,7 @@
                     </a>
                     <span class="hover-title">HALLE AND HALLE</span>
                 </div>
-                <div class="image-group">
+                <div class="image-group hidden-xs hidden-sm">
                     <a href="" class="photo-thumbnail">
                         <img src="https://media.kairos.com/demo/verify/bradley2.jpg" subjectId="bradley2" galleryId="verify-demo" />
                     </a>
@@ -88,14 +96,14 @@
         </div>
         <div class="row ui-buttons">
             <div class="col-md-12">
-                <div class="upload col-md-6">
+                <div class="upload col-xs-6 col-sm-6 col-md-6">
                     <form method="post" enctype="multipart/form-data" id="mediaUploadForm-left" class="upload-form"> 
                         <div class="upload-button btn btn-kairos">UPLOAD<input type="file" id="upload-left" name="upload-left"></div>
                     </form>
                     <div id="uploadErrorLeft"></div>
                 </div>
                 <div class="mask upload-mask-left"></div>
-                <div class="upload col-md-6">
+                <div class="upload col-xs-6 col-sm-6 col-md-6">
                     <form method="post" enctype="multipart/form-data" id="mediaUploadForm-right" class="upload-form"> 
                         <div class="upload-button btn btn-kairos">UPLOAD<input type="file" id="upload-right" name="upload-right"></div>
                     </form>
@@ -106,19 +114,19 @@
         </div>
         <div class="row ui-buttons">
             <div class="col-md-12">
-                <div class="url col-md-4">
-                    <input type="text" class="url-from-web" id="url-left" autofocus="autofocus" value="URL from the web" />
+                <div class="url col-xs-3 col-sm-4 col-md-4">
+                    <input type="text" class="url-from-web" id="url-left" value="URL from the web" />
                     <div class="url-error error-left"></div>
                 </div>
-                <div class="submit col-md-2">
+                <div class="submit col-xs-3 col-sm-2 col-md-2">
                     <button class="submit-button btn btn-kairos" id="submit-left">SUBMIT</button>
                 </div>
                 <div class="mask url-mask-left"></div>
-                <div class="url col-md-4">
-                    <input type="text" class="url-from-web" id="url-right" autofocus="autofocus" value="URL from the web" />
+                <div class="url col-xs-3 col-sm-4 col-md-4">
+                    <input type="text" class="url-from-web" id="url-right" value="URL from the web" />
                     <div class="url-error error-right"></div>
                 </div>
-                <div class="submit col-md-2">
+                <div class="submit col-xs-3 col-sm-2 col-md-2">
                     <button class="submit-button btn btn-kairos" id="submit-right">SUBMIT</button>
                 </div>
                 <div class="mask url-mask-right"></div>
@@ -166,6 +174,9 @@
     <script src="js/imageData.js"></script>
     <script src="js/imageAnalysisData.js"></script>
     <script src="js/jsonData.js"></script>
+    <script src="../js/exif.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/transparentImageData.js"></script>
     
     <!-- initialize custom libraries if API credentials are valid -->
     <?php
@@ -191,11 +202,10 @@
                 "apiCredentials":false
             });
         </script>
-    <?php  
+    <?php
         }
     ?>
 
 </body>
 
 </html>
-

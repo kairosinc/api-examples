@@ -12,18 +12,21 @@
 <html lang="en">
 
 <head>
-    <title>Kairos Detect Demo</title>   
+    <title>Kairos Emotion Demo</title>  
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link href="../images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="css/emotion.css">
+    <link rel="stylesheet" href="css/emotion-mediaqueries.css">
 </head>
 <body>
     <div class="main-container container">
         <div class="row">
-            <div class="col-md-6 main-video-container">
+            <div class="col-xs-12 col-sm-12 col-md-6 main-video-container">
                 <div class="video-wrapper">
-                    <video id="video" width="100%" mediaId="video_1" src="https://media.kairos.com/demo/emotion/videos/video_1.mp4" muted></video>
+                    <video id="video" width="100%" mediaId="video_1" src="https://media.kairos.com/demo/emotion/videos/video_1.mp4" muted  playsinline></video>
                     <div class="video-controls">
                         <a href="/" class="play" id="play-pause"></a>
                         <div id="progress">  
@@ -46,10 +49,12 @@
                 <div class="template-background"></div>
                 <div class="video-container-template"></div>
             </div>
-            <div class="col-md-6 highcharts-container">
-                <a href="" class="show-json">SHOW JSON</a>
-                <div class="autoscale-checkbox"><input type="checkbox" id="autoscale" /> Autoscale</div>
-                <div class="featurepoints-checkbox"><input type="checkbox" id="featurepoints" checked /> Featurepoints</div>
+            <div class="col-xs-12 col-sm-12 col-md-6 highcharts-container emotion">
+                <div class="highcharts-menu">
+                    <a href="" class="show-json">SHOW JSON</a>
+                    <div class="autoscale-checkbox"><input type="checkbox" id="autoscale" /> Autoscale</div>
+                    <div class="featurepoints-checkbox"><input type="checkbox" id="featurepoints" checked /> Featurepoints</div>
+                </div>
                 <div class="highcharts-wrapper">
                     <div id="highcharts-curtain-wrapper">
                         <div id="highcharts-curtain">
@@ -67,7 +72,7 @@
                 <div id="highcharts-container-image"></div>
                 <div class="highcharts-template"></div>
             </div>
-            <div class="col-md-6 json-response-container">
+            <div class="col-xs-12 col-sm-12 col-md-6 json-response-container emotion">
                 <a href="" class="hide-json">HIDE JSON</a>
                 <button class="copy-json-button btn btn-primary" data-clipboard-action="copy" data-clipboard-target=".json-response">COPY</button>
                 <div class="json-response"><pre></pre></div>
@@ -75,20 +80,20 @@
             </div>
         </div>
         <div class="row ui-buttons">
-            <div class="webcam col-md-6">
+            <div class="webcam col-xs-6 col-sm-6 col-md-6">
                 <button class="webcam-button btn btn-kairos">WEBCAM</button>
             </div>
-            <div class="upload col-md-6">
+            <div class="upload col-xs-6 col-sm-6 col-md-6">
                 <form method="post" enctype="multipart/form-data" id="mediaUploadForm"> 
                     <div class="upload-button btn btn-kairos">UPLOAD<input type="file" id="upload" name="upload"></div>
                 </form>
                 <div class="upload-error"></div>
             </div>
-            <div class="url col-md-8">
-                <input type="text" class="url-from-web" autofocus="autofocus" value="URL from the web" />
+            <div class="url col-xs-6 col-sm-8 col-md-8">
+                <input type="text" class="url-from-web" value="URL from the web" />
                 <div class="url-error"></div>
             </div>
-            <div class="submit col-md-4">
+            <div class="submit col-xs-6 col-sm-4 col-md-4">
                 <button class="submit-button btn btn-kairos">SUBMIT</button>
             </div>
             <div class="ui-buttons-mask"></div>
@@ -138,6 +143,7 @@
     <!-- hosted libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://code.highcharts.com/4.2.2/highcharts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
@@ -154,6 +160,7 @@
     <script src="js/highchartsAppPhoto.js"></script>
     <script src="js/videoPlayer.js"></script>
     <script src="js/emotionUi.js"></script>
+    <script src="../js/utils.js"></script>
 
     <!-- initialize custom libraries if API credentials are valid -->
     <?php

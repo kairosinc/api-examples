@@ -6,25 +6,30 @@
 
 <head>
     <title>Kairos Detect Demo</title>   
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="css/detect.css">
+    <link rel="stylesheet" href="css/detect-mediaqueries.css">
 </head>
 <body>
     <div class="main-container container">
         <div class="row">
-            <div class="col-md-6 main-image-container">
-                <img id="previewImage" src="images/Brain_Brackeen.jpeg">
+            <div class="col-xs-12 col-sm-6 col-md-6 main-image-container">
+                <img id="previewImage" width="100%" src="images/Brain_Brackeen.jpeg">
                 <div class="webcam-video-container">
                     <div class="face-overlay"></div>
                     <div class="webcam-counter"></div>
                 </div>
                 <div class="canvas-container"><canvas id="displayCanvas" /></div>
+                <div class="display-image-container"></div>
                 <div class="image-container-template"></div>
             </div>
-            <div class="col-md-6 json-response-container">
-                <div class="json-title">JSON</div>
+            <a href="" class="show-hide-json hidden-sm">SHOW JSON</a>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="json-title hidden-xs">JSON</div>
                 <button class="copy-json-button btn btn-primary" data-clipboard-action="copy" data-clipboard-target=".json-response">COPY</button>
                 <div class="json-response"><pre></pre></div>
                 <div class="json-response-template"></div>
@@ -59,11 +64,11 @@
                 </form>
                 <div id="uploadError"></div>
             </div>
-            <div class="url col-md-8">
-                <input type="text" class="url-from-web" autofocus="autofocus" value="URL from the web" />
+            <div class="url col-xs-6 col-sm-8 col-md-8">
+                <input type="text" class="url-from-web" value="URL from the web" />
                 <div class="url-error"></div>
             </div>
-            <div class="submit col-md-4">
+            <div class="submit col-xs-6 col-sm-4 col-md-4">
                 <button class="submit-button btn btn-kairos">SUBMIT</button>
             </div>
             <div class="ui-buttons-mask"></div>
@@ -74,7 +79,7 @@
         <div class="spinner-message-container">
             {{#if spinner}}
               <div class="processing-spinner"></div>
-            {{/if}}
+            {{/if}}i 
             {{#if sadFace}}
               <div class="sad-face"></div>
             {{/if}}
@@ -105,6 +110,9 @@
     <!-- custom libraries -->
     <script src="js/detectDemoApp.js"></script>
     <script src="js/detectUi.js"></script>
+    <script src="../js/exif.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/transparentImageData.js"></script>
     
     <!-- initialize custom libraries if API credentials are valid -->
     <?php

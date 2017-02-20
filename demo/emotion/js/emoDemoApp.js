@@ -15,10 +15,6 @@ emoDemoApp =  {
     init: function (config) { 
         this.config = config;
         this.apiCredentials = config.apiCredentials;
-        this.viewportWidth = 475;
-        this.viewportHeight = 560;
-        this.fullVideoWidth = 923;
-        this.fullVideoHeight = 520;
         if (this.apiCredentials){
             this.examplesModule("video");
             this.uploadModule();
@@ -35,6 +31,8 @@ emoDemoApp =  {
             $(".webcam").hide();
             $(".ui-buttons .upload").addClass("full-width");
         }
+
+        this.setElementDimensions();
     },
     //------------------------------------
     // EXAMPLES PROCESSING
@@ -114,7 +112,13 @@ emoDemoApp =  {
                 mediaRecorder.videoHeight = webcamHeight;
                 var captureInterval = self.captureInterval;
                 var countdown = captureInterval/1000;
-                self.getTemplate("highcharts-template","Tip","Keep your face inside the green circle...",false,false);
+                if ($(window).width() < 768) {
+                    $(".highcharts-container").hide();
+                    self.getTemplate("video-container-template","Tip","Keep your face inside the green circle...",false,false);
+                }
+                else {
+                    self.getTemplate("highcharts-template","Tip","Keep your face inside the green circle...",false,false);
+                }
                 webcamVideo.addEventListener('canplay', function(ev){
                     $(".webcam-counter").html(countdown);
                     mediaRecorder.start(captureInterval);
@@ -158,8 +162,14 @@ emoDemoApp =  {
                         if (videoFile.size > self.config.uploadFileSizeVideo) {
                             self.resetElements();
                             var filesizeMsg = "File size is too large.  Must be less than or equal to " + self.config.uploadFileSizeVideo/1000000 + "MB";
-                            self.getTemplate("video-container-template","","",false, true);
-                            self.getTemplate("highcharts-template","Error",filesizeMsg,false, false);
+                            if ($(window).width() < 768) {
+                                $(".highcharts-container").hide();
+                                self.getTemplate("video-container-template","Error",filesizeMsg,false,false);
+                            }
+                            else {
+                                self.getTemplate("video-container-template","","",false, true);
+                                self.getTemplate("highcharts-template","Error",filesizeMsg,false, false);
+                            }
                             self.processing = false;
                         }
                         else {
@@ -176,7 +186,10 @@ emoDemoApp =  {
             }
             var processVideo = function ( blob ) {
                 self.getTemplate("video-container-template","","Uploading video...",true, false);
-                self.getTemplate("highcharts-template","","Please Wait",false, false);
+                if ($(window).width() < 768) {
+                    $(".highcharts-container").hide();
+                    self.getTemplate("highcharts-template","","Please Wait",false, false);
+                }
                 var reader = new FileReader();
                 reader.onload = function(event){
                     var fd = {};
@@ -188,14 +201,21 @@ emoDemoApp =  {
                         url: 'process.php',
                         data: fd,
                         dataType: 'text',
-                        timeout  : self.config.pollTimeout
+                        timeout  : self.config.apiTimeout
                     }).done(function(data) {
-                        if(self.validateJson(data)){
+                        if(utils.validateJson(data)){
                             var response = JSON.parse(data);
                             if (response.Error) {
                                 self.resetElements();
-                                self.getTemplate("video-container-template","","",false, true);
-                                self.getTemplate("highcharts-template","Error","Invalid file...",false, false);
+                                if ($(window).width() < 768) {
+                                    $(".highcharts-container").hide();
+                                    self.getTemplate("video-container-template","Error","Invalid file...",false,false);
+                                }
+                                else {
+                                    self.getTemplate("video-container-template","","",false, true);
+                                    self.getTemplate("highcharts-template","Error","Invalid file...",false, false);
+                                }
+                                
                                 self.processing = false;
                             }
                             else {
@@ -206,8 +226,14 @@ emoDemoApp =  {
                         }
                         else {
                             self.resetElements();
-                            self.getTemplate("video-container-template","","",false, true);
-                            self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false);
+                            if ($(window).width() < 768) {
+                                $(".highcharts-container").hide();
+                                self.getTemplate("video-container-template","Error","Invalid JSON response...",false, false);
+                            }
+                            else {
+                                self.getTemplate("video-container-template","","",false, true);
+                                self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false);
+                            }
                             self.processing = false;
                         }
                     }).fail(function (jqXHR, textStatus) {
@@ -238,7 +264,12 @@ emoDemoApp =  {
             self.resetElements();
             $(".canvas-container-image").empty();
             self.getTemplate("video-container-template","","Uploading...",true, false);
-            self.getTemplate("highcharts-template","","Please Wait",false, false);
+            if ($(window).width() < 768) {
+                $(".highcharts-container").hide();
+            }
+            else {
+                self.getTemplate("highcharts-template","","Please Wait",false, false);
+            }
             highchartsApp.parsedData = ""; 
             var input = $("#upload")[0];
             var fileData = $('#upload')[0].files[0]; 
@@ -255,9 +286,9 @@ emoDemoApp =  {
                 type: 'post',
             }).done(function(data) {
                 var response = JSON.parse(data);
-                self.mimeType = response;
+                self.mimeType = response.fileType;
                 // hack for webm issue in php.get-file-data
-                if ($('#upload')[0].files[0].type == "video/webm" && response == "application/octet-stream") {
+                if ($('#upload')[0].files[0].type == "video/webm" && self.mimeType == "application/octet-stream") {
                     self.mimeType = "video/webm";
                 }
                 // end hack
@@ -283,31 +314,55 @@ emoDemoApp =  {
                 if (!fileTypeAllowed) {
                     self.processing = false; 
                     self.resetElements();
-                    self.getTemplate("video-container-template","","",false,true);
-                    var filetypeMsg = "Wrong file type.  Must be" + fileTypeList;
-                    self.getTemplate("highcharts-template","Error",filetypeMsg,false,false);
+                    if ($(window).width() < 768) {
+                        $(".highcharts-container").hide();
+                        self.getTemplate("video-container-template","Error","Wrong file type.  Must be" + fileTypeList,false,false);
+                    }
+                    else {
+                        self.getTemplate("video-container-template","","",false,true);
+                        var filetypeMsg = "Wrong file type.  Must be" + fileTypeList;
+                        self.getTemplate("highcharts-template","Error",filetypeMsg,false,false);
+                    }
                     return false;
                 }
                 else if (!fileSizeAllowed) {
                     self.processing = false; 
                     self.resetElements();
-                    self.getTemplate("video-container-template","","",false,true);
                     var filesizeMsg = "File size is too large.  Must be less than or equal to " + self.config.uploadFileSizeVideo/1000000 + "MB";
-                    self.getTemplate("highcharts-template","Error",filesizeMsg,false,false);
+                    if ($(window).width() < 768) {
+                        $(".highcharts-container").hide();
+                        self.getTemplate("video-container-template","Error",filesizeMsg,false,false);
+                    }
+                    else {
+                        self.getTemplate("video-container-template","","",false,true);
+                        self.getTemplate("highcharts-template","Error",filesizeMsg,false,false);
+                    }
                     return false;
                 }
                 else if (!input) {
                     self.processing = false; 
                     self.resetElements();
-                    self.getTemplate("video-container-template","","",false,true);
-                    self.getTemplate("highcharts-template","Error","Couldn't find the file input element.",false,false);
+                    if ($(window).width() < 768) {
+                        $(".highcharts-container").hide();
+                        self.getTemplate("video-container-template","Error","Couldn't find the file input element.",false,false);
+                    }
+                    else {
+                        self.getTemplate("video-container-template","","",false,true);
+                        self.getTemplate("highcharts-template","Error","Couldn't find the file input element.",false,false);
+                    }
                     return false;
                 }
                 else if (!input.files) {
                     self.processing = false; 
                     self.resetElements();
-                    self.getTemplate("video-container-template","","",false,true);
-                    self.getTemplate("highcharts-template","Error","This browser doesn't seem to support the `files` property of file inputs.",false,false);
+                    if ($(window).width() < 768) {
+                        $(".highcharts-container").hide();
+                        self.getTemplate("video-container-template","Error","This browser doesn't seem to support the `files` property of file inputs.",false,false);
+                    }
+                    else {
+                        self.getTemplate("video-container-template","","",false,true);
+                        self.getTemplate("highcharts-template","Error","This browser doesn't seem to support the `files` property of file inputs.",false,false);
+                    }
                     return false;
                 }
                 else {
@@ -323,18 +378,30 @@ emoDemoApp =  {
                         data: formData,                         
                         type: 'post',
                     }).done(function(data) {
-                        if(self.validateJson(data)){
+                        if(utils.validateJson(data)){
                             if (data.length <= 1) {
                                 self.processing = false; 
                                 self.resetElements();
-                                self.getTemplate("video-container-template","","",false, true);
-                                self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false); 
+                                if ($(window).width() < 768) {
+                                    $(".highcharts-container").hide();
+                                    self.getTemplate("video-container-template","Error","Invalid JSON response...",false, false);
+                                }
+                                else {
+                                    self.getTemplate("video-container-template","","",false, true);
+                                    self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false);
+                                }
                             }
                             else if(JSON.parse(data).code && JSON.parse(data).code == 5000) {
                                 self.processing = false; 
                                 self.resetElements();
-                                self.getTemplate("video-container-template","","",false, true);
-                                self.getTemplate("highcharts-template","Error",JSON.parse(data).message,false, false);
+                                if ($(window).width() < 768) {
+                                    $(".highcharts-container").hide();
+                                    self.getTemplate("video-container-template","Error",JSON.parse(data).message,false, false);
+                                }
+                                else {
+                                    self.getTemplate("video-container-template","","",false, true);
+                                    self.getTemplate("highcharts-template","Error",JSON.parse(data).message,false, false);
+                                }
                             }
                             else {
                                 var mediaId = JSON.parse(data).id;
@@ -353,7 +420,7 @@ emoDemoApp =  {
                                         img.src = e.target.result;
                                         self.imgWidth = img.width;
                                         self.imgHeight = img.height;
-                                        newImageSize = self.calculateAspectRatioFit(img.width,img.height,self.viewportWidth,self.viewportHeight);
+                                        newImageSize = utils.calculateAspectRatioFit(img.width,img.height,self.viewportWidth,self.viewportHeight);
                                         self.newImageSize = newImageSize;
                                         $('.show-image')
                                             .attr("src", e.target.result)
@@ -378,8 +445,14 @@ emoDemoApp =  {
                         else {
                             self.processing = false; 
                             self.resetElements();
-                            self.getTemplate("video-container-template","","",false, true);
-                            self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false);
+                            if ($(window).width() < 768) {
+                                $(".highcharts-container").hide();
+                                self.getTemplate("video-container-template","Error","Invalid JSON response...",false, false);
+                            }
+                            else {
+                                self.getTemplate("video-container-template","","",false, true);
+                                self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false);
+                            }
                         }
                     });
                 } 
@@ -402,7 +475,7 @@ emoDemoApp =  {
             $('.show-image')
                 .attr("src","")
                 .css({"width":0,"height":0});
-            var urlMediaSrc = self.validateUrl($(".url-from-web").val());
+            var urlMediaSrc = utils.validateUrl($(".url-from-web").val());
             if (urlMediaSrc === false) {
                 $(".url-error").html("Please enter a valid URL");
             }
@@ -414,7 +487,12 @@ emoDemoApp =  {
                 $(".hide-json").click();
                 $(".canvas-container-image").empty();
                 self.getTemplate("video-container-template","","Uploading...",true, false);
-                self.getTemplate("highcharts-template","","Please Wait",false, false);
+                if ($(window).width() < 768) {
+                    $(".highcharts-container").hide();
+                }
+                else {
+                    self.getTemplate("highcharts-template","","Please Wait",false, false);
+                }
                 var data = {};
                 data.fname = "url";
                 data.url = urlMediaSrc;
@@ -453,16 +531,28 @@ emoDemoApp =  {
                     }
                     if (!fileTypeAllowed) {
                         self.processing = false;
-                        self.getTemplate("video-container-template","","",false,true);
-                        var filetypeMsg = "Wrong file type.  Must be" + fileTypeList;
-                        self.getTemplate("highcharts-template","Error",filetypeMsg,false,false);
+                        if ($(window).width() < 768) {
+                            $(".highcharts-container").hide();
+                            self.getTemplate("video-container-template","","Wrong file type.  Must be" + fileTypeList,false,false);
+                        }
+                        else {
+                            self.getTemplate("video-container-template","","",false,true);
+                            var filetypeMsg = "Wrong file type.  Must be" + fileTypeList;
+                            self.getTemplate("highcharts-template","Error",filetypeMsg,false,false);
+                        }
                     }
                     else if (!fileSizeAllowed) {
                         self.processing = false; 
                         self.resetElements();
-                        self.getTemplate("video-container-template","","",false,true);
                         var filesizeMsg = "File size is too large.  Must be less than or equal to " + self.config.uploadFileSizeVideo/1000000 + "MB";
-                        self.getTemplate("highcharts-template","Error",filesizeMsg,false,false);
+                        if ($(window).width() < 768) {
+                            $(".highcharts-container").hide();
+                            self.getTemplate("video-container-template","Error",filesizeMsg,false,false);
+                        }
+                        else {
+                            self.getTemplate("video-container-template","","",false,true);
+                            self.getTemplate("highcharts-template","Error",filesizeMsg,false,false);
+                        }
                         return false;
                     }
                     else {
@@ -479,9 +569,9 @@ emoDemoApp =  {
                             url: 'process.php',
                             data: data,
                             dataType: 'text',
-                            timeout  : self.config.pollTimeout
+                            timeout  : self.config.apiTimeout
                         }).done(function(data) {
-                            if(self.validateJson(data)){
+                            if(utils.validateJson(data)){
                                 var mediaId = JSON.parse(data).id;
                                 if (self.mimeType == "image/png" || self.mimeType == "image/jpeg") {
                                     var mediaType = "image";
@@ -494,7 +584,7 @@ emoDemoApp =  {
                                 imageData = "data:" + self.mimeType + ";base64," + self.fileData;
                                 img.src = imageData;
                                 img.onload = function(){
-                                    newImageSize = self.calculateAspectRatioFit(img.width,img.height,self.viewportWidth,self.viewportHeight);
+                                    newImageSize = utils.calculateAspectRatioFit(img.width,img.height,self.viewportWidth,self.viewportHeight);
                                     $('.show-image')
                                         .attr("src", imageData)
                                         .css("z-index",1)
@@ -504,8 +594,14 @@ emoDemoApp =  {
                             }
                             else {
                                 self.resetElements();
-                                self.getTemplate("video-container-template","","",false, true);
-                                self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false);
+                                if ($(window).width() < 768) {
+                                    $(".highcharts-container").hide();
+                                    self.getTemplate("video-container-template","Error","Invalid JSON response...",false, false);
+                                }
+                                else {
+                                    self.getTemplate("video-container-template","","",false, true);
+                                    self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false);
+                                }
                             }
                         });
                     }
@@ -530,7 +626,7 @@ emoDemoApp =  {
         else {
             self.getTemplate("video-container-template","","Processing image...",true, false);
         }
-        var pollTimeout = self.config.pollTimeout;
+        var pollTimeout = self.config.pollTimeout * 1000;
         var pollTick = 1000;
         self.timeRemaining = pollTimeout;
         self.pollInterval = setInterval(function () {
@@ -550,14 +646,14 @@ emoDemoApp =  {
                 dataType: 'text'
             }).done(function(data){
                 var response = data;
-                if(self.validateJson(response)){
-                    if (JSON.parse(response).status_code == "3") {
-                        var data = {"status_message":"api_error","status_message_text": JSON.parse(response).status_message.replace("Error:", "")};
-                        self.postProcessingLayout(JSON.stringify(data), module);
-                        self.processing = false; 
-                        clearInterval(self.pollInterval)
-                    }
-                    else if (JSON.parse(response).status_code == "4") {
+                if(utils.validateJson(response)){
+                    // if (JSON.parse(response).status_code == "3") {
+                    //     var data = {"status_message":"api_error","status_message_text": JSON.parse(response).status_message.replace("Error:", "")};
+                    //     self.postProcessingLayout(JSON.stringify(data), module);
+                    //     self.processing = false; 
+                    //     clearInterval(self.pollInterval)
+                    // }
+                    if (JSON.parse(response).status_code == "4") {
                         if (!self.initPostProcessingLayout) {
                             // make sure response contains at least one
                             // "people" array, which contains landmark data
@@ -575,8 +671,14 @@ emoDemoApp =  {
                             }
                             else {
                                 self.resetElements();
-                                self.getTemplate("video-container-template","","",false, true);
-                                self.getTemplate("highcharts-template","Error","Invalid JSON response - 'people' object missing...",false, false);
+                                if ($(window).width() < 768) {
+                                    $(".highcharts-container").hide();
+                                    self.getTemplate("video-container-template","Error","Invalid JSON response - 'people' object empty...",false, false);
+                                }
+                                else {
+                                    self.getTemplate("video-container-template","","",false, true);
+                                    self.getTemplate("highcharts-template","Error","Invalid JSON response - 'people' object empty...",false, false);
+                                }
                             }  
                             self.processing = false;
                             clearInterval(self.pollInterval)
@@ -606,8 +708,14 @@ emoDemoApp =  {
                     clearInterval(self.pollInterval)
                     self.processing = false;
                     self.resetElements();
-                    self.getTemplate("video-container-template","","",false, true);
-                    self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false);
+                    if ($(window).width() < 768) {
+                        $(".highcharts-container").hide();
+                        self.getTemplate("video-container-template","Error","Invalid JSON response...",false, false);
+                    }
+                    else {
+                        self.getTemplate("video-container-template","","",false, true);
+                        self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false);
+                    }
                 }
                     
             }).fail(function (jqXHR, textStatus) {
@@ -624,8 +732,6 @@ emoDemoApp =  {
     postProcessingLayout: function (data, module) {
         var self = this;
         var response = JSON.parse(data);
-        // self.mediaType = response.media_info.mime_type.split("/")[0];
-        // featurePointAnimation.init(data);
         $(".hide-json").click();
         $(".json-response").html("");
         if (response.status_message != "Complete") {
@@ -643,8 +749,14 @@ emoDemoApp =  {
                 }
             }
             $(".video-wrapper").hide();
-            self.getTemplate("video-container-template","","",false, true);
-            self.getTemplate("highcharts-template","",messageText,false, false);
+            if ($(window).width() < 768) {
+                $(".highcharts-container").hide();
+                self.getTemplate("video-container-template","",messageText,false, false);
+            }
+            else {
+                self.getTemplate("video-container-template","","",false, true);
+                self.getTemplate("highcharts-template","",messageText,false, false);
+            }
         }
         else {
             self.mediaType = response.media_info.mime_type.split("/")[0];
@@ -693,7 +805,6 @@ emoDemoApp =  {
                     $(".show-json").click();
                     $(".hide-json").hide();
                     self.jsonResponse = JSON.stringify(response, undefined, 4);
-                    // $(".json-response").html("<pre>" + self.syntaxHighlight(str) + "</pre>");
                     $("#highcharts-titles, #highcharts-containers").show();
                 }
                 else {
@@ -708,8 +819,9 @@ emoDemoApp =  {
                         dataType: 'text'
                     }).done(function(analyticsData){
                         var analyticsResponse = JSON.parse(analyticsData);
+                        // if analytics object is available, show, if not
+                        // loop through response
                         if (analyticsResponse.id != undefined) {
-                            console.log("a")
                             var analytics   = analyticsResponse.impressions[0].demographics;
                             genderDefined   = true;
                             ageDefined      = true;
@@ -717,7 +829,6 @@ emoDemoApp =  {
                             age             = analytics.age_group;
                         }
                         else {
-                            console.log("b")
                             var analytics   = self.getAnalyticsFromJson(response);
                             genderDefined   = analytics.genderDefined;
                             ageDefined      = analytics.ageDefined;
@@ -737,6 +848,9 @@ emoDemoApp =  {
                                 $(".video-controls").show();
                             }
                             else {
+                                if ($(window).width() < 768) {
+                                    $(".main-video-container").hide();
+                                }
                                 self.getTemplate("video-container-template","","Here's your video analysis!",false, false);
                             }
                         }
@@ -744,8 +858,6 @@ emoDemoApp =  {
                             $(".video-wrapper").show();
                         }
                         self.jsonResponse = JSON.stringify(response, undefined, 4);
-                        // var str = JSON.stringify(response, undefined, 4);
-                        // $(".json-response").html("<pre>" + self.syntaxHighlight(str) + "</pre>");
                         $("#highcharts-titles, #highcharts-containers").show();
                         $("#highcharts-containers").empty();
                         highchartsApp.parsedData = JSON.stringify(response.frames);
@@ -756,39 +868,25 @@ emoDemoApp =  {
                 }
             }
             else {
-                self.getTemplate("video-container-template","","",false, true);
-                self.getTemplate("highcharts-template","Error","Improper API response...",false, false);
-            }
-                
-        }
-    },
-    //------------------------------------
-    // COLOR CODE JSON RESPONSE
-    //------------------------------------
-    syntaxHighlight: function (json) {
-        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-            var cls = 'number';
-            
-            if (/^"/.test(match)) {
-                if (/"$/.test(match)) {
-                    cls = 'key'
+                if ($(window).width() < 768) {
+                    $(".highcharts-container").hide();
+                    self.getTemplate("video-container-template","Error","Invalid JSON response...",false, false);
                 }
                 else {
-                    cls = 'string';
+                    self.getTemplate("video-container-template","","",false, true);
+                    self.getTemplate("highcharts-template","Error","Invalid JSON response...",false, false);
                 }
                     
             }
-            if (match.indexOf(":") > -1) {
-                return '<span class="' + cls + '">' + match.replace(":","") + '</span>:';
-            }
-            else {
-                return '<span class="' + cls + '">' + match.replace(":","") + '</span>';
-            }
-            
+                
+        }
+        $( window ).resize(function() {
+          featurePointAnimation.init(data);
         });
     },
     resetElements: function() {
+        $(".main-video-container").show();
+        $(".highcharts-container").show();
         $(".video-wrapper").hide();
         $(".autoscale-checkbox").hide();
         $(".featurepoints-checkbox").hide();
@@ -803,14 +901,6 @@ emoDemoApp =  {
         $(".copy-json-button").hide();
         $(".ui-buttons-mask").hide();
     },
-    //------------------------------------
-    // SHOW JSON RESPONSE
-    //------------------------------------
-    showJsonResponse: function (data) {
-        var self = this;
-        var str = JSON.stringify(data, null, 4);
-        $(".json-response pre").html(self.syntaxHighlight(str));
-    }, 
     //------------------------------------
     // DISPLAY HANDLEBARS TEMPLATES
     //------------------------------------ 
@@ -827,33 +917,6 @@ emoDemoApp =  {
         };
         var theCompiledHtml = compiledTemplate(context);
         $("." + template).html(theCompiledHtml);
-    },
-    validateUrl: function(urlString) {
-        var url;
-        if (urlString.search(/^http[s]?\:\/\//) == -1) {
-            url = 'http://' + urlString;
-        }
-        else {
-            url = urlString;
-        }
-        var valid = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-        if(valid === null)
-            return false;
-        else
-            return url;
-    },
-    validateJson: function(json){
-        if (/^[\],:{}\s]*$/.test(json.replace(/\\["\\\/bfnrtu]/g, '@').
-            replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-            replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-            return true;
-        } else {
-            return false;
-        }
-    },
-    calculateAspectRatioFit: function(srcWidth, srcHeight, maxWidth, maxHeight) {
-        var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-        return { width: srcWidth*ratio, height: srcHeight*ratio, ratio:ratio };
     },
     getAnalyticsFromJson: function(response) {
         var maleCount = 0;
@@ -902,6 +965,24 @@ emoDemoApp =  {
             ageDefined = true;
         }
         return {gender: gender, genderDefined: genderDefined, age: age, ageDefined: ageDefined};
+    },
+    setElementDimensions: function () {
+        if ($(window).width() < 768) {
+            this.fullVideoWidth = $(window).width() - 30;  // allow for side margins
+            this.fullVideoHeight = this.fullVideoWidth * 9/16;
+            $(".main-video-container").height(this.fullVideoHeight + 40 + 15 + 1); // add video controls height + top margin
+            $("#video").height(this.fullVideoHeight);
+        }
+        else if ($(window).width() < 992) {
+            this.fullVideoWidth = 750 - 30;
+            this.fullVideoHeight = this.fullVideoWidth * 9/16;
+            $(".main-video-container").height(this.fullVideoHeight + 40 + 15 + 1); // add video controls height + top margin
+            $("#video").height(this.fullVideoHeight);
+        }
+        else {
+            this.fullVideoWidth = 923;
+            this.fullVideoHeight = 520;
+        }
     }
 }
 

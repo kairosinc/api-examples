@@ -3,7 +3,7 @@
 // javascript object responsible for primary app functionality
 // dependencies: jquery.js, jquery-ui, detect.php
 // created: May 2016
-// modified: August 2016
+// modified: January 2017
 // author: Steve Rucker
 //------------------------------------
 
@@ -13,16 +13,13 @@ detectDemoApp =  {
     // INITIALIZE - index.php
     //------------------------------------
     init: function (config) {
-        this.canvasWidth = 475;
-        this.canvasHeight = 475;
-        this.webcamWidth = 635;
-        this.webcamHeight = 475;
+        this.setElementDimensions();
+        this.radiusDefault = 25;
         this.config = config;
         this.apiCredentials = config.apiCredentials;
         if (this.apiCredentials){
             this.examplesModule("");
             this.uploadModule();
-            this.dragdropModule();
             this.urlModule();
         }
         else {
@@ -35,7 +32,11 @@ detectDemoApp =  {
             $(".webcam").hide();
             $(".ui-buttons .upload").addClass("full-width");
         }
-        
+        var fileTypeList = [];
+        $(this.config.uploadFileTypesImage).each(function(idx, fileType) {
+            fileTypeList.push(" ." + fileType.toString().split("/")[1])
+        }); 
+        this.fileTypeList = fileTypeList;
     },
     //------------------------------------
     // EXAMPLES PROCESSING
@@ -43,7 +44,10 @@ detectDemoApp =  {
     examplesModule: function (imageElement) {
         var self = this; 
         self.processing = true; 
-        self.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
+        $(".display-image-container")
+            .empty()
+            .hide();
+        utils.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
         self.getTemplate("json-response-template","","Generating results...",true);
         var canvas = document.createElement('CANVAS');
         var context = canvas.getContext('2d');
@@ -53,12 +57,9 @@ detectDemoApp =  {
             var imageData;
             context.drawImage(imageElement, 0, 0, self.canvasWidth, self.canvasHeight);
             imageData = canvas.toDataURL();
-            self.globalImageData = self.parseImageData(imageData);
-            // set ratio to 1
-            self.newImageSize = self.calculateAspectRatioFit(1,1,1,1);
             var data = {};
             imgObj = { 
-                "image"   : self.globalImageData,
+                "image"   : utils.parseImageData(imageData),
                 "minHeadScale" : ".015"
             };
             data.imgObj = JSON.stringify(imgObj);
@@ -67,8 +68,26 @@ detectDemoApp =  {
                 url: 'detect.php',
                 data: data,
                 dataType: 'text'
-            }).done(function(response){
-                self.apiCallback(response);
+            }).done(function(data){
+                var response = JSON.parse(data);
+                if (response.Errors) {
+                    self.processing = false;
+                    self.getTemplate("image-container-template","","",false,true);
+                    self.getTemplate("json-response-template","Error: " + utils.toTitleCase(response.Errors[0].Message),"",false);
+                    return false;
+                }
+                else {
+                    $(".display-image-container").show();
+                    var imgWidth = response.images[0].width;
+                    var imgHeight = response.images[0].height;
+                    var cssObj = utils.computeCss(imgWidth, imgHeight, self.canvasWidth);
+                    var image = $('<img />', {
+                        src: $(imageElement).attr("src"),
+                        css: cssObj
+                    });
+                    image.appendTo(".display-image-container");
+                    self.apiCallback(data);
+                }
             });
             canvas = null; 
         }  
@@ -91,7 +110,10 @@ detectDemoApp =  {
     webcamModule: function () {
         var self = this;
         self.processing = true; 
-        self.createDisplayCanvas(self.webcamWidth, self.webcamHeight);
+        $(".display-image-container")
+            .empty()
+            .hide();
+        utils.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
         var streaming = false;
         var video = null;
 
@@ -113,6 +135,7 @@ detectDemoApp =  {
                     self.localStream = stream.getTracks()[0];
                 },
                 function(err) {
+                    $(".image-container-template").show();
                     self.getTemplate("image-container-template","","",false,true);
                     self.getTemplate("json-response-template","Error","A wecam error occured. Please try again.",false,false);
                     return false;
@@ -122,8 +145,8 @@ detectDemoApp =  {
                 $(".face-overlay").show();
                 self.getTemplate("json-response-template","Tip","Keep your face inside the green circle...",false);
                 if (!streaming) {
-                    video.setAttribute('width', self.webcamWidth);
-                    video.setAttribute('height', self.webcamHeight);
+                    video.setAttribute('width', self.canvasWidth);
+                    video.setAttribute('height', self.canvasHeight);
                     streaming = true;
                 }
                 var captureInterval = 3000;
@@ -142,6 +165,7 @@ detectDemoApp =  {
         })();
 
         var takepicture = function() {
+            $(".image-container-template").show();
             self.getTemplate("image-container-template","","Analyzing image...",true,false);
             self.getTemplate("json-response-template","","Generating results...",true,false);
             $("#webcamVideo").hide();
@@ -149,18 +173,22 @@ detectDemoApp =  {
             // create canvas
             var canvas = document.createElement('CANVAS');
             var context = canvas.getContext('2d');
-            canvas.width = self.webcamWidth;
-            canvas.height = self.webcamHeight;
+            canvas.width = self.canvasWidth;
+            canvas.height = self.canvasHeight;
             // draw video image onto canvas, get data
-            context.drawImage(video, 0, 0, self.webcamWidth, self.webcamHeight);
+            context.drawImage(video, 0, 0, self.canvasWidth, self.canvasHeight);
             var imageData = canvas.toDataURL('image/png');
-            self.globalImageData = self.parseImageData(imageData);
-            // set ratio to 1
-            self.newImageSize = self.calculateAspectRatioFit(1,1,1,1);
+
+            var cssObj = utils.computeCss(self.canvasWidth, self.canvasHeight, self.canvasWidth);
+            var image = $('<img />', {
+                src: imageData,
+                css: cssObj
+            });
+            image.appendTo(".display-image-container");
             // send data to Kairos API
             var data = {};
             imgObj = { 
-                "image"   : self.globalImageData,
+                "image"   : utils.parseImageData(imageData),
                 "minHeadScale" : ".015"
             };
             data.imgObj = JSON.stringify(imgObj);
@@ -169,8 +197,18 @@ detectDemoApp =  {
                 url: 'detect.php',
                 data: data,
                 dataType: 'text'
-            }).done(function(response){
-                self.apiCallback(response);
+            }).done(function(data){
+                var response = JSON.parse(data);
+                if (response.Errors) {
+                    self.processing = false;
+                    self.getTemplate("image-container-template","","",false,true);
+                    self.getTemplate("json-response-template","Error: " + utils.toTitleCase(response.Errors[0].Message),"",false);
+                    return false;
+                }
+                else {
+                    $(".display-image-container").show();
+                    self.apiCallback(data);
+                }
             });
             self.localStream.stop();
         };
@@ -182,99 +220,76 @@ detectDemoApp =  {
         var self = this;  
         $('#mediaUploadForm').submit(function() { 
             self.processing = true; 
-            self.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
+            $(".display-image-container")
+                .empty()
+                .hide();
+            utils.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
+            $(".image-container-template").show();
+            self.getTemplate("image-container-template","","Analyzing image...",true,false);
+            self.getTemplate("json-response-template","","Generating results...",true,false);
             var input = $("#upload")[0];
             if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
                 self.getTemplate("image-container-template","","",false,true);
                 self.getTemplate("json-response-template","Error","The File APIs are not fully supported in this browser.",false,false);
                 self.processing = false; 
                 return false;
-            }  
-            var fileData = $('#upload')[0].files[0]; 
-            var formData = new FormData();                  
-            formData.append('file', fileData);
-            formData.append('fname', 'upload');
-            $.ajax({
-                url: '../get-file-data.php', 
-                dataType: 'text', 
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: formData,                         
-                type: 'post',
-            }).done(function(data) {
-                var response = JSON.parse(data);
-                var mimeType = response.split(";")[0];
-                var fileTypeAllowed = false;
-                var fileTypeList = [];
-                $(self.config.uploadFileTypesImage).each(function(idx, fileType) {
-                    fileTypeList.push(" ." + fileType.toString().split("/")[1])
-                    if(fileType == mimeType) { 
-                        fileTypeAllowed = true;
-                    }
-                }); 
-                var fsize = input.files[0].size; // get file type
-                var fileSizeAllowed = false;
-                if(fsize <= self.config.uploadFileSizeImage) { 
-                    fileSizeAllowed = true;
-                }
-                if (!fileTypeAllowed) {
-                    self.getTemplate("image-container-template","","",false,true);
-                    var filetypeMsg = "Wrong file type.  Must be" + fileTypeList;
-                    self.getTemplate("json-response-template","Error",filetypeMsg,false,false);
-                    self.processing = false;
-                    return false;
-                }
-                else if (!fileSizeAllowed) {
-                    self.getTemplate("image-container-template","","",false,true);
-                    var filesizeMsg = "File size is too large.  Must be less than or equal to " + self.config.uploadFileSizeImage/1000000 + "MB";
-                    self.getTemplate("json-response-template","Error",filesizeMsg,false,false);
-                    self.processing = false;
-                    return false;
-                }
-                else if (!input) {
-                    self.getTemplate("image-container-template","","",false,true);
-                    self.getTemplate("json-response-template","Error","Couldn't find the file input element.",false,false);
-                    self.processing = false;
-                    return false;
-                }
-                else if (!input.files) {
-                    self.getTemplate("image-container-template","","",false,true);
-                    self.getTemplate("json-response-template","Error","This browser doesn't seem to support the `files` property of file inputs.",false,false);
-                    self.processing = false;
-                    return false;
-                }
-                else {
-                    var canvas = document.createElement('CANVAS');
-                    var context = canvas.getContext('2d');
-                    canvas.width = self.canvasWidth;
-                    canvas.height = self.canvasHeight;
-                    var img = new Image();
-                    var file = input.files[0];
-                    var reader  = new FileReader();
+            } 
+            // asynchronous script to check for mime type
+            utils.checkMimeType(self.config, input, "upload", self.showMimetypeError);
 
-                    if (file) {
-                        reader.readAsDataURL(file);
-                    } 
-                    else {
-                        img.src = "";
-                    }   
-                    reader.onloadend = function () {
-                        var imageData;
-                        imageData = String(reader.result);
-                        img.src = imageData;
-                        var imageLoaded = false;
-                        img.onload = function(){
-                            if (!imageLoaded) {
-                                imageLoaded = true;
-                                self.newImageSize = self.calculateAspectRatioFit(img.width,img.height,self.canvasWidth,self.canvasHeight);
-                                newImageData = self.imageToDataUri(img, self.newImageSize.width, self.newImageSize.height);
-                                context.drawImage(this, 0, 0, self.canvasWidth, self.canvasHeight);
-                                self.globalImageData = self.parseImageData(newImageData);
+            var fileSizeAllowed = false;
+            var fsize = input.files[0].size;          
+            if(fsize <= self.config.uploadFileSizeImage) { 
+                fileSizeAllowed = true;
+            }
+            if (!fileSizeAllowed) {
+                $(".image-container-template").show();
+                self.getTemplate("image-container-template","","",false,true);
+                var filesizeMsg = "File size is too large.  Must be less than or equal to " + self.config.uploadFileSizeImage/1000000 + "MB";
+                self.getTemplate("json-response-template","Error",filesizeMsg,false,false);
+                self.processing = false;
+                return false;
+            }
+            else if (!input) {
+                $(".image-container-template").show();
+                self.getTemplate("image-container-template","","",false,true);
+                self.getTemplate("json-response-template","Error","Couldn't find the file input element.",false,false);
+                self.processing = false;
+                return false;
+            }
+            else if (!input.files) {
+                $(".image-container-template").show();
+                self.getTemplate("image-container-template","","",false,true);
+                self.getTemplate("json-response-template","Error","This browser doesn't seem to support the `files` property of file inputs.",false,false);
+                self.processing = false;
+                return false;
+            }
+            else {
+                var img = new Image();
+                var file = input.files[0];
+                var reader  = new FileReader();
+                reader.readAsDataURL(file);   
+                reader.onloadend = function () {
+                    var imageData;
+                    imageData = String(reader.result);
+                    img.src = imageData;
+                    var imageLoaded = false;
+                    img.onload = function(){
+                        if (!imageLoaded) {
+                            imageLoaded = true;
+                            var imgWidth = img.width;
+                            var imgHeight = img.height;
+                            var cssObj = utils.computeCss(imgWidth, imgHeight, self.canvasWidth);
+                            var image = $('<img />', {
+                                src: imageData,
+                                css: cssObj
+                            });
+                            var processImage = function() {
+                                image.appendTo(".display-image-container");
                                 $("#upload").val("");
                                 var data = {};
                                 imgObj = { 
-                                    "image"   : self.parseImageData(imageData),
+                                    "image"   : utils.parseImageData(imageData),
                                     "minHeadScale" : ".015"
                                 };
                                 data.imgObj = JSON.stringify(imgObj);
@@ -283,14 +298,30 @@ detectDemoApp =  {
                                     url: 'detect.php',
                                     data: data,
                                     dataType: 'text'
-                                }).done(function(response){
-                                    self.apiCallback(response);
+                                }).done(function(data){
+                                    var response = JSON.parse(data);
+                                    if (response.Errors) {
+                                        self.processing = false;
+                                        self.getTemplate("image-container-template","","",false,true);
+                                        self.getTemplate("json-response-template","Error: " + utils.toTitleCase(response.Errors[0].Message),"",false);
+                                        return false;
+                                    }
+                                    else {
+                                        setTimeout(function(){
+                                           self.setElementDimensions(); 
+                                        },100);
+                                        $(".display-image-container").show();
+                                        self.apiCallback(data);
+                                    }
                                 });
-                            }
-                        };  
-                    };
-                } 
-            });
+                            };
+                            // rotate image if needed
+                            utils.rotateImage($(image)[0], processImage, self); 
+                        }
+                    };  
+                };
+            } 
+            // });
             return false; 
         });
     },
@@ -301,217 +332,69 @@ detectDemoApp =  {
         var self = this;
         $(".submit-button").click(function(){
             self.processing = true;
-            var urlImageSrc = self.validateUrl($(".url-from-web").val());
+            var url = $(".url-from-web").val();
+            var img = new Image();
+            img.src = url;
+            img.onload = function () {
+                var imgWidth = img.width;
+                var imgHeight = img.height;
+                var cssObj = utils.computeCss(imgWidth, imgHeight, self.canvasWidth);
+                var image = $('<img />', {
+                    src: urlImageSrc,
+                    css: cssObj
+                });
+                image.appendTo(".display-image-container");
+            }
+
+            var urlImageSrc = utils.validateUrl(url);
+            self.urlImageSrc = urlImageSrc;
             if (urlImageSrc === false) {
+                self.processing = false;
                 $(".url-error").html("Please enter a valid URL");
             }
             else {
+                // Image info cannot be retrieved from files received
+                // by URL due to CORS issues, so a simulaneous POST 
+                // request is made to a PHP file to get this info,
+                // and show an error if the file type is not accepted
+                utils.checkMimeType(self.config, url, "url", self.showMimetypeError);
+                $(".display-image-container")
+                    .empty()
+                    .hide();
                 $(".url-error").html("");
                 self.resetElements();
-                self.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
+                utils.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
+                $(".image-container-template").show();
                 self.getTemplate("image-container-template","","Analyzing image...",true,false);
                 self.getTemplate("json-response-template","","Generating results...",true,false);
-                // POST to php file to get image data
                 var data = {};
-                data.fname = "url";
-                data.url = urlImageSrc;
+                imgObj = { 
+                    "image"   : urlImageSrc,
+                    "minHeadScale" : ".015"
+                };
+                data.imgObj = JSON.stringify(imgObj);
                 $.ajax({
-                    type: "POST",
-                    url: "../get-file-data.php",
+                    type: 'POST',
+                    url: 'detect.php',
                     data: data,
-                    dataType: "text"
-                }).done(function(data) {
+                    dataType: 'text'
+                }).done(function(data){
                     var response = JSON.parse(data);
-                    if(self.validateJson(data) && response.fileType !== false && response.fileType !== null) {
-                        processUrlImage(response);
-                    }              
-                    else {
-                        self.getTemplate("image-container-template","","",false,true);
-                        self.getTemplate("json-response-template","","Invalid response.  Please try another URL.",false,false);
+                    if (response.Errors) {
                         self.processing = false;
+                        self.getTemplate("image-container-template","","",false,true);
+                        self.getTemplate("json-response-template","Error: " + utils.toTitleCase(response.Errors[0].Message),"",false);
+                        return false;
+                    }
+                    else if (response.images) {
+                        setTimeout(function(){
+                           self.setElementDimensions(); 
+                        },100);
+                        $(".display-image-container").show();
+                        self.apiCallback(data);
                     }
                 });
             }
-            var processUrlImage = function (response) {
-                var mimeType = response.fileType;
-                var fileSize = response.fileSize;
-                var fileTypeAllowed = false;
-                var fileTypeList = [];
-                $(self.config.uploadFileTypesImage).each(function(idx, fileType) {
-                    fileTypeList.push(" ." + fileType.toString().split("/")[1]);
-                    if(fileType == mimeType) { 
-                        fileTypeAllowed = true;
-                    }
-                }); 
-                var fileSizeAllowed = false;
-                if(fileSize <= self.config.uploadFileSizeImage) { 
-                    fileSizeAllowed = true;
-                }
-                if (!fileTypeAllowed) {
-                    self.resetElements();
-                    self.getTemplate("image-container-template","","",false,true);
-                    var filetypeMsg = "Wrong file type.  Must be" + fileTypeList;
-                    self.getTemplate("json-response-template","Error",filetypeMsg,false,false);
-                    self.processing = false;
-                    return false;
-                }
-                else if (!fileSizeAllowed) {
-                    self.resetElements();
-                    self.getTemplate("image-container-template","","",false,true);
-                    var filesizeMsg = "File size is too large.  Must be less than or equal to " + self.config.uploadFileSizeImage/1000000 + "MB";
-                    self.getTemplate("json-response-template","Error",filesizeMsg,false,false);
-                    self.processing = false;
-                    return false;
-                }
-                else {
-                    var canvas = document.createElement('CANVAS');
-                    var context = canvas.getContext('2d');
-                    canvas.width = self.canvasWidth;
-                    canvas.height = self.canvasHeight;
-                    var img = new Image();
-                    var imageData;
-                    imageData = "data:" + mimeType + ";base64," + response.fileData;
-                    img.src = imageData;
-                    var imageLoaded = false;
-                    img.onload = function(){
-                        if (!imageLoaded) {
-                            imageLoaded = true;
-                            self.newImageSize = self.calculateAspectRatioFit(img.width,img.height,self.canvasWidth,self.canvasHeight);
-                            imageData = self.imageToDataUri(img, self.newImageSize.width, self.newImageSize.height);
-                            context.drawImage(this, 0, 0, self.canvasWidth, self.canvasHeight);
-                            self.globalImageData = self.parseImageData(imageData);
-                            $("#upload").val("");
-                        }
-                    };  
-                    var data = {};
-                    imgObj = { 
-                        "image"   : response.fileData,
-                        "minHeadScale" : ".015"
-                    };
-                    data.imgObj = JSON.stringify(imgObj);
-                    $.ajax({
-                        type: 'POST',
-                        url: 'detect.php',
-                        data: data,
-                        dataType: 'text'
-                    }).done(function(response){
-                        self.apiCallback(response);
-                    });
-                }
-            };
-        });
-    },
-    //------------------------------------
-    // DRAGDROP PROCESSING
-    //------------------------------------
-    dragdropModule: function () {
-        var self = this;
-        var handleFileSelect = function(evt) {
-            evt.stopPropagation();
-            evt.preventDefault();
-            self.resetElements();
-            var file = evt.dataTransfer.files[0]; // FileList object.
-            var ftype = file.type; // get file type
-            var fileTypeAllowed = false;
-            var fileTypeList = [];
-            $(self.config.uploadFileTypesImage).each(function(idx, fileType) {
-                fileTypeList.push(" ." + fileType.toString().split("/")[1])
-                if(fileType == ftype) { 
-                    fileTypeAllowed = true;
-                }
-            }); 
-            if (!fileTypeAllowed) {
-                self.resetElements();
-                self.getTemplate("image-container-template","","",false,true);
-                var filetypeMsg = "Wrong file type.  Must be" + fileTypeList;
-                self.getTemplate("json-response-template","Error",filetypeMsg,false,false);
-                return false;
-            }
-            else {
-                self.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
-                $(".json-response pre").html("");
-                $(".copy-json-button").hide();
-                self.getTemplate("image-container-template","","Analyzing image...",true);
-                self.getTemplate("json-response-template","","Generating results...",true);
-                var canvas = document.createElement("CANVAS");
-                var context = canvas.getContext("2d");
-                canvas.width = self.canvasWidth;
-                canvas.height = self.canvasWidth;
-                var img = new Image();
-                var reader  = new FileReader();
-                if (file) {
-                    reader.readAsDataURL(file);
-                } else {
-                    img.src = "";
-                }
-                reader.onloadend = function () {
-                    var imageData = String(reader.result);
-                    img.src = imageData;
-                    var imageLoaded = false;
-                    img.onload = function(){
-                        if (!imageLoaded) {
-                            imageLoaded = true;
-                            var maxWidth = self.canvasWidth;
-                            if(img.width > maxWidth) {
-                                var ratio = maxWidth / img.width;
-                                imageData = self.imageToDataUri(img, img.width * ratio, img.height * ratio);
-                                img.src = imageData;
-                            }
-                            context.drawImage(this, 0, 0, self.canvasWidth, self.canvasHeight);
-                            self.globalImageData = self.parseImageData(imageData);
-                            var data = {};
-                            imgObj = { 
-                                "image"   : self.globalImageData,
-                                "minHeadScale" : ".015"
-                            };
-                            data.imgObj = JSON.stringify(imgObj);
-                            $.ajax({
-                                type: 'POST',
-                                url: 'detect.php',
-                                data: data,
-                                dataType: 'text'
-                            }).done(function(response){
-                                self.apiCallback(response);
-                            });
-                        }
-                    };  
-                };
-            }
-        };
-        var handleDragOver = function(evt) {
-            evt.stopPropagation();
-            evt.preventDefault();
-            evt.dataTransfer.dropEffect = "copy"; // Explicitly show this is a copy.
-        };
-        // Setup the dnd listeners.
-        var dropZone = $(".canvas-container")[0];
-        dropZone.addEventListener("dragover", handleDragOver, false);
-        dropZone.addEventListener("drop", handleFileSelect, false);
-    },
-    //------------------------------------
-    // COLOR CODE JSON RESPONSE
-    //------------------------------------
-    syntaxHighlight: function (json) {
-        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-            var cls = 'number';
-            
-            if (/^"/.test(match)) {
-                if (/"$/.test(match)) {
-                    cls = 'key';
-                }
-                else {
-                    cls = 'string';
-                }
-
-            }
-            if (match.indexOf(":") > -1) {
-                return '<span class="' + cls + '">' + match.replace(":","") + '</span>:';
-            }
-            else {
-                return '<span class="' + cls + '">' + match.replace(":","") + '</span>';
-            }
-            
         });
     },
     //------------------------------------
@@ -520,8 +403,11 @@ detectDemoApp =  {
     apiCallback: function(data) {
         var self = this;
         $("#previewImage").hide();
-        $(".copy-json-button").show();
+        if ($(window).width() > 767) {
+            $(".copy-json-button").show();
+        }
         $(".json-title").show();
+        $(".image-container-template").hide();
         $(".spinner-message-container").hide();
         $(".ui-buttons-mask").hide();
         self.processing = false;
@@ -529,10 +415,10 @@ detectDemoApp =  {
         var response = JSON.parse(data);
 
         if(!response.images || !response.images[0].faces[0]) {
-            self.showJsonResponse({});
+            utils.showJsonResponse({});
         }
         else {
-            self.showJsonResponse(response);
+            utils.showJsonResponse(response);
         }
         if (response.images) {
             self.drawMethod(response.images[0]);
@@ -544,54 +430,38 @@ detectDemoApp =  {
         
     },
     //------------------------------------
-    // DRAW IMAGE TO CANVAS, KEEPING ASPECT RATIO
-    //------------------------------------
-    imageToDataUri: function(img, width, height) {
-        // create an off-screen canvas
-        var canvas = document.createElement('CANVAS');
-        var ctx = canvas.getContext('2d');
-
-        // set its dimension to target size
-        canvas.width = width;
-        canvas.height = height;
-
-        // draw source image into the off-screen canvas:
-        ctx.drawImage(img, 0, 0, width, height);
-
-        // encode image to data-uri with base64 version of compressed image
-        return canvas.toDataURL();
-    },
-    //------------------------------------
-    // REMOVE META INFO FROM IMAGE DATA AND SAVE AS GLOBAL VARIABLE
-    //------------------------------------
-    parseImageData: function(imageData) {
-        imageData = imageData.replace("data:image/jpeg;base64,", "");
-        imageData = imageData.replace("data:image/jpg;base64,", "");
-        imageData = imageData.replace("data:image/png;base64,", "");
-        imageData = imageData.replace("data:image/gif;base64,", "");
-        imageData = imageData.replace("data:image/bmp;base64,", "");
-        return imageData;
-    },
-    //------------------------------------
     // DRAW FEATURE POINTS ON CANVAS
     //------------------------------------
     drawMethod: function(image) {
         var self = this;
         var canvas = $("#displayCanvas")[0];
         var context = canvas.getContext('2d');
-        self.adjX   = 1;
-        self.adjY   = 1;
+        adjX   = 1;
+        adjY   = 1;
+        subX   = 0;
+        subY   = 0;
+        // get actual image dimensions from Kairos API response      
+        var imgWidth = image.width;
+        var imgHeight = image.height;
+
+        // get dimensions of the image as it is displayed in .display-image-container
+        var displayImageDimensions = utils.getDisplayImageDimensions(imgWidth, imgHeight, self.canvasWidth);
+        // get dimensions and ratio of image relative to display size
+        var newImageInfo = utils.calculateAspectRatioFit(imgWidth,imgHeight,displayImageDimensions.width,displayImageDimensions.height);
         // adjust aspect ratio of feature points relative to resized image
-        if (self.newImageSize != undefined) {
-            self.adjX   = self.newImageSize.ratio;
-            self.adjY   = self.newImageSize.ratio;
-        }
+        adjX   = newImageInfo.ratio;
+        adjY   = newImageInfo.ratio;
+        // reposition face relative to full image size
+        subX   = (self.canvasWidth - newImageInfo.width) / 2;
+        subY   = (self.canvasHeight - newImageInfo.height) / 2;
+
         context.clearRect(0, 0, canvas.width, canvas.height);
         var imageObj = new Image();
         imageObj.onload = function() {
             context.drawImage(imageObj, 0, 0);
             
             for (var i = 0; i < image.faces.length; i++) { 
+
                 var face = image.faces[i];
                 var strokeStyle = '#139C8A';
                 // color code gender
@@ -602,11 +472,11 @@ detectDemoApp =  {
                     strokeStyle = '#0033ff';
                 }
                 if (face.confidence >= .989) {
-                    
+                    var radius = utils.adjustRadius(face.width * adjX, self.radiusDefault);
+
                     // draw face box
                     if (face.topLeftX != -1 && face.topLeftY != -1) {
-                        context.beginPath();
-                        context.rect(face.topLeftX * self.adjX, face.topLeftY * self.adjY, face.width * self.adjX , face.height * self.adjY);
+                        utils.roundRect(context, face.topLeftX * adjX + subX, face.topLeftY * adjY + subY, face.width * adjX , face.height * adjY, radius);
                         context.lineWidth = 2;
                         context.strokeStyle = strokeStyle;
                         context.stroke();
@@ -614,55 +484,29 @@ detectDemoApp =  {
 
                     if (face.leftEyeCenterX != -1 && face.leftEyeCenterY != -1) {
                         context.beginPath();
-                        context.moveTo(face.leftEyeCenterX * self.adjX, (face.leftEyeCenterY * self.adjY + (face.height * self.adjY / 25)));
-                        context.lineTo(face.leftEyeCenterX * self.adjX, (face.leftEyeCenterY * self.adjY - (face.height * self.adjY / 25)));
+                        context.moveTo(face.leftEyeCenterX * adjX + subX, (face.leftEyeCenterY * adjY + subY + ((face.height * adjY + subY) / 25)));
+                        context.lineTo(face.leftEyeCenterX * adjX + subX, (face.leftEyeCenterY * adjY + subY - ((face.height * adjY + subY) / 25)));
                         context.stroke();
                     }
 
                     if (face.rightEyeCenterX != -1 && face.rightEyeCenterY != -1) {
                         context.beginPath();
-                        context.moveTo(face.rightEyeCenterX * self.adjX, (face.rightEyeCenterY * self.adjY + (face.height * self.adjY / 25)));
-                        context.lineTo(face.rightEyeCenterX * self.adjX, (face.rightEyeCenterY * self.adjY - (face.height * self.adjY / 25)));
+                        context.moveTo(face.rightEyeCenterX * adjX + subX, (face.rightEyeCenterY * adjY + subY + ((face.height * adjY + subY) / 25)));
+                        context.lineTo(face.rightEyeCenterX * adjX + subX, (face.rightEyeCenterY * adjY + subY - ((face.height * adjY + subY) / 25)));
                         context.stroke();
                     }
 
                     if (face.chinTipX != -1 && face.chinTipY != -1) {
                         context.beginPath();
-                        context.moveTo(face.chinTipX * self.adjX, (face.chinTipY * self.adjY + (face.height * self.adjY / 25)));
-                        context.lineTo(face.chinTipX * self.adjX, (face.chinTipY * self.adjY - (face.height * self.adjY / 25)));
+                        context.moveTo(face.chinTipX * adjX + subX, (face.chinTipY * adjY + subY + ((face.height * adjY + subY) / 25)));
+                        context.lineTo(face.chinTipX * adjX + subX, (face.chinTipY * adjY + subY - ((face.height * adjY + subY) / 25)));
                         context.stroke();
                     }
                 }
             }
         };
-        imageObj.src = 'data:image/jpeg;base64,' + self.globalImageData;
-
-        var negVals = function(faceObj,attr1,attr2) {
-            var neg = false;
-            var xAttr1, yAttr1, xAttr2, yAttr2;
-            xAttr1 = attr1 + "X";
-            yAttr1 = attr1 + "Y";
-            xAttr2 = attr2 + "X";
-            yAttr2 = attr2 + "Y";
-            if (
-                faceObj[xAttr1] == -1 ||
-                faceObj[yAttr1] == -1 ||
-                faceObj[xAttr2] == -1 ||
-                faceObj[yAttr2] == -1
-              ) {
-                neg = true;
-            }
-            return neg;
-        };
+        imageObj.src = transparentImageData;
     },
-    //------------------------------------
-    // SHOW JSON RESPONSE
-    //------------------------------------
-    showJsonResponse: function (data) {
-        var self = this;
-        var str = JSON.stringify(data, null, 4);
-        $(".json-response pre").html(self.syntaxHighlight(str));
-    }, 
     //------------------------------------
     // DISPLAY HANDLEBARS TEMPLATES
     //------------------------------------ 
@@ -678,19 +522,6 @@ detectDemoApp =  {
         var theCompiledHtml = compiledTemplate(context);
         $("." + template).html(theCompiledHtml);
     },
-    //------------------------------------
-    // CREATE CANVAS FOR DISPLAYING IMAGE
-    //------------------------------------ 
-    createDisplayCanvas: function(h, w) {
-        $(".canvas-container")
-        .empty()
-        .append(
-            $('<canvas/>')
-            .attr("id", "displayCanvas")
-            .attr("width", h)
-            .attr("height", w)
-            );
-    },
     resetElements: function() {
         $(".canvas-container").empty();
         $(".face-overlay").hide();
@@ -701,33 +532,60 @@ detectDemoApp =  {
         $(".json-response pre").html("");
         $(".copy-json-button").hide();
     },
-    validateUrl: function(urlString) {
-        var url;
-        if (urlString.search(/^http[s]?\:\/\//) == -1) {
-            url = 'http://' + urlString;
+    showMimetypeError: function () {
+        var self = detectDemoApp;
+        $(".image-container-template").show();
+        self.getTemplate("image-container-template","","",false,true);
+        var filetypeMsg = "Wrong file type.  Must be" + self.fileTypeList;
+        self.getTemplate("json-response-template","Error",filetypeMsg,false,false);
+        self.processing = false;
+        return false;
+    },
+    setElementDimensions: function () {
+        var self = this;
+        if ($(window).width() < 768) {
+            this.canvasWidth = $(window).width() - 30;  // allow for side margins
+            this.canvasHeight = this.canvasWidth; 
+            $(".main-image-container").height(this.canvasWidth + 15); // add bottom margin
+            $("#previewImage").height(this.canvasHeight);
+            $(".webcam-video-container, .canvas-container, .display-image-container, .display-image-container img, .image-container-template, #displayCanvas")
+                .width(this.canvasWidth)
+                .height(this.canvasHeight);
+            $(".json-response").width(this.canvasWidth);
+            $(".json-response pre").height(this.canvasHeight);
+            $(".ui-buttons-mask").width(this.canvasWidth);
+        }
+        else if ($(window).width() < 992) {
+            this.canvasWidth = 360;
+            this.canvasHeight = this.canvasWidth; 
+            $(".main-image-container").height(this.canvasWidth); // add bottom margin
+            $("#previewImage").height(this.canvasHeight);
+            $(".webcam-video-container, .canvas-container, .display-image-container, .display-image-container img, .image-container-template, #displayCanvas")
+                .width(this.canvasWidth)
+                .height(this.canvasHeight);
+            $(".json-response").width(345);
+            $(".json-response pre").height(305);
+            $(".ui-buttons-mask").width(720);
         }
         else {
-            url = urlString;
+            this.canvasWidth = 475;
+            this.canvasHeight = 475;
+            $(".main-image-container").height(this.canvasWidth + 15); // add bottom margin
+            $("#previewImage").height(this.canvasHeight);
+            $(".webcam-video-container, .canvas-container, .display-image-container, .display-image-container img, .image-container-template, #displayCanvas")
+                .width(this.canvasWidth)
+                .height(this.canvasHeight);
+            $(".json-response").width(475);
+            $(".json-response pre").height(420);
+            $(".ui-buttons-mask")
+                .width($(".ui-buttons").width() - 30)
+                .height(110);
         }
-        var valid = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-        if(valid === null)
-            return false;
-        else
-            return url;
-    },
-    validateJson: function(json){
-        if (/^[\],:{}\s]*$/.test(json.replace(/\\["\\\/bfnrtu]/g, '@').
-            replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-            replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-            return true;
-        } else {
-            return false;
-        }
-    },
-    calculateAspectRatioFit: function(srcWidth, srcHeight, maxWidth, maxHeight) {
-        var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-        return { width: srcWidth*ratio, height: srcHeight*ratio, ratio:ratio };
-    },
+        $(".display-image-container img").each(function(idx,image){
+            var displayImageCssObj = utils.computeCss(image.naturalWidth, image.naturalHeight, self.canvasWidth);
+            $(image).css(displayImageCssObj); 
+        });
+    } 
 };
 
 

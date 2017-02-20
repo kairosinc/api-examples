@@ -4,8 +4,8 @@ define( 'APP_ID', (getenv('APP_ID') ? getenv('APP_ID') : ''));
 define( 'APP_KEY', (getenv('APP_KEY') ? getenv('APP_KEY') : ''));
 define( 'API_URL', (getenv('API_URL') ? getenv('API_URL') : ''));
 define( 'DEMO1_ID', (getenv('DEMO1_ID') ? getenv('DEMO1_ID') : ''));
-define( 'DEMO2_ID', (getenv('DEMO2_ID') ? getenv('DEMO2_ID') : ''));
-define( 'DEMO3_ID', (getenv('DEMO3_ID') ? getenv('DEMO3_ID') : ''));
+define( 'API_TIMEOUT', (getenv('API_TIMEOUT') ? getenv('API_TIMEOUT') : 10));
+define( 'POLL_TIMEOUT', (getenv('POLL_TIMEOUT') ? getenv('POLL_TIMEOUT') : 300));
 define( 'DEMO_SECRET_KEY', (getenv('DEMO_SECRET_KEY') ? getenv('DEMO_SECRET_KEY') : ''));
 
 return array(
@@ -26,25 +26,27 @@ return array(
         ["image/jpeg"],
         ["image/jpg"]
     ]',
-    "uploadFileSizeVideo" => "50000000",
+    "uploadFileSizeVideo" => "100000000",
     "uploadFileTypesEmotion" => '[
         ["video/mp4"],
         ["video/x-flv"],
         ["video/webm"],
         ["video/quicktime"],
         ["video/mov"],
+        ["video/wmv"],
+        ["video/mpeg"],
+        ["video/x-msvideo"],
+        ["video/x-ms-asf"],
         ["image/png"],
         ["image/jpeg"],
         ["image/jpg"],
         ["application/octet-stream"],
         ["image/x-ms-bmp"]
     ]',
-    "apiTimeout" => "30",
-    "pollTimeout" => "120000",
+    "apiTimeout" => API_TIMEOUT,
+    "pollTimeout" => POLL_TIMEOUT,
     "demoMedia"  => array(
-        "video_1"=>DEMO1_ID,
-        "video_2"=>DEMO2_ID,
-        "fullsize_3"=>DEMO3_ID
+        "video_1"=>DEMO1_ID
     )
 );
 

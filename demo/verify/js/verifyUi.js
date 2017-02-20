@@ -3,6 +3,7 @@
 // a collection of javascript functions to enable user interactions
 // dependencies: jquery.js, clipboard.js
 // created: June 2016
+// last modified: January 2016
 // author: Steve Rucker
 //------------------------------------
 
@@ -22,12 +23,15 @@ $(".image-group").click(function(e) {
 				.attr("src",$(this).children().eq(0).find("img").attr("src"))
 				.attr("galleryId",$(this).children().eq(0).find("img").attr("galleryId"))
 				.attr("subjectId",$(this).children().eq(0).find("img").attr("subjectId"))
+				.attr("style","")
 				.show();
 			$("#image-right")
 				.attr("src",$(this).children().eq(1).find("img").attr("src"))
 				.attr("galleryId",$(this).children().eq(1).find("img").attr("galleryId"))
 				.attr("subjectId",$(this).children().eq(1).find("img").attr("subjectId"))
+				.attr("style","")
 				.show();
+			verifyDemoApp.setElementDimensions();
 			verifyDemoApp.examplesModule();
 		}
 	}
@@ -78,6 +82,20 @@ $( ".image-group" ).hover(
     	$(this).find(".hover-title").fadeOut();
 	}
 );
+var changeButtonContent = function () {
+	if ($(window).width() < 480) {
+		$(".url-from-web").attr("value","Web URL");
+	}
+	else {
+		$(".url-from-web").attr("value","URL from the web");
+	}
+};
+changeButtonContent();
+$( window ).resize(function() {
+  	verifyDemoApp.setElementDimensions();
+  	changeButtonContent();
+});
+	
 
 
 

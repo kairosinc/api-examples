@@ -6,6 +6,10 @@
 // author: Steve Rucker
 //------------------------------------
 
+// show JSON container by default at larger resolutions
+if ($(window).width() > 768) {
+	$(".json-response-container").show();
+}
 // provide functionality for Copy to Clipboard button
 var clipboard = new Clipboard('.copy-json-button');
 $(".photo-thumbnail img").eq(0).css("opacity","1");
@@ -57,6 +61,24 @@ $(document).keydown(function(){
         $(".submit-button").click();
     }
 });
+// show/hide JSON
+$('.show-hide-json').click(function(e) {
+	e.preventDefault();
+    var s = $(this);
+    $('.json-response').slideToggle('fast', function(){
+    	if ($(window).width() <= 767) {
+	    	$(".copy-json-button").toggle();
+
+	    }
+        s.html(s.text() == 'HIDE JSON' ? 'SHOW JSON' : 'HIDE JSON');
+    });
+    return false;
+});
+$( window ).resize(function() {
+  detectDemoApp.setElementDimensions();
+});
+
+
 
 
 

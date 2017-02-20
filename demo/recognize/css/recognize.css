@@ -1,0 +1,307 @@
+/* 
+    verify CSS      
+    created: December 2016 
+    author: Steve Rucker
+*/
+.main-container {
+    margin-top: 12px;
+    clear: both;
+    position: relative;
+}
+.btn-kairos {
+	background-color: #139C8A;
+	color: #FFF!important;
+	border-radius: 0;
+	font-weight: bold;
+	padding: 12px;
+}
+	.btn:hover {
+		background-color: #0d6f62;
+		color: #FFF!important;
+	}
+.left-image-container {
+	float: left;
+	padding-right: 7px;
+	padding-left: 0;
+	overflow: hidden;
+	height: 400px;
+}
+.enrolled-images-container {
+	background-color: #2c3444;
+	position: relative;
+	height: 100%;
+}
+.canvas-container {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9;
+}
+.enrolled-images {
+	padding: 7px 0;
+	margin: 0;
+	width: 100%;
+}
+.enrolled-image {
+	width: 48%;
+    height: 122px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    border: 2px solid #fff;
+    margin: 0 2px 4px 3px;
+}
+.enrolled-image:nth-child(7),
+.enrolled-image:nth-child(8),
+.enrolled-image:nth-child(9) {
+	display: none;
+}
+.image-mask {
+	width: 100%;
+    height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	background-color: #000;
+	opacity: 0.1;
+}
+.image-mask-unrecognized {
+	width: 100%;
+    height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	background-color: #000;
+	opacity: 0.7;
+}
+.image-info {
+	position: absolute;
+	color: #fff;
+	text-align: center;
+	width: 100%;
+	top: 36%;
+	display: none;
+}
+.right-image-container {
+	border: 1px solid #333;
+	float: right;
+	overflow: hidden;
+    padding-left: 0;
+    padding-right: 7px;
+    background-color: #2c3444;
+    height: 400px;
+}
+.right-image-container img {
+	position: absolute;
+	width: 100%;
+}
+.recognize-image-container {
+	display: none;
+}
+.right-image-example {
+	height: 100%;
+}
+.example-instructions {
+	text-align: center;
+	margin-bottom: 8px;
+}
+.user-instructions {
+	position: absolute;
+	top: 32%;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	color: #fff;
+	font-size: 16px;
+	padding: 0 20px;
+	display: none;
+}
+.right-image-container .user-instructions {
+	display: none;
+	z-index: 9;
+}
+.show-json, .hide-json {
+	display: block;
+	top: 1px;
+}
+.json-response-container {
+	position: absolute;
+	border: none;
+	height: 400px;
+	width: 100%;
+	z-index: 999;
+}
+
+/* HANDLEBAR MESSAGES */
+.image-left-template, .image-right-template {
+	height: 80px;
+    position: absolute;
+    top: 0;
+    left: 2px;
+    width: 100%;
+    z-index: 9;
+}
+.image-left-template {
+	left: 15px;
+}
+.header-bkg-left, .header-bkg-right {
+	background-color: #000;
+    height: 60px;
+    position: absolute;
+    top: 0;
+    left: -2px;
+    width: 100%;
+    opacity: 0.5;
+    z-index: 8;
+}
+.header-bkg-left {
+    left: -16px;
+}
+.message-container{
+	position: relative;
+	z-index: 10;
+}
+.message-container .message{
+	font-size: 14px;
+	clear: both;
+	color: #fff;
+	text-align: center;
+	z-index: 10;
+    padding-top: 30px;
+}
+.processing-spinner {
+	width: 50px; 
+	height: 50px; 
+	margin: 0 auto; 
+	background: transparent url('../images/spinner.svg') no-repeat;
+	position: relative;
+}
+.message-container .spinner-message{
+	font-size: 14px;
+	clear: both;
+	color: #fff;
+	text-align: center;
+	z-index: 10;
+}
+.recognize-response {
+    border: 1px solid #fff;
+    padding: 4px;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    right: 20px;
+    top: 24px;
+    position: absolute;
+    z-index: 10;
+}
+.reset-panels {
+	/*position: absolute;
+	top: 2px;
+	right: 12px;*/
+    z-index: 999;
+    font-weight: normal;
+    cursor: pointer!important;
+}
+	.reset-panels:hover {
+		color: #267769!important;
+	}
+.upload-button {
+    position: relative;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff!important;
+    height: 46px;
+    width: 100%;
+    line-height: 45px;
+    cursor: pointer;
+    text-align: center;
+    padding: 0;
+}
+.upload-button input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+    z-index: 9999;
+    margin: 0;
+    padding: 12px;
+}
+.upload-value {
+	position: absolute;
+	top: 7px;
+    left: 104px;
+	color: #fff;
+}
+.url-error {
+	color: #ff0000;
+	padding: 10px 0 0 10px;
+	font-size: 12px;
+}
+.ui-buttons {
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 15px;
+	position: relative;
+	clear: both;
+}
+.exercise-view .enrolled-image img {
+	width: 100%; 
+	height: auto; 
+	top: 0px; 
+	left: 0px; 
+	position: absolute;
+}
+.exercise-view .ui-buttons {
+	display: none;
+}
+.ui-buttons .upload {
+	display: none;
+}
+.ui-buttons .upload:first-child {
+	padding-left: 0;
+	padding-right: 7px;
+}
+.ui-buttons .upload:nth-child(2) {
+	padding-right: 0;
+	padding-left: 0;
+}
+.ui-buttons div button {
+	width: 100%;
+}
+.ui-buttons input {
+	border: 2px solid #CCC;
+    height: 46px;
+    width: 100%;
+    padding-left: 10px;
+    color: #333;
+}
+.submit {
+	padding-left: 0;
+}
+.step-two-prompt {
+	display: none;
+	width: 100%;
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+.step-two-prompt span {
+	font-weight: bold;
+    font-size: 18px;
+    font-family: Arial;
+}
+
+

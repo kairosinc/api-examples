@@ -8,6 +8,8 @@ COPY . /tmp
 RUN cp -Rf /tmp/* /var/www/app/                       && \
     cp /tmp/conf/default.conf /etc/nginx/conf.d/      && \
     rm -Rf /var/www/app/conf /var/www/app/Dockerfile  && \
+    cp /tmp/scripts/nginx_env.sh  /usr/local/bin/     && \
+    chmod +x /usr/local/bin/nginx_env.sh              && \
     rm -Rf /tmp/*                                     && \
     touch /var/log/access.log /var/log/error.log      && \
     touch /var/run/php-fpm.sock                       && \
@@ -16,7 +18,8 @@ RUN cp -Rf /tmp/* /var/www/app/                       && \
     ln -sf /dev/stdout /var/log/demo.log              && \
     ln -sf /dev/stdout /var/log/nginx/access.log      && \
     ln -sf /dev/stderr /var/log/nginx/error.log       && \
+    sed -i -e "s/memory_limit = 128M/memory_limit = 512M/g" /etc/php5/php.ini && \
     chown -R nginx:nginx /var/log/* /etc/nginx/*      && \
-    chown -R nginx:nginx /var/www/*
+    chown -R nginx:nginx /var/www/* /etc/php5/*
 
 WORKDIR /var/log

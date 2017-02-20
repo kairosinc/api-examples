@@ -41,7 +41,9 @@ if ($_POST['fname'] == "url") {
 	);
 } else if ($_POST['fname'] == "upload") {
 	$file = $_FILES["file"]["tmp_name"];
-	$response = file_mime_type($file);
+	$response = array (
+		"fileType" => file_mime_type($file)
+	);
 }
 
 

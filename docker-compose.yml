@@ -10,9 +10,12 @@ services:
       STAGE: local
       APP_ID: ""
       APP_KEY: ""
-      API_URL: "https://api.kairos.com" 
+      API_URL: "https://api.kairos.com"
+      API_TIMEOUT: "10" 
+      POLL_TIMEOUT: "300"
       DEMO1_ID: ""
-      DEMO2_ID: ""
-      DEMO3_ID: ""
+      DEMO_SECRET_KEY: ""
+      XDEBUG: "true"
+      XDEBUG_CONFIG: "remote_host=10.254.254.254"
     volumes:
       - ./demo:/var/www/app/demo

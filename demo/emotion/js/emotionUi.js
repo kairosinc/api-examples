@@ -7,6 +7,23 @@
 // author: Steve Rucker
 //------------------------------------
 
+
+// show/hide UI toolbar containing webcam, upload and URL
+var getUrlVars = function() {
+	var vars = {};
+	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+	function(m,key,value) {
+	  vars[key] = value;
+	});
+	return vars;
+}
+if (getUrlVars()["ui"] && getUrlVars()["ui"] == "no") {
+	$(".ui-buttons").hide();
+}
+else {
+	$(".ui-buttons").show();
+}
+
 $(".video-thumbnail img").eq(0).css("opacity","1");
 
 // show/hide Highcharts tooltip
@@ -54,7 +71,7 @@ $(".show-json").click(function (e) {
 	$(".json-response-container").show();
 	emoDemoApp.getTemplate("json-template","Wait","Retrieving JSON response...",false, false);
 	setTimeout(function() {
-		$(".json-response").html("<pre>" + emoDemoApp.syntaxHighlight(emoDemoApp.jsonResponse) + "</pre>");
+		$(".json-response").html("<pre>" + utils.syntaxHighlight(emoDemoApp.jsonResponse) + "</pre>");
 		$(".copy-json-button").show();
 		emoDemoApp.getTemplate("json-template","","",false, false);
 	},200)
@@ -127,6 +144,11 @@ $(document).keydown(function(){
         $(".submit-button").click();
     }
 });
+$( window ).resize(function() {
+  emoDemoApp.setElementDimensions();
+});
+
+
 
 
  
