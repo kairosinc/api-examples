@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    <title>Kairos File Upload Example</title>  
+</head>
+<body>
+    <div style="margin: 50px;">
+    	<form method="post" enctype="multipart/form-data" id="mediaUploadForm"> 
+    		<input type="file" id="upload" style="float: left;">
+            <input type="submit" value="Upload Media" style="float: left;" />
+        </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>
+		$("#mediaUploadForm").submit(function(e) {
+			e.preventDefault();
+			var fileData = $('#upload')[0].files[0]; 
+			var formData = new FormData();                  
+            formData.append("file", fileData);
+            $.ajax({
+                url: 'form-post.php', 
+                dataType: 'text',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,                         
+                type: 'post',
+            }).done(function(data) {
+            	console.log(data)
+            });
+		});
+
+	</script>
+</body>
+
+</html>
+
