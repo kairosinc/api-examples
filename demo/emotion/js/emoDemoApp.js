@@ -16,7 +16,14 @@ emoDemoApp =  {
         this.config = config;
         this.apiCredentials = config.apiCredentials;
         if (this.apiCredentials){
-            this.examplesModule("video");
+            // if example video id is not provided, 
+            // bypass example processing
+            if (this.config["demoMedia"]["video_1"] != "") {
+                this.examplesModule("video");
+            }
+            else {
+                $(".ui-buttons-mask").hide();
+            }
             this.uploadModule();
             this.urlModule();
         }
