@@ -8,3 +8,6 @@ The Detect Demo uses Kairos Face Recognition API to detect a human face in an ex
 ## Verify
 Using the Kairos Face Recognition API, the Verify Demo compares two photos, and verifies that the two photos are of the same individual.
 [Documentation](/demo/verify/README.md)
+## Facerace
+Using the Kairos Face Recognition API, the Facerace Demo creates a visual display of the ethnicity of an uploaded photo, and makes it available for social media sharing.
+[Documentation](/demo/facerace/README.md)

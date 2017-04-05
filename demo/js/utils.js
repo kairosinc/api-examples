@@ -3,6 +3,7 @@
 // collection of javascript utilities for use with demos
 // dependencies: jquery.js
 // created: December 2016
+// modified: March 2017
 // author: Steve Rucker
 //------------------------------------
 
@@ -270,11 +271,11 @@ utils =  {
             }
         });
     },
-    rotateImage: function(image, callback, app) {
-        EXIF.getData($(image)[0], function() {
-            var imageOrientation = EXIF.getTag(this,"Orientation");
+    rotateImage: function(image, callback, app, url) {
+        var doRotate = function (imageOrientation) {
+            app.imageOrientation = imageOrientation;
             if (!utils.isiOS()) {
-                switch(imageOrientation) {
+                switch(parseInt(imageOrientation)) {
                     case 3:
                         var rotate = "rotate(180deg)"
                         break;
@@ -295,15 +296,49 @@ utils =  {
                     $(image).css(rotateCss);
                 } 
             }
-            app.imageOrientation = imageOrientation;
             if (typeof callback === "function") {
                 callback();
             }
-        });
+        };
+        if (url) {
+            var imageData = {};
+            imageData["url"] = url;
+            $.ajax({
+                url: '../get-exif-data.php', 
+                dataType: 'text', 
+                data: imageData,                         
+                type: 'post',
+            }).done(function(orientation) {
+                doRotate(orientation);
+            });
+        }
+        else {
+            EXIF.getData(image, function() {
+                var orientation = EXIF.getTag(this,"Orientation");
+                doRotate(orientation);
+            });
+        }
+        
     },
     isiOS: function() {
         var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         return (iOS);
+    },
+    getUrlVars: function() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+        function(m,key,value) {
+          vars[key] = value;
+        });
+        return vars;
+    },
+    isNumber: function(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode != 46 && charCode > 31 
+                && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+        return true;
     }
 
 }

@@ -6,6 +6,7 @@ build:
 	docker build  -t demo .
 run:
 	docker-compose up -d
+	docker exec demo_demo_1 composer update -d /var/www/app/demo
 stop:
 	docker-compose down
 exec:

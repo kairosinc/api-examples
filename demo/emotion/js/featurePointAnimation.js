@@ -26,6 +26,7 @@ featurePointAnimation =  {
         else if (windowWidth < 992) {
             this.featurePointWidth = 1;
         }
+
         if (emoDemoApp.mediaType == "video") {
             this.createDisplayCanvas(emoDemoApp.fullVideoWidth, emoDemoApp.fullVideoHeight);
             
@@ -44,26 +45,31 @@ featurePointAnimation =  {
             this.subX   = (emoDemoApp.fullVideoWidth - newVideoSize.width) / 2;
             this.subY   = (emoDemoApp.fullVideoHeight - newVideoSize.height) / 2;
         }
-        else {
+        else if (emoDemoApp.mediaType == "image")  {
+            var self = this;
             // wait until still image feature points are more accurate
-            // this.createDisplayCanvas(emoDemoApp.viewportWidth, emoDemoApp.viewportHeight);
+            this.createDisplayCanvas(emoDemoApp.canvasWidth, emoDemoApp.canvasWidth);
 
-            // var canvas = $("#displayCanvas" + emoDemoApp.mediaType )[0];
-            // this.context = canvas.getContext('2d');
+            var canvas = $("#displayCanvas" + emoDemoApp.mediaType )[0];
+            this.context = canvas.getContext('2d');
 
-            // // image dimensions
-            // var imageWidth = emoDemoApp.imgWidth;
-            // var imageHeight = emoDemoApp.imgHeight;
+            // image dimensions
+            var imgWidth = emoDemoApp.imgWidth;
+            var imgHeight = emoDemoApp.imgHeight;
 
-            // newImageSize = emoDemoApp.calculateAspectRatioFit(imageWidth,imageHeight,emoDemoApp.newImageSize.width,emoDemoApp.newImageSize.height);
+            // get dimensions of the image as it is displayed in .display-image-container
+            var displayImageDimensions = utils.getDisplayImageDimensions(imgWidth, imgHeight, emoDemoApp.canvasWidth);
+            // get dimensions and ratio of image relative to display size
+            var newImageInfo = utils.calculateAspectRatioFit(imgWidth,imgHeight,displayImageDimensions.width,displayImageDimensions.height);
 
-            // // adjust aspect ratio of feature points relative to resized image
-            // this.adjX   = newImageSize.ratio;
-            // this.adjY   = newImageSize.ratio;
-            // // reposition face relative to full image size
-            // this.subX   = ((emoDemoApp.viewportWidth - emoDemoApp.newImageSize.width) / 2);
-            // this.subY   = ((emoDemoApp.viewportHeight - emoDemoApp.newImageSize.height) / 2);
-
+            // adjust aspect ratio of feature points relative to resized image
+            this.adjX   = newImageInfo.ratio;
+            this.adjY   = newImageInfo.ratio;
+            // reposition face relative to full image size
+            this.subX   = (emoDemoApp.canvasWidth - newImageInfo.width) / 2;
+            this.subY   = (emoDemoApp.canvasHeight - newImageInfo.height) / 2;
+            this.getFeaturePoints(0);
+          
         }
             
 
@@ -89,6 +95,7 @@ featurePointAnimation =  {
             var frame = self.response.frames[currFrame];
             // if the people array is empty, clear canvas
             if(frame.people.length && $("#featurepoints").is(":checked")) {
+
                 var landmarks = self.response.frames[currFrame].people[0].landmarks;
                 if (landmarks != undefined) {
                     self.context.clearRect(0, 0, emoDemoApp.fullVideoWidth, emoDemoApp.fullVideoHeight);
@@ -115,11 +122,14 @@ featurePointAnimation =  {
         if (landmarks[idx] != undefined && landmarks[idx][val] != undefined) {
             var xPoint = landmarks[idx][val]["x"];
             var yPoint = landmarks[idx][val]["y"];
-            // console.log(xPoint)
-            self.context.beginPath();
-            self.context.rect(xPoint * self.adjX + self.subX, yPoint * self.adjY + self.subY, self.featurePointWidth, 1);
-            self.context.stroke();
         }
+        else if (landmarks[idx] != undefined && landmarks[idx]["name"] != undefined && landmarks[idx]["name"] == val) {
+            var xPoint = landmarks[idx]["x"];
+            var yPoint = landmarks[idx]["y"];
+        }
+        self.context.beginPath();
+        self.context.rect(xPoint * self.adjX + self.subX, yPoint * self.adjY + self.subY, self.featurePointWidth, 1);
+        self.context.stroke();
     },
     //------------------------------------
     // CREATE CANVAS 

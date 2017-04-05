@@ -16,6 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <link href="../images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="css/emotion.css">
@@ -44,7 +45,7 @@
                     <div class="face-overlay"></div>
                     <div class="webcam-counter"></div>
                 </div>
-                <img class="show-image" src="">
+                <div class="display-image-container"></div>
                 <div class="canvas-container-image"></div>
                 <div class="template-background"></div>
                 <div class="video-container-template"></div>
@@ -77,6 +78,17 @@
                 <button class="copy-json-button btn btn-primary" data-clipboard-action="copy" data-clipboard-target=".json-response">COPY</button>
                 <div class="json-response"><pre></pre></div>
                 <div class="json-template"></div>
+            </div>
+        </div>
+        <div class="row options-panel col-md-12">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <h4>Options</h4>
+                <div class="form-group">
+                    <label class="control-label" for="optionPollTimeout">Poll Timeout:</label><span class="prompt">Time allowed for the demo to poll for a response once a Media ID is returned (in seconds)</span>
+                    <input class="form-control" type="text" name="optionPollTimeout" id="optionPollTimeout"><span class="option-error"></span>
+                    <div class="polltimeout-slider"></div>
+                </div>
+                <div class="polling-display">Polling: <span></span></div>
             </div>
         </div>
         <div class="row ui-buttons">
@@ -145,13 +157,14 @@
     <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://code.highcharts.com/4.2.2/highcharts.js"></script>
+    <script src="https://code.highcharts.com/4.2.3/highcharts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
     <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
     <script src="https://cdn.WebRTC-Experiment.com/gumadapter.js"></script>
 
     <!-- custom libraries -->
+    <script src="../js/utils.js"></script>
     <script src="js/MediaStreamRecorder.js"></script>
     <script src="js/featurePoints.js"></script>
     <script src="js/emoDemoApp.js"></script>
@@ -160,7 +173,6 @@
     <script src="js/highchartsAppPhoto.js"></script>
     <script src="js/videoPlayer.js"></script>
     <script src="js/emotionUi.js"></script>
-    <script src="../js/utils.js"></script>
 
     <!-- initialize custom libraries if API credentials are valid -->
     <?php

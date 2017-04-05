@@ -1,0 +1,19 @@
+@media (max-width: 600px) {
+	#diversity_image img { max-width: 100%; }
+}
+
+@media (min-width: 992px) {
+	.main-container {
+	    width: 600px;
+	    margin: 0 auto;
+	    padding: 50px 0;
+	}
+	.image-container-template {
+	    width: 475px;
+	    height: 475px;
+	}
+	.ui-buttons .upload {
+		margin-top: 0;
+	}
+}
+

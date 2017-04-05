@@ -160,29 +160,50 @@ The functionality for a number of user interactions is contained within the `emo
 * URL from web functionality
 
 ---
+
+## Option Panel
+
+If `?option-panel=yes` is added to the URL of the demo, a panel is revealed underneath the example video containing a slider/input box where the user can enter the time allowed for the demo to poll for a response once a Media ID is returned (in seconds).  See the docs for detailed information on these arguments: http://kairos.com/docs/api/
+
+---
 ## Installation
 
-To build with Docker:
+First, enter your personal keys into the docker-compose.yml file:
 
-```
-docker build -t user/demo .
-```
+    version: '2'
+    services:
+      demo:
+        image: demo
+        expose:
+          - "8080"
+        ports:
+          - "8080:80"
+        environment:
+          STAGE: prod
+          AWS_S3_REGION: "your-aws-s3-region"
+          AWS_S3_UPLOAD_BUCKET: "your-aws-upload-bucket"
+          APP_ID: "your-app-id"
+          APP_KEY: "your-app-key"
+          API_URL: "https://api.kairos.com"
+          API_TIMEOUT: "10" 
+          POLL_TIMEOUT: "300"
+          DEMO1_ID: "leave-blank"
+          DEMO_SECRET_KEY: "leave-blank"
+          XDEBUG: "true"
+          XDEBUG_CONFIG: "remote_host=10.254.254.254"
+        volumes:
+          - ./demo:/var/www/app/demo
+          
+The AWS keys aren't necessary unless you're running the Facerace demo.  For more information about using XDEBUG with PHPStorm, go to: https://gist.github.com/coleca/c227543fbed515e4eb4c058a7455c581
 
-To run with Docker:
 
+Then, cd to your demo repo, and run:
 ```
-docker run -d -p 8080:80 \
-           -e APP_ID="xxxyyy" \
-           -e APP_KEY="xxxyyy111" \
-           -e API_URL="https://api.kairos.com" \
-           -e DEMO1_ID="123456" \
-           -e DEMO2_ID="456789" \
-           -e DEMO3_ID="789123" \
-           -e STAGE="prod" \
-           user/demo
-```
+make build
 
-You will then be able to access the UI at http://localhost:8080 (if running using Docker for Mac or Docker for Windows)
+make run
+```
+You will then be able to access the UI at http://localhost:8080:80 (if running using Docker for Mac or Docker for Windows)
 
 To stop the Docker container:
 
@@ -199,20 +220,18 @@ Note: This will stop all running containers not just this one
 * APP_KEY - Application Key
 * API_URL - URL of the API server 
 * DEMO1_ID - Media ID of the first preprocessed video 
-* DEMO2_ID - Media ID of the second preprocessed video
-* DEMO3_ID - Media ID of the third preprocessed video
-* STAGE - Environment (dev, prod, stage)
+* DEMO_ENV - Environment (dev, prod, stage)
 
 ---
 
 ## Dependencies
-Libraries hosted by content delivery networks:
+Javascript libraries hosted by content delivery networks:
 * jquery.js
 * jquery-ui.js
 * bootstrap.js
 * highcharts.js
-* handlebars.js
-* clipboard.js
+* handlebars.js (used for error message display)
+* clipboard.js (used for copy function in JSON display)
 * gumadapter.js
 
 Note: These dependencies can be also be saved locally.
@@ -228,7 +247,10 @@ The following custom javascript libraries are used:
 * featurePointAnimation.js - javascript object which draws feature points onto a Canvas element which is positioned over the video or image
 * featurePoints.js - a javascript array containing the 49 feature points
 * emotionUi.js - a collection of javascript functions to enable user interactions
+* utils.js - a collection of javascript methods for global use (canvas drawing, exif data, URL and JSON validation, aspect ratio calculations, retrival of data from image, mimetype checking, image rotation, and others)
 
 The following custom php files are used:
 * process.php - processes calls to Kairos API (for examples and webcam modules)
 * form-post.php - processes form posts to Kairos API (for upload module)
+* get-file-data.php - retrieves file information for validation (used in utils.js to check mimetype)
+

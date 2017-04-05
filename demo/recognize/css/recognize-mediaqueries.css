@@ -5,7 +5,7 @@
 	}
 	.right-image-container {
 		width: 100%;
-		margin-top:10px;
+		margin-top: 20px;
 	}
 	.enrolled-images {
 	    padding: 16px 0 0 20px;
@@ -26,6 +26,13 @@
 		width: 100%;
 		padding-right: 0;
 		padding-left: 0;
+	}
+	.recognized .left-image-container,
+	.recognized .right-image-container {
+		position: absolute;
+	}
+	.recognized .left-image-container {
+		top: 400px;
 	}
 	.example-instructions {
 	    margin-bottom: 0;
@@ -156,12 +163,6 @@
 	.right-image-container {
 		width: 475px;
 		height: 475px;
-	}
-	.json-response-container {
-		padding-left: 15px;
-	}
-	.hide-json {
-		left: 25px;
 	}
 	.canvas-container {
 		width: 475px;

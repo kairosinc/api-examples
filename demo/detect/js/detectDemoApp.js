@@ -113,7 +113,7 @@ detectDemoApp =  {
         $(".display-image-container")
             .empty()
             .hide();
-        utils.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
+        utils.createDisplayCanvas(self.webcamWidth, self.webcamHeight);
         var streaming = false;
         var video = null;
 
@@ -145,8 +145,8 @@ detectDemoApp =  {
                 $(".face-overlay").show();
                 self.getTemplate("json-response-template","Tip","Keep your face inside the green circle...",false);
                 if (!streaming) {
-                    video.setAttribute('width', self.canvasWidth);
-                    video.setAttribute('height', self.canvasHeight);
+                    video.setAttribute('width', self.webcamWidth);
+                    video.setAttribute('height', self.webcamHeight);
                     streaming = true;
                 }
                 var captureInterval = 3000;
@@ -173,13 +173,13 @@ detectDemoApp =  {
             // create canvas
             var canvas = document.createElement('CANVAS');
             var context = canvas.getContext('2d');
-            canvas.width = self.canvasWidth;
-            canvas.height = self.canvasHeight;
+            canvas.width = self.webcamWidth;
+            canvas.height = self.webcamHeight;
             // draw video image onto canvas, get data
-            context.drawImage(video, 0, 0, self.canvasWidth, self.canvasHeight);
+            context.drawImage(video, 0, 0, self.webcamWidth, self.webcamHeight);
             var imageData = canvas.toDataURL('image/png');
 
-            var cssObj = utils.computeCss(self.canvasWidth, self.canvasHeight, self.canvasWidth);
+            var cssObj = utils.computeCss(self.webcamWidth, self.webcamHeight, self.canvasWidth);
             var image = $('<img />', {
                 src: imageData,
                 css: cssObj
@@ -403,9 +403,7 @@ detectDemoApp =  {
     apiCallback: function(data) {
         var self = this;
         $("#previewImage").hide();
-        if ($(window).width() > 767) {
-            $(".copy-json-button").show();
-        }
+        $(".copy-json-button").show();
         $(".json-title").show();
         $(".image-container-template").hide();
         $(".spinner-message-container").hide();

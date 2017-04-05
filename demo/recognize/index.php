@@ -30,12 +30,12 @@
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/team/Brain_Brackeen.jpeg" crossorigin="Anonymous" />
                         <div class="image-mask" style="display: block;"></div>
-                        <div class="image-info" style="display: block;">Confidence: <br>84.226%</div>
+                        <div class="image-info" style="display: block;">Confidence: <br>87.203%</div>
                     </li>
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/demo/verify/brad1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
-                        <div class="image-info" style="display: block;">Confidence: <br>28.583%</div>
+                        <div class="image-info" style="display: block;">Confidence: <br>28.593%</div>
                     </li>
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/team/Rajnesah_Belyeu2.jpeg" crossorigin="Anonymous" />
@@ -45,7 +45,7 @@
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/team/Ben_Virdee-Chapman.jpeg" crossorigin="Anonymous" />
                         <div class="image-mask" style="display: block;"></div>
-                        <div class="image-info" style="display: block;">Confidence: <br>85.821%</div>
+                        <div class="image-info" style="display: block;">Confidence: <br>88.376%</div>
                     </li>
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/demo/verify/george1.jpg" crossorigin="Anonymous" />
@@ -60,7 +60,7 @@
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/team/Neil_Pitts.jpeg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
-                        <div class="image-info" style="display: block;">Confidence: <br>57.566%</div>
+                        <div class="image-info" style="display: block;">Confidence: <br>55.546%</div>
                     </li>
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/demo/verify/angelina2.jpg" crossorigin="Anonymous" />
@@ -70,7 +70,7 @@
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/demo/verify/halle1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
-                        <div class="image-info" style="display: block;">Confidence: <br>12.894%</div>
+                        <div class="image-info" style="display: block;">Confidence: <br>10.789%</div>
                     </li>
                 </ul>
                 <div class="image-left-template"></div>

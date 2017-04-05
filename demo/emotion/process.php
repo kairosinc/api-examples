@@ -124,7 +124,7 @@ else {
             }
             return $protocol;
         }
-
+        // $mediaPath = "https://steverucker.com/dev/media/emodemo.webm";
         $mediaPath = isSSL() . $_SERVER['HTTP_HOST'] . "/emotion/media/" . $fullFilename;
 
         $queryUrl = API_URL . "/v2/media?source=" . $mediaPath . "&landmarks=1&timeout=1";

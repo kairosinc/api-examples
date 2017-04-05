@@ -2,9 +2,6 @@
 	.image2 {
 		display: none;
 	}
-	.copy-json-button {
-		display: none;
-	}
 }
 
 @media (max-width: 767px) {
@@ -20,9 +17,6 @@
 	}
 	.image5 img {
 		margin-top: 0;
-	}
-	.json-response, .json-response-template, .copy-json-button {
-		display: none;
 	}
 }
 
@@ -48,7 +42,7 @@
 		margin-top: 0;
 		float: right;
 	}
-	.json-response {
+	.detect.json-response-container {
 		display: block;
 		height: 360px;
 	}
@@ -107,7 +101,7 @@
 		width: 475px;
 		height: 475px;
 	}
-	.detect.json-response {
+	.detect.json-response-container {
 	    width: 505px;
 		height: 475px;
 		padding-left: 0;

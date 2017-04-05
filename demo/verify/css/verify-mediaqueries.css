@@ -127,6 +127,9 @@
 		font-size: 10px;
 		width: 200px;
 	}
+	.ui-buttons input {
+		font-size: 14px;
+	}
 }
 
 @media (max-width: 767px) {

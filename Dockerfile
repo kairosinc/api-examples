@@ -4,6 +4,8 @@ MAINTAINER Cole Calistra <cole@kairos.com>
 ## Copy working files to container
 COPY . /tmp
 
+RUN apk update && apk add php5-gd php5-imagick ghostscript ghostscript-fonts php5-exif
+
 ## Copy files to correct directories
 RUN cp -Rf /tmp/* /var/www/app/                       && \
     cp /tmp/conf/default.conf /etc/nginx/conf.d/      && \
@@ -19,7 +21,9 @@ RUN cp -Rf /tmp/* /var/www/app/                       && \
     ln -sf /dev/stdout /var/log/nginx/access.log      && \
     ln -sf /dev/stderr /var/log/nginx/error.log       && \
     sed -i -e "s/memory_limit = 128M/memory_limit = 512M/g" /etc/php5/php.ini && \
+    echo "extension=exif.so" >/etc/php5/conf.d/zzexif.ini && \
     chown -R nginx:nginx /var/log/* /etc/nginx/*      && \
-    chown -R nginx:nginx /var/www/* /etc/php5/*
+    chown -R nginx:nginx /var/www/* /etc/php5/*       && \
+    cd /var/www/app/demo && composer update
 
 WORKDIR /var/log

@@ -9,19 +9,18 @@
 
 
 // show/hide UI toolbar containing webcam, upload and URL
-var getUrlVars = function() {
-	var vars = {};
-	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
-	function(m,key,value) {
-	  vars[key] = value;
-	});
-	return vars;
-}
-if (getUrlVars()["ui"] && getUrlVars()["ui"] == "no") {
+if (utils.getUrlVars()["ui"] && utils.getUrlVars()["ui"] == "no") {
 	$(".ui-buttons").hide();
 }
 else {
 	$(".ui-buttons").show();
+}
+// show/hide options panel
+if (utils.getUrlVars()["option-panel"] && utils.getUrlVars()["option-panel"] == "yes") {
+	$(".options-panel").show();
+}
+else {
+	$(".options-panel").hide();
 }
 
 $(".video-thumbnail img").eq(0).css("opacity","1");
@@ -147,6 +146,44 @@ $(document).keydown(function(){
 $( window ).resize(function() {
   emoDemoApp.setElementDimensions();
 });
+// wait until dom is loaded to grab config vars
+$(function() {
+    // slider
+	$(".polltimeout-slider").slider({
+		range: "min",
+	    min: 10,
+	    max: emoDemoApp.config.pollTimeout,
+	    slide: function( event, ui ) {
+	        $("#optionPollTimeout").val(ui.value);
+	    }
+	});
+	$(".polltimeout-slider").slider("value", emoDemoApp.config.pollTimeout);
+	$("#optionPollTimeout").click(function(){
+		$(this).val("");
+	});
+	$("#optionPollTimeout").keypress(function(event){
+		if (utils.isNumber(event)) {
+			setTimeout(function(){
+				var thisVal = $("#optionPollTimeout").val();
+				var newVal = "";
+				if (thisVal < 10 || thisVal > emoDemoApp.config.pollTimeout) {
+					$(".option-error").html("Out of range");
+					$("#optionPollTimeout").val("");
+					$(".polltimeout-slider").slider("value", emoDemoApp.config.pollTimeout);
+				}
+				else {
+					$(".option-error").html("");
+					$(".polltimeout-slider").slider("value", thisVal);
+				}
+				
+			},1500)
+		}
+		else {
+			return false;
+		}
+	});
+});
+
 
 
 

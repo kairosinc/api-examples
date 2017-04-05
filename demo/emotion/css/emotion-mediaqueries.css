@@ -106,6 +106,14 @@
 	    width: 475px;
 	    height: 560px;
 	}
+	.display-image-container {
+		width: 475px;
+		height: 475px;
+		margin-top: 42px;
+	}
+	#displayCanvasimage {
+		margin-top: 42px;
+	}
 	/* Highcharts */
 	.highcharts-container {
 		padding-right: 15px;

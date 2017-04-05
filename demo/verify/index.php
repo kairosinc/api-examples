@@ -169,13 +169,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
 
     <!-- custom libraries -->
+    <script src="../js/utils.js"></script>
     <script src="js/verifyDemoApp.js"></script>
     <script src="js/verifyUi.js"></script>
     <script src="js/imageData.js"></script>
     <script src="js/imageAnalysisData.js"></script>
     <script src="js/jsonData.js"></script>
     <script src="../js/exif.js"></script>
-    <script src="../js/utils.js"></script>
     <script src="../js/transparentImageData.js"></script>
     
     <!-- initialize custom libraries if API credentials are valid -->

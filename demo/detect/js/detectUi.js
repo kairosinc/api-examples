@@ -65,11 +65,7 @@ $(document).keydown(function(){
 $('.show-hide-json').click(function(e) {
 	e.preventDefault();
     var s = $(this);
-    $('.json-response').slideToggle('fast', function(){
-    	if ($(window).width() <= 767) {
-	    	$(".copy-json-button").toggle();
-
-	    }
+    $('.json-response-container').slideToggle('fast', function(){
         s.html(s.text() == 'HIDE JSON' ? 'SHOW JSON' : 'HIDE JSON');
     });
     return false;

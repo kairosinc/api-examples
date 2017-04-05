@@ -527,7 +527,7 @@ recognizeDemoApp =  {
             var thumbnail = 134;
             this.thumbnailSize = thumbnail;
             var containerHeight = thumbnail * 3 + 58;
-            $(".json-response-container, .json-response").width(canvasWidth - 15)
+            $(".json-response-container, .json-response").width(canvasWidth)
             $(".json-response pre").height(canvasWidth);
             $(".enrolled-image").height(this.thumbnailSize);
             $(".right-image-container").show();

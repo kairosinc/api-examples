@@ -249,6 +249,7 @@ verifyDemoApp =  {
                 return false;
             }
             else {
+                $(".display-image-" + position + "-container").empty();
                 var file = input.files[0];
                 var reader  = new FileReader();
                 reader.readAsDataURL(file);
@@ -266,21 +267,25 @@ verifyDemoApp =  {
                             var imgWidth = img.width;
                             var imgHeight = img.height;
                             var cssObj = utils.computeCss(imgWidth, imgHeight, self.canvasWidth);
-                            $("#image-" + position)
-                                .attr("src", imageData)
-                                .css(cssObj);
-                            utils.rotateImage($("#image-" + position)[0], "processImage", self);
-                            setTimeout(function(){
-                               self.setElementDimensions(); 
-                            },100);
-                            self.verifyImage(position, imageData);
-                            self.enrollImage(position, imageData);
+                            var image = $('<img />', {
+                                src: imageData,
+                                css: cssObj,
+                                id: "image-" + position
+                            });
+                            var processImage = function() {
+                                image.appendTo(".display-image-" + position + "-container");
+                                setTimeout(function(){
+                                   self.setElementDimensions(); 
+                                },100);
+                                self.verifyImage(position, imageData);
+                                self.enrollImage(position, imageData);
+                            };
+                            utils.rotateImage($(image)[0], processImage, self);
                         }
                     };  
                 };
             }
- 
-        };
+         };
     },
     //------------------------------------
     // URL PROCESSING
@@ -320,28 +325,37 @@ verifyDemoApp =  {
                 var imgWidth = img.width;
                 var imgHeight = img.height;
                 var cssObj = utils.computeCss(imgWidth, imgHeight, self.canvasWidth);
-                $("#image-" + position)
-                    .attr("src", urlImageSrc)
-                    .css(cssObj);
-            }
-            if (position == "left") {
-                self.getTemplate("image-right-template","",false,false);
-            }
-            $(".canvas-container-" + position).empty();
-            // show image
-            $(".canvas-container-" + position).hide();
+                var image = $('<img />', {
+                    src: urlImageSrc,
+                    css: cssObj,
+                    id: "image-" + position
+                });
+                var processImage = function() {
+                    $(".display-image-" + position + "-container").empty();
+                    image.appendTo(".display-image-" + position + "-container");
+                    if (position == "left") {
+                        self.getTemplate("image-right-template","",false,false);
+                    }
+                    $(".canvas-container-" + position).empty();
+                    // show image
+                    $(".canvas-container-" + position).hide();
 
-            if (position == "right" && simultaneous) {
-                // store data for enroll/verify later
-                self.simultaneousUrl = urlImageSrc;
+                    if (position == "right" && simultaneous) {
+                        // store data for enroll/verify later
+                        self.simultaneousUrl = urlImageSrc;
+                    }
+                    else if (position == "left" && simultaneous) {
+                        self.enrollImage("left", "", true, urlImageSrc);
+                    }
+                    else {
+                        self.verifyImage(position, "", urlImageSrc);
+                        self.enrollImage(position, "", false, urlImageSrc); 
+                    } 
+                }
+                utils.rotateImage($(image)[0], processImage, self, urlImageSrc);
+                    
             }
-            else if (position == "left" && simultaneous) {
-                self.enrollImage("left", "", true, urlImageSrc);
-            }
-            else {
-                self.verifyImage(position, "", urlImageSrc);
-                self.enrollImage(position, "", false, urlImageSrc); 
-            } 
+                 
         });
     },
     //------------------------------------
@@ -435,14 +449,14 @@ verifyDemoApp =  {
                     var imgWidth = img.width;
                     var imgHeight = img.height;
                     // get dimensions of the image as it is displayed in .display-image-container
-                    var displayImageDimensions = utils.getDisplayImageDimensions(imgWidth, imgHeight, self.canvasWidth)
+                    var displayImageDimensions = utils.getDisplayImageDimensions(imgWidth, imgHeight, self.canvasWidth);
                     // get dimensions and ratio of image relative to display size
                     var newImageInfo = utils.calculateAspectRatioFit(imgWidth,imgHeight,displayImageDimensions.width,displayImageDimensions.height);
                     // adjust aspect ratio of feature points relative to resized image
                     adjX   = newImageInfo.ratio;
                     adjY   = newImageInfo.ratio;
                     // reposition face relative to full image size
-                    switch(self.imageOrientation) {
+                    switch(parseInt(self.imageOrientation)) {
                         case 3:
                             // 180 degrees
                             subX   = (self.canvasWidth - newImageInfo.width) / 2;
@@ -463,7 +477,6 @@ verifyDemoApp =  {
                             subX   = (self.canvasWidth - newImageInfo.width) / 2;
                             subY   = (self.canvasHeight - newImageInfo.height) / 2;
                     }
-
                     var imageObj = new Image();
                     imageObj.onload = function() {
                         context.drawImage(imageObj, 0, 0);

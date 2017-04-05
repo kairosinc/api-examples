@@ -7,6 +7,14 @@
 // author: Steve Rucker
 //------------------------------------
 
+// show/hide UI toolbar containing webcam, upload and URL
+if (utils.getUrlVars()["ui"] && utils.getUrlVars()["ui"] == "no") {
+	$(".ui-buttons").hide();
+}
+else {
+	$(".ui-buttons").show();
+}
+
 // provide functionality for Copy to Clipboard button
 var clipboard = new Clipboard('.copy-json-button');
 $(".image-group").eq(0).addClass("active");

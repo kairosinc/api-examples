@@ -3,8 +3,17 @@
 // a collection of javascript functions to enable user interactions
 // dependencies: jquery.js, clipboard.js
 // created: December 2016
+// modified: March 2017
 // author: Steve Rucker
 //------------------------------------
+
+// show/hide options panel
+if (utils.getUrlVars()["option-panel"] && utils.getUrlVars()["option-panel"] == "yes") {
+	$(".options-panel").show();
+}
+else {
+	$(".options-panel").hide();
+}
 
 // provide functionality for Copy to Clipboard button
 var clipboard = new Clipboard('.copy-json-button');
@@ -90,7 +99,105 @@ var dropZone = $(".right-image-container")[0];
 dropZone.addEventListener("dragover", handleDragOver, false);
 dropZone.addEventListener("drop", recognizeDemoApp.recognizeImage, false);
 
-
+// slider - minheadscale
+$(".minheadscale-slider").slider({
+	range: "min",
+    min: 15,
+    max: 500,
+    slide: function( event, ui ) {
+        $("#optionMinHeadScale").val(ui.value / 1000);
+    }
+});
+$("#optionMinHeadScale").click(function(){
+	$(this).val("");
+});
+$("#optionMinHeadScale").keypress(function(event){
+	if (utils.isNumber(event)) {
+		setTimeout(function(){
+			var thisVal = $("#optionMinHeadScale").val();
+			var newVal = "";
+			if (thisVal < .015 || thisVal > .5) {
+				$(".option-error-minheadscale").html("Out of range");
+				$("#optionMinHeadScale").val("");
+				$(".minheadscale-slider").slider("value", 15);
+			}
+			else {
+				$(".option-error-minheadscale").html("");
+				$(".minheadscale-slider").slider("value", thisVal * 1000);
+			}
+			
+		},1500)
+	}
+	else {
+		return false;
+	}
+});
+// slider - threshold
+$(".threshold-slider").slider({
+	range: "min",
+    min: 2,
+    max: 8,
+    slide: function( event, ui ) {
+        $("#optionThreshold").val(ui.value / 10);
+    }
+});
+$("#optionThreshold").click(function(){
+	$(this).val("");
+});
+$("#optionThreshold").keypress(function(event){
+	if (utils.isNumber(event)) {
+		setTimeout(function(){
+			var thisVal = $("#optionThreshold").val();
+			var newVal = "";
+			if (thisVal < .2 || thisVal > .8) {
+				$(".option-error-threshold").html("Out of range");
+				$("#optionThreshold").val("");
+				$(".threshold-slider").slider("value", 2);
+			}
+			else {
+				$(".option-error-threshold").html("");
+				$(".threshold-slider").slider("value", thisVal * 10);
+			}
+			
+		},1500)
+	}
+	else {
+		return false;
+	}
+});
+// slider - maxnumresults
+$(".maxnumresults-slider").slider({
+	range: "min",
+    min: 1,
+    max: 1,
+    slide: function( event, ui ) {
+        $("#optionMaxNumResults").val(ui.value);
+    }
+});
+$("#optionMaxNumResults").click(function(){
+	$(this).val("");
+});
+$("#optionMaxNumResults").keypress(function(event){
+	if (utils.isNumber(event)) {
+		setTimeout(function(){
+			var thisVal = $("#optionMaxNumResults").val();
+			var newVal = "";
+			if (thisVal < 1 || thisVal > recognizeDemoApp.enrolledImages) {
+				$(".option-error-maxnumresults").html("Out of range");
+				$("#optionMaxNumResults").val("1");
+				$(".maxnumresults-slider").slider("value", 1);
+			}
+			else {
+				$(".option-error-maxnumresults").html("");
+				$(".maxnumresults-slider").slider("value", thisVal);
+			}
+			
+		},1500)
+	}
+	else {
+		return false;
+	}
+});
 
 
 

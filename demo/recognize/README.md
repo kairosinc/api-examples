@@ -64,26 +64,50 @@ The functionality for the JSON display is contained in the recognizeUi.js file:
 * Show/Hide JSON functionality
 
 ---
+
+## Option Panel
+
+If `?option-panel=yes` is added to the URL of the demo, a panel is revealed underneath the example images containing slider/input boxes where the user can enter values for minHeadScale, threshold, and max num results.  The payload which is sent to the API is also displayed.  See the docs for detailed information on these arguments: http://kairos.com/docs/api/
+
+---
 ## Installation
 
-To build with Docker:
+First, enter your personal keys into the docker-compose.yml file:
 
-```
-docker build -t user/demo .
-```
+    version: '2'
+    services:
+      demo:
+        image: demo
+        expose:
+          - "8080"
+        ports:
+          - "8080:80"
+        environment:
+          STAGE: prod
+          AWS_S3_REGION: "your-aws-s3-region"
+          AWS_S3_UPLOAD_BUCKET: "your-aws-upload-bucket"
+          APP_ID: "your-app-id"
+          APP_KEY: "your-app-key"
+          API_URL: "https://api.kairos.com"
+          API_TIMEOUT: "10" 
+          POLL_TIMEOUT: "300"
+          DEMO1_ID: "leave-blank"
+          DEMO_SECRET_KEY: "leave-blank"
+          XDEBUG: "true"
+          XDEBUG_CONFIG: "remote_host=10.254.254.254"
+        volumes:
+          - ./demo:/var/www/app/demo
+          
+The AWS keys aren't necessary unless you're running the Facerace demo.  For more information about using XDEBUG with PHPStorm, go to: https://gist.github.com/coleca/c227543fbed515e4eb4c058a7455c581
 
-To run with Docker:
 
+Then, cd to your demo repo, and run:
 ```
-docker run -d -p 8080:80 \
-           -e APP_ID="xxxyyy" \
-           -e APP_KEY="xxxyyy111" \
-           -e API_URL="https://api.kairos.com" \
-           -e STAGE="prod" \
-           user/demo
-```
+make build
 
-You will then be able to access the UI at http://localhost:8080 (if running using Docker for Mac or Docker for Windows)
+make run
+```
+You will then be able to access the UI at http://localhost:8080:80 (if running using Docker for Mac or Docker for Windows)
 
 To stop the Docker container:
 
@@ -94,6 +118,7 @@ docker stop $(docker ps -q)
 Note: This will stop all running containers not just this one
 
 ---
+
 ## Environment Variables
 
 * APP_ID - Application ID
@@ -104,14 +129,20 @@ Note: This will stop all running containers not just this one
 ---
 
 ## Dependencies
-Libraries hosted by content delivery networks:
+Javascript libraries hosted by content delivery networks:
 * jquery.js
 * jquery-ui.js
 * bootstrap.js
-* handlebars.js
-* clipboard.js
+* handlebars.js (used for error message display)
+* clipboard.js (used for copy function in JSON display)
+* featherlight.js (used for lightbox display of threshold range in option panel)
 
 Note: These dependencies can be also be saved locally.
+
+The following javascript libraries are stored locally:
+
+* exif.js - used to retrieve orientation data from images (used in utils.js for image uploads)
+* transparentImageData.js - provides transparent background for canvas drawing
 
 The following custom javascript libraries are used:
 * recognizeDemoApp.js - javascript object responsible for primary app functionality
@@ -119,7 +150,7 @@ The following custom javascript libraries are used:
 
 The following custom php files are used:
 * recognize.php - processes calls to Kairos API
-* get-image-data.php - retrieves image information
+
 
 
 

@@ -303,5 +303,91 @@
     font-size: 18px;
     font-family: Arial;
 }
-
+.options-panel {
+	padding: 0 20px 15px;
+	margin: 15px 0;
+	display: none;
+	border: 1px solid #ccc;
+}
+.options-panel label {
+	padding-right: 10px;
+}
+.options-panel .prompt {
+	font-size: 11px;
+	display: block;
+	color: #999;
+	margin-bottom: 5px;
+}
+#optionMinHeadScale,
+#optionThreshold,
+#optionMaxNumResults {
+	width: 60px;
+	height: 30px;
+	display: inline;
+}
+.options-panel .option-error-minheadscale,
+.options-panel .option-error-threshold,
+.options-panel .option-error-maxnumresults {
+	font-size: 11px;
+	display: inline;
+	color: #ff0000;
+	margin-left: 5px;
+}
+.payload-display span {
+	display: block;
+	margin-top: 5px;
+}
+.form-control {
+	border-radius: 0;
+	border: 2px solid #CCC;
+    margin-top: 0;
+    color: #333;
+    margin-bottom: 15px;
+    padding: 6px 9px;
+}
+.ui-slider-handle {
+	border-radius: 10px;
+	background: #000!important;
+}
+.ui-slider-horizontal {
+	height: 7px;
+	background: #ccc;
+	border: none;
+	border-radius: 0;
+}
+.ui-widget-header {
+	background: #139C8A;
+}
+.ui-slider-horizontal .ui-slider-handle {
+	top: -6px;
+	border: 2px solid #fff;
+	width: 18px;
+    height: 18px;
+}
+label[for=optionSelector] {
+	width: 100%;
+}
+.btn-group {
+	margin-bottom: 10px;
+}
+.btn-primary {
+	background-color: #139C8A;
+	border-color: #aaa;
+}
+.btn-primary:hover {
+	border-color: #aaa!important;
+}
+.btn-primary.active, 
+.btn-primary:active, 
+.btn-primary.active.focus, 
+.btn-primary.active:focus, 
+.btn-primary.active:hover, 
+.btn-primary:active.focus, 
+.btn-primary:active:focus, 
+.btn-primary:active:hover
+ {
+    color: #fff;
+    border-color: #aaa!important;
+	background-color: #0d6f62;
+}
 
