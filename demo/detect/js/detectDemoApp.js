@@ -3,7 +3,7 @@
 // javascript object responsible for primary app functionality
 // dependencies: jquery.js, jquery-ui, detect.php
 // created: May 2016
-// modified: January 2017
+// modified: March 2017
 // author: Steve Rucker
 //------------------------------------
 
@@ -25,6 +25,8 @@ detectDemoApp =  {
         else {
             this.getTemplate("json-response-template","Error","API credentials not provided.",false,false);
         }
+        // options
+        this.minHeadScale = 0.015;
         // detect getUserMedia compatibility
         // hide webcam link if not supported
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
@@ -44,6 +46,9 @@ detectDemoApp =  {
     examplesModule: function (imageElement) {
         var self = this; 
         self.processing = true; 
+        $(".show-hide-ethnicity").html("ETHNICITY");
+        $(".ethnicity-graph-inner").empty();
+        $(".ethnicity-graph").hide();
         $(".display-image-container")
             .empty()
             .hide();
@@ -58,10 +63,29 @@ detectDemoApp =  {
             context.drawImage(imageElement, 0, 0, self.canvasWidth, self.canvasHeight);
             imageData = canvas.toDataURL();
             var data = {};
+            // options
+            var minHeadScale = self.minHeadScale;
+            if ($("#optionMinHeadScale").val()) {
+                minHeadScale = $("#optionMinHeadScale").val();
+            }
+            var selector = $(".selector:checked").val();
+            var optSelector = $(".opt-selector:checked").val();
+            if (optSelector != undefined) {
+                tmp = [];
+                tmp.push(selector);
+                tmp.push(optSelector);
+                selector = tmp;
+            }
             imgObj = { 
                 "image"   : utils.parseImageData(imageData),
-                "minHeadScale" : ".015"
+                "minHeadScale" : minHeadScale,
+                "selector": selector
             };
+            imgObjDisplay = { 
+                "minHeadScale" : minHeadScale,
+                "selector": selector
+            };
+            $(".payload-display span").html(JSON.stringify(imgObjDisplay));
             data.imgObj = JSON.stringify(imgObj);
             $.ajax({
                 type: 'POST',
@@ -110,10 +134,13 @@ detectDemoApp =  {
     webcamModule: function () {
         var self = this;
         self.processing = true; 
+        $(".show-hide-ethnicity").html("ETHNICITY");
+        $(".ethnicity-graph-inner").empty();
+        $(".ethnicity-graph").hide();
         $(".display-image-container")
             .empty()
             .hide();
-        utils.createDisplayCanvas(self.webcamWidth, self.webcamHeight);
+        utils.createDisplayCanvas(self.videoWidth, self.videoHeight);
         var streaming = false;
         var video = null;
 
@@ -145,8 +172,8 @@ detectDemoApp =  {
                 $(".face-overlay").show();
                 self.getTemplate("json-response-template","Tip","Keep your face inside the green circle...",false);
                 if (!streaming) {
-                    video.setAttribute('width', self.webcamWidth);
-                    video.setAttribute('height', self.webcamHeight);
+                    video.setAttribute('width', self.videoWidth);
+                    video.setAttribute('height', self.videoHeight);
                     streaming = true;
                 }
                 var captureInterval = 3000;
@@ -173,13 +200,13 @@ detectDemoApp =  {
             // create canvas
             var canvas = document.createElement('CANVAS');
             var context = canvas.getContext('2d');
-            canvas.width = self.webcamWidth;
-            canvas.height = self.webcamHeight;
+            canvas.width = self.videoWidth;
+            canvas.height = self.videoHeight;
             // draw video image onto canvas, get data
-            context.drawImage(video, 0, 0, self.webcamWidth, self.webcamHeight);
+            context.drawImage(video, 0, 0);
             var imageData = canvas.toDataURL('image/png');
 
-            var cssObj = utils.computeCss(self.webcamWidth, self.webcamHeight, self.canvasWidth);
+            var cssObj = utils.computeCss(self.videoWidth, self.videoHeight, self.canvasWidth);
             var image = $('<img />', {
                 src: imageData,
                 css: cssObj
@@ -187,10 +214,29 @@ detectDemoApp =  {
             image.appendTo(".display-image-container");
             // send data to Kairos API
             var data = {};
+            // options
+            var minHeadScale = self.minHeadScale;
+            if ($("#optionMinHeadScale").val()) {
+                minHeadScale = $("#optionMinHeadScale").val();
+            }
+            var selector = $(".selector:checked").val();
+            var optSelector = $(".opt-selector:checked").val();
+            if (optSelector != undefined) {
+                tmp = [];
+                tmp.push(selector);
+                tmp.push(optSelector);
+                selector = tmp;
+            }
             imgObj = { 
                 "image"   : utils.parseImageData(imageData),
-                "minHeadScale" : ".015"
+                "minHeadScale" : minHeadScale,
+                "selector": selector
             };
+            imgObjDisplay = { 
+                "minHeadScale" : minHeadScale,
+                "selector": selector
+            };
+            $(".payload-display span").html(JSON.stringify(imgObjDisplay));
             data.imgObj = JSON.stringify(imgObj);
             $.ajax({
                 type: 'POST',
@@ -223,6 +269,9 @@ detectDemoApp =  {
             $(".display-image-container")
                 .empty()
                 .hide();
+            $(".show-hide-ethnicity").html("ETHNICITY");
+            $(".ethnicity-graph-inner").empty();
+            $(".ethnicity-graph").hide();
             utils.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
             $(".image-container-template").show();
             self.getTemplate("image-container-template","","Analyzing image...",true,false);
@@ -286,12 +335,31 @@ detectDemoApp =  {
                             });
                             var processImage = function() {
                                 image.appendTo(".display-image-container");
-                                $("#upload").val("");
+                                // send data to Kairos API
                                 var data = {};
+                                // options
+                                var minHeadScale = self.minHeadScale;
+                                if ($("#optionMinHeadScale").val()) {
+                                    minHeadScale = $("#optionMinHeadScale").val();
+                                }
+                                var selector = $(".selector:checked").val();
+                                var optSelector = $(".opt-selector:checked").val();
+                                if (optSelector != undefined) {
+                                    tmp = [];
+                                    tmp.push(selector);
+                                    tmp.push(optSelector);
+                                    selector = tmp;
+                                }
                                 imgObj = { 
                                     "image"   : utils.parseImageData(imageData),
-                                    "minHeadScale" : ".015"
+                                    "minHeadScale" : minHeadScale,
+                                    "selector": selector
                                 };
+                                imgObjDisplay = { 
+                                    "minHeadScale" : minHeadScale,
+                                    "selector": selector
+                                };
+                                $(".payload-display span").html(JSON.stringify(imgObjDisplay));
                                 data.imgObj = JSON.stringify(imgObj);
                                 $.ajax({
                                     type: 'POST',
@@ -311,6 +379,7 @@ detectDemoApp =  {
                                            self.setElementDimensions(); 
                                         },100);
                                         $(".display-image-container").show();
+                                        $("#upload")[0].value = '';
                                         self.apiCallback(data);
                                     }
                                 });
@@ -332,20 +401,10 @@ detectDemoApp =  {
         var self = this;
         $(".submit-button").click(function(){
             self.processing = true;
+            $(".show-hide-ethnicity").html("ETHNICITY");
+            $(".ethnicity-graph-inner").empty();
+            $(".ethnicity-graph").hide();
             var url = $(".url-from-web").val();
-            var img = new Image();
-            img.src = url;
-            img.onload = function () {
-                var imgWidth = img.width;
-                var imgHeight = img.height;
-                var cssObj = utils.computeCss(imgWidth, imgHeight, self.canvasWidth);
-                var image = $('<img />', {
-                    src: urlImageSrc,
-                    css: cssObj
-                });
-                image.appendTo(".display-image-container");
-            }
-
             var urlImageSrc = utils.validateUrl(url);
             self.urlImageSrc = urlImageSrc;
             if (urlImageSrc === false) {
@@ -353,47 +412,83 @@ detectDemoApp =  {
                 $(".url-error").html("Please enter a valid URL");
             }
             else {
-                // Image info cannot be retrieved from files received
-                // by URL due to CORS issues, so a simulaneous POST 
-                // request is made to a PHP file to get this info,
-                // and show an error if the file type is not accepted
-                utils.checkMimeType(self.config, url, "url", self.showMimetypeError);
-                $(".display-image-container")
-                    .empty()
-                    .hide();
-                $(".url-error").html("");
-                self.resetElements();
-                utils.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
-                $(".image-container-template").show();
-                self.getTemplate("image-container-template","","Analyzing image...",true,false);
-                self.getTemplate("json-response-template","","Generating results...",true,false);
-                var data = {};
-                imgObj = { 
-                    "image"   : urlImageSrc,
-                    "minHeadScale" : ".015"
-                };
-                data.imgObj = JSON.stringify(imgObj);
-                $.ajax({
-                    type: 'POST',
-                    url: 'detect.php',
-                    data: data,
-                    dataType: 'text'
-                }).done(function(data){
-                    var response = JSON.parse(data);
-                    if (response.Errors) {
-                        self.processing = false;
-                        self.getTemplate("image-container-template","","",false,true);
-                        self.getTemplate("json-response-template","Error: " + utils.toTitleCase(response.Errors[0].Message),"",false);
-                        return false;
-                    }
-                    else if (response.images) {
-                        setTimeout(function(){
-                           self.setElementDimensions(); 
-                        },100);
-                        $(".display-image-container").show();
-                        self.apiCallback(data);
-                    }
-                });
+                var img = new Image();
+                img.src = url;
+                img.onload = function () {
+                    var imgWidth = img.width;
+                    var imgHeight = img.height;
+                    var cssObj = utils.computeCss(imgWidth, imgHeight, self.canvasWidth);
+                    var image = $('<img />', {
+                        src: urlImageSrc,
+                        css: cssObj
+                    });
+                    // Image info cannot be retrieved from files received
+                    // by URL due to CORS issues, so a simulaneous POST 
+                    // request is made to a PHP file to get this info,
+                    // and show an error if the file type is not accepted
+                    utils.checkMimeType(self.config, url, "url", self.showMimetypeError);
+                    $(".display-image-container")
+                        .empty()
+                        .hide();
+                    $(".url-error").html("");
+                    self.resetElements();
+                    utils.createDisplayCanvas(self.canvasWidth, self.canvasHeight);
+                    $(".image-container-template").show();
+                    self.getTemplate("image-container-template","","Analyzing image...",true,false);
+                    self.getTemplate("json-response-template","","Generating results...",true,false);
+                    var processImage = function() {
+                        image.appendTo(".display-image-container");
+                        // send data to Kairos API
+                        var data = {};
+                        // options
+                        var minHeadScale = self.minHeadScale;
+                        if ($("#optionMinHeadScale").val()) {
+                            minHeadScale = $("#optionMinHeadScale").val();
+                        }
+                        var selector = $(".selector:checked").val();
+                        var optSelector = $(".opt-selector:checked").val();
+                        if (optSelector != undefined) {
+                            tmp = [];
+                            tmp.push(selector);
+                            tmp.push(optSelector);
+                            selector = tmp;
+                        }
+                        imgObj = { 
+                            "image"   : urlImageSrc,
+                            "minHeadScale" : minHeadScale,
+                            "selector": selector
+                        };
+                        imgObjDisplay = { 
+                            "minHeadScale" : minHeadScale,
+                            "selector": selector
+                        };
+                        $(".payload-display span").html(JSON.stringify(imgObjDisplay));
+                        data.imgObj = JSON.stringify(imgObj);
+                        $.ajax({
+                            type: 'POST',
+                            url: 'detect.php',
+                            data: data,
+                            dataType: 'text'
+                        }).done(function(data){
+                            var response = JSON.parse(data);
+                            if (response.Errors) {
+                                self.processing = false;
+                                self.getTemplate("image-container-template","","",false,true);
+                                self.getTemplate("json-response-template","Error: " + utils.toTitleCase(response.Errors[0].Message),"",false);
+                                return false;
+                            }
+                            else if (response.images) {
+                                setTimeout(function(){
+                                   self.setElementDimensions(); 
+                                },100);
+                                $(".display-image-container").show();
+                                self.apiCallback(data);
+                            }
+                        });
+                    };
+                    // rotate image if needed
+                    utils.rotateImage($(image)[0], processImage, self, urlImageSrc);
+                }
             }
         });
     },
@@ -403,7 +498,9 @@ detectDemoApp =  {
     apiCallback: function(data) {
         var self = this;
         $("#previewImage").hide();
-        $(".copy-json-button").show();
+        if ($(window).width() > 767) {
+            $(".copy-json-button").show();
+        }
         $(".json-title").show();
         $(".image-container-template").hide();
         $(".spinner-message-container").hide();
@@ -420,6 +517,18 @@ detectDemoApp =  {
         }
         if (response.images) {
             self.drawMethod(response.images[0]);
+            // ethnicity
+            var image = response.images[0];
+            var imgSizeArr = [];
+            var imageSize = 0;
+            $.each(image.faces, function( index, value ) {
+                thisImageSize = parseInt(value.height * value.width);
+                if(thisImageSize > imageSize) {
+                    largestFace = image.faces[index];
+                    imageSize = thisImageSize;
+                }
+            });
+            self.renderethnicityGraph(largestFace);
         }
         else {
             self.getTemplate("image-container-template","Error","No faces were detected.",false);
@@ -539,35 +648,95 @@ detectDemoApp =  {
         self.processing = false;
         return false;
     },
+    //------------------------------------
+    // RENDER ethnicity GRAPH
+    //------------------------------------
+    renderethnicityGraph: function(largestFace) {
+        var self = this;
+        // races in response
+        var raceArray = ["asian","hispanic","white","black","other"];
+        // obj containing all attributes
+        var attributeObj = largestFace.attributes;
+        // create obj on only races
+        var raceAttributeObj = {};
+        $.each(attributeObj, function(idx, val){
+            if($.inArray(idx,raceArray) !== -1) {
+                raceAttributeObj[idx] = val;
+            }
+        });
+        // create array of race objects
+        var orderedRaceArray = [];
+        for (var index in raceAttributeObj) {
+            orderedRaceArray.push([index, raceAttributeObj[index]]);
+        }
+        // sort race array descending
+        orderedRaceArray.sort(function(a, b) {
+            return  b[1] - a[1];
+        });
+        // loop through ordered race array, building HTML visualization
+        $.each(orderedRaceArray, function(idx, val){
+            var barContainer = "<div class='bar-container'>";
+            barContainer += "<div class='bar-header'><div class='percent'>" +  parseInt(100 * val[1]) + "%</div>";
+            barContainer += "<div class='title'>" + val[0] + "</div></div>";
+            barContainer += "<div class='bar-outer'><div class='bar' style='width: " + parseInt(100 * val[1]) + "%'</div></div>";
+            $(".ethnicity-graph-inner").append(barContainer);
+        });
+    },
     setElementDimensions: function () {
         var self = this;
         if ($(window).width() < 768) {
-            this.canvasWidth = $(window).width() - 30;  // allow for side margins
-            this.canvasHeight = this.canvasWidth; 
-            $(".main-image-container").height(this.canvasWidth + 15); // add bottom margin
-            $("#previewImage").height(this.canvasHeight);
-            $(".webcam-video-container, .canvas-container, .display-image-container, .display-image-container img, .image-container-template, #displayCanvas")
-                .width(this.canvasWidth)
-                .height(this.canvasHeight);
-            $(".json-response").width(this.canvasWidth);
-            $(".json-response pre").height(this.canvasHeight);
-            $(".ui-buttons-mask").width(this.canvasWidth);
+            if ($(window).width() > 753 && $(window).width() < 768) {
+                this.canvasWidth = 360;
+                this.canvasHeight = this.canvasWidth; 
+                this.videoWidth = 640;
+                this.videoHeight = 480;
+                $(".main-image-container").height(this.canvasWidth);
+                $("#previewImage").height(this.canvasHeight);
+                $(".webcam-video-container, .canvas-container, .display-image-container, .display-image-container img, .image-container-template, #displayCanvas")
+                    .width(this.canvasWidth)
+                    .height(this.canvasHeight);
+                $(".json-response").width(345);
+                $(".json-response pre").height(305);
+                $(".ethnicity-graph").width(345);
+                $(".ui-buttons-mask").width(720);
+            }
+            else {
+                this.canvasWidth = $(window).width() - 30;  // allow for side margins
+                this.canvasHeight = this.canvasWidth; 
+                this.videoWidth = this.canvasWidth;
+                this.videoHeight = this.canvasHeight;
+                $(".main-image-container").height(this.canvasWidth + 15); // add bottom margin
+                $("#previewImage").height(this.canvasHeight);
+                $(".webcam-video-container, .canvas-container, .display-image-container, .display-image-container img, .image-container-template, #displayCanvas, .face-overlay")
+                    .width(this.canvasWidth)
+                    .height(this.canvasHeight);
+                $(".json-response").width(this.canvasWidth);
+                $(".json-response pre").height(this.canvasHeight);
+                $(".ethnicity-graph").width(this.canvasWidth);
+                $(".ethnicity-graph").height(this.canvasHeight + 55);
+                $(".ui-buttons-mask").width(this.canvasWidth);
+            }
         }
         else if ($(window).width() < 992) {
             this.canvasWidth = 360;
             this.canvasHeight = this.canvasWidth; 
-            $(".main-image-container").height(this.canvasWidth); // add bottom margin
+            this.videoWidth = 640;
+            this.videoHeight = 480;
+            $(".main-image-container").height(this.canvasWidth); 
             $("#previewImage").height(this.canvasHeight);
             $(".webcam-video-container, .canvas-container, .display-image-container, .display-image-container img, .image-container-template, #displayCanvas")
                 .width(this.canvasWidth)
                 .height(this.canvasHeight);
             $(".json-response").width(345);
             $(".json-response pre").height(305);
+            $(".ethnicity-graph").width(345);
             $(".ui-buttons-mask").width(720);
         }
         else {
             this.canvasWidth = 475;
             this.canvasHeight = 475;
+            this.videoWidth = 640;
+            this.videoHeight = 480;
             $(".main-image-container").height(this.canvasWidth + 15); // add bottom margin
             $("#previewImage").height(this.canvasHeight);
             $(".webcam-video-container, .canvas-container, .display-image-container, .display-image-container img, .image-container-template, #displayCanvas")
@@ -575,6 +744,7 @@ detectDemoApp =  {
                 .height(this.canvasHeight);
             $(".json-response").width(475);
             $(".json-response pre").height(420);
+            $(".ethnicity-graph").width(475);
             $(".ui-buttons-mask")
                 .width($(".ui-buttons").width() - 30)
                 .height(110);
@@ -583,7 +753,7 @@ detectDemoApp =  {
             var displayImageCssObj = utils.computeCss(image.naturalWidth, image.naturalHeight, self.canvasWidth);
             $(image).css(displayImageCssObj); 
         });
-    } 
+    }
 };
 
 

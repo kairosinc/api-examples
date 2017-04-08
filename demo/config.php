@@ -4,6 +4,7 @@ define( 'APP_ID', (getenv('APP_ID') ? getenv('APP_ID') : ''));
 define( 'APP_KEY', (getenv('APP_KEY') ? getenv('APP_KEY') : ''));
 define( 'API_URL', (getenv('API_URL') ? getenv('API_URL') : ''));
 define( 'DEMO1_ID', (getenv('DEMO1_ID') ? getenv('DEMO1_ID') : ''));
+define( 'CURL_API_TIMEOUT', (getenv('CURL_API_TIMEOUT') ? getenv('CURL_API_TIMEOUT') : 300));
 define( 'API_TIMEOUT', (getenv('API_TIMEOUT') ? getenv('API_TIMEOUT') : 10));
 define( 'POLL_TIMEOUT', (getenv('POLL_TIMEOUT') ? getenv('POLL_TIMEOUT') : 300));
 define( 'DEMO_SECRET_KEY', (getenv('DEMO_SECRET_KEY') ? getenv('DEMO_SECRET_KEY') : ''));

@@ -9,6 +9,8 @@
 // author: Steve Rucker
 //------------------------------------
 
+set_time_limit(0);
+
 $configs = include('../config.php');
 
 if ($_POST['fname'] == "polling") {
@@ -27,6 +29,7 @@ if ($_POST['fname'] == "polling") {
             "app_key:" . APP_KEY
         )
     );
+    curl_setopt($request, CURLOPT_TIMEOUT, CURL_API_TIMEOUT);
     curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
     $response = curl_exec($request);
@@ -54,7 +57,7 @@ else if ($_POST['fname'] == "url") {
         "app_key:" . APP_KEY
         )
     );
-
+    curl_setopt($request, CURLOPT_TIMEOUT, CURL_API_TIMEOUT);
     curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
     $response =  curl_exec($request);
@@ -80,6 +83,7 @@ else if ($_POST['fname'] == "analytics") {
             "app_key:" . APP_KEY
         )
     );
+    curl_setopt($request, CURLOPT_TIMEOUT, CURL_API_TIMEOUT);
     curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
     $response = curl_exec($request);
@@ -137,7 +141,7 @@ else {
                 "app_key:" . APP_KEY
             )
         );
-
+        curl_setopt($request, CURLOPT_TIMEOUT, CURL_API_TIMEOUT);
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($request);

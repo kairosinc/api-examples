@@ -3,7 +3,7 @@
 // javascript object responsible for primary app functionality
 // dependencies: jquery.js, highchartsApp.js, MediaStreamRecorder.js, adapter.js, jquery.form.js, process.php
 // created: March 2016
-// last modified: September 2016
+// last modified: March 2017
 // author: Steve Rucker
 //------------------------------------
 
@@ -16,7 +16,14 @@ emoDemoApp =  {
         this.config = config;
         this.apiCredentials = config.apiCredentials;
         if (this.apiCredentials){
-            this.examplesModule("video");
+            // if example video id is not provided, 
+            // bypass example processing
+            if (this.config["demoMedia"]["video_1"] != "") {
+                this.examplesModule("video");
+            }
+            else {
+                $(".ui-buttons-mask").hide();
+            }
             this.uploadModule();
             this.urlModule();
         }
@@ -24,6 +31,7 @@ emoDemoApp =  {
             this.getTemplate("highcharts-template","Error","API credentials not provided.",false,false);
         }
         this.captureInterval = 10000;
+        $("#optionPollTimeout").val(this.config.pollTimeout);
         // detect getUserMedia compatibility
         // hide webcam link if not supported
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
@@ -255,9 +263,9 @@ emoDemoApp =  {
         var self = this;  
         $('#mediaUploadForm').submit(function(e) {
             e.preventDefault();
-            $('.show-image')
-                .attr("src","")
-                .css({"width":0,"height":0});
+            $(".display-image-container")
+                .empty()
+                .hide();
             self.processing = true;
             self.initPostProcessingLayout = false;
             self.mimeType = "";
@@ -415,19 +423,31 @@ emoDemoApp =  {
                                 // if upload is image
                                 if (mediaType == "image") {
                                     var img = new Image();
+                                    var file = input.files[0];
                                     var reader = new FileReader();
-                                    reader.onload = function (e) {
-                                        img.src = e.target.result;
-                                        self.imgWidth = img.width;
-                                        self.imgHeight = img.height;
-                                        newImageSize = utils.calculateAspectRatioFit(img.width,img.height,self.viewportWidth,self.viewportHeight);
-                                        self.newImageSize = newImageSize;
-                                        $('.show-image')
-                                            .attr("src", e.target.result)
-                                            .css("z-index",1)
-                                            .css(newImageSize)
+                                    reader.readAsDataURL(file);
+                                    reader.onloadend = function () {
+                                        if (!imageLoaded) {
+                                            imageLoaded = true;
+                                            var imageData;
+                                            imageData = String(reader.result);
+                                            img.src = imageData;
+                                            var imageLoaded = false;
+                                            img.onload = function(){
+                                                imageLoaded = true;
+                                                self.imgWidth = img.width;
+                                                self.imgHeight = img.height;
+                                                var cssObj = utils.computeCss(self.imgWidth, self.imgHeight, self.canvasWidth);
+                                                var image = $('<img />', {
+                                                    src: imageData,
+                                                    css: cssObj
+                                                });
+                                                $(".display-image-container").show();
+                                                image.addClass("display-image");
+                                                image.appendTo(".display-image-container");
+                                            }
+                                        }
                                     }
-                                    reader.readAsDataURL(input.files[0]);
                                 }
                                 // if video type is HTML5 compatible,
                                 // show video on response
@@ -472,9 +492,9 @@ emoDemoApp =  {
     urlModule: function () {
         var self = this;
         $(".submit-button").click(function(){
-            $('.show-image')
-                .attr("src","")
-                .css({"width":0,"height":0});
+            $(".display-image-container")
+                .empty()
+                .hide();
             var urlMediaSrc = utils.validateUrl($(".url-from-web").val());
             if (urlMediaSrc === false) {
                 $(".url-error").html("Please enter a valid URL");
@@ -584,11 +604,22 @@ emoDemoApp =  {
                                 imageData = "data:" + self.mimeType + ";base64," + self.fileData;
                                 img.src = imageData;
                                 img.onload = function(){
-                                    newImageSize = utils.calculateAspectRatioFit(img.width,img.height,self.viewportWidth,self.viewportHeight);
-                                    $('.show-image')
-                                        .attr("src", imageData)
-                                        .css("z-index",1)
-                                        .css(newImageSize)
+                                    imageLoaded = true;
+                                    self.imgWidth = img.width;
+                                    self.imgHeight = img.height;
+                                    var cssObj = utils.computeCss(self.imgWidth, self.imgHeight, self.canvasWidth);
+                                    var image = $('<img />', {
+                                        src: imageData,
+                                        css: cssObj
+                                    });
+                                    $(".display-image-container").show();
+                                    image.addClass("display-image");
+                                    image.appendTo(".display-image-container");
+                                    // newImageSize = utils.calculateAspectRatioFit(img.width,img.height,self.viewportWidth,self.viewportHeight);
+                                    // $('.show-image')
+                                    //     .attr("src", imageData)
+                                    //     .css("z-index",1)
+                                    //     .css(newImageSize)
                                 }
                                 self.pollApi(mediaId, "url", mediaType);
                             }
@@ -626,7 +657,11 @@ emoDemoApp =  {
         else {
             self.getTemplate("video-container-template","","Processing image...",true, false);
         }
-        var pollTimeout = self.config.pollTimeout * 1000;
+        var pollTimeout = self.config.pollTimeout;
+        if ($("#optionPollTimeout").val()) {
+            pollTimeout = $("#optionPollTimeout").val();
+        }
+        pollTimeout = pollTimeout * 1000;
         var pollTick = 1000;
         self.timeRemaining = pollTimeout;
         self.pollInterval = setInterval(function () {
@@ -701,6 +736,7 @@ emoDemoApp =  {
                         clearInterval(self.pollInterval)
                     }
                     else {
+                        $(".polling-display span").html(parseInt(pollTimeout - self.timeRemaining) / 1000 + 1);
                         console.log('keep polling')
                     }
                 }
@@ -759,7 +795,7 @@ emoDemoApp =  {
             }
         }
         else {
-            self.mediaType = response.media_info.mime_type.split("/")[0];
+            self.mediaType = response.media_info.type;
             featurePointAnimation.init(data);
             if(response.frames[0].people != undefined) {
                 self.resetElements();
@@ -767,7 +803,7 @@ emoDemoApp =  {
                 var ageDefined = false;
                 // photo
                 // NOTE: "jpg" should be "jpeg"
-                if (response.media_info.mime_type == "image/jpeg" || response.media_info.mime_type == "image/jpg" || response.media_info.mime_type == "image/png" || response.media_info.mime_type == "image/x-ms-bmp") {
+                if (response.media_info.type == "image") {
                     self.getTemplate("highcharts-template","","",false, false, false, false);
                     if(response.frames[0].people[0].demographics != undefined) {
                         var gender = response.frames[0].people[0].demographics.gender;
@@ -900,6 +936,8 @@ emoDemoApp =  {
         $(".json-response pre").html("");
         $(".copy-json-button").hide();
         $(".ui-buttons-mask").hide();
+        $(".polling-display span").empty();
+        $(".json-response-container").hide();
     },
     //------------------------------------
     // DISPLAY HANDLEBARS TEMPLATES
@@ -970,19 +1008,32 @@ emoDemoApp =  {
         if ($(window).width() < 768) {
             this.fullVideoWidth = $(window).width() - 30;  // allow for side margins
             this.fullVideoHeight = this.fullVideoWidth * 9/16;
-            $(".main-video-container").height(this.fullVideoHeight + 40 + 15 + 1); // add video controls height + top margin
+            var mediaHeight = this.fullVideoHeight + 40 + 15 + 1; // add video controls height + top margin
+            $(".main-video-container, .display-image-container").height(mediaHeight); 
+            this.canvasWidth = mediaHeight; 
+            this.canvasHeight = mediaHeight; 
             $("#video").height(this.fullVideoHeight);
         }
         else if ($(window).width() < 992) {
             this.fullVideoWidth = 750 - 30;
             this.fullVideoHeight = this.fullVideoWidth * 9/16;
-            $(".main-video-container").height(this.fullVideoHeight + 40 + 15 + 1); // add video controls height + top margin
+            var mediaHeight = this.fullVideoHeight + 40 + 15 + 1; // add video controls height + top margin
+            $(".main-video-container, .display-image-container").height(mediaHeight); // add video controls height + top margin
+            this.canvasWidth = mediaHeight; 
+            this.canvasHeight = mediaHeight; 
             $("#video").height(this.fullVideoHeight);
         }
         else {
+            this.canvasWidth = 475;
+            this.canvasHeight = 475;
             this.fullVideoWidth = 923;
             this.fullVideoHeight = 520;
+            $(".display-image-container").height(this.fullVideoHeight);
         }
+        $(".display-image-container img").each(function(idx,image){
+            var displayImageCssObj = utils.computeCss(image.naturalWidth, image.naturalHeight, self.canvasWidth);
+            $(image).css(displayImageCssObj); 
+        });
     }
 }
 

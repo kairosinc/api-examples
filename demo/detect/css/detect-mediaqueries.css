@@ -2,6 +2,15 @@
 	.image2 {
 		display: none;
 	}
+	.copy-json-button {
+		display: none;
+	}
+	.ethnicity-graph-inner .bar-container {
+		height: 20px;
+	}
+	.face-overlay {
+	    background-position: 50% 50%;
+	}
 }
 
 @media (max-width: 767px) {
@@ -17,6 +26,9 @@
 	}
 	.image5 img {
 		margin-top: 0;
+	}
+	.json-response, .json-response-template, .copy-json-button {
+		display: none;
 	}
 }
 
@@ -42,7 +54,7 @@
 		margin-top: 0;
 		float: right;
 	}
-	.detect.json-response-container {
+	.json-response {
 		display: block;
 		height: 360px;
 	}
@@ -53,7 +65,29 @@
 	.ui-buttons-mask {
 		width: 96%;
 	}
-
+	.show-hide-ethnicity {
+		display: block;
+	}
+	.ethnicity-graph-inner .bar-container {
+		height: 12px;
+	}
+	.ethnicity-graph-inner .bar-header .percent {
+		font-size: 20px;
+		font-weight: bold;
+	}
+	.ethnicity-graph-inner .bar-header .title {
+		font-size: 11px;
+		font-weight: normal;
+	}
+	#webcamVideo {
+		position: absolute;
+		top: 0;
+	    left: -80px;
+		z-index: 9;
+	}
+	#displayCanvas {
+		left: -80px;
+	}
 }
 
 @media (min-width: 992px) {
@@ -101,7 +135,7 @@
 		width: 475px;
 		height: 475px;
 	}
-	.detect.json-response-container {
+	.json-response {
 	    width: 505px;
 		height: 475px;
 		padding-left: 0;
@@ -115,6 +149,17 @@
 	}
 	.ui-buttons-mask {
 		width: 97%;
+	}
+	.ethnicity-graph-inner .bar-container {
+		height: 35px;
+	}
+	.ethnicity-graph-inner .bar-header .percent {
+		font-size: 22px;
+		font-weight: bold;
+	}
+	.ethnicity-graph-inner .bar-header .title {
+		font-size: 13px;
+		font-weight: normal;
 	}
 }
 

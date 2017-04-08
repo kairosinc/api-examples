@@ -15,10 +15,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="../images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="css/recognize.css">
     <link rel="stylesheet" href="css/recognize-mediaqueries.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/noelboss/featherlight/1.7.1/release/featherlight.min.css" type="text/css"  />
 </head>
 <body>
     <div class="main-container container exercise-view">
@@ -30,12 +32,12 @@
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/team/Brain_Brackeen.jpeg" crossorigin="Anonymous" />
                         <div class="image-mask" style="display: block;"></div>
-                        <div class="image-info" style="display: block;">Confidence: <br>87.203%</div>
+                        <div class="image-info" style="display: block;">Confidence: <br>84.226%</div>
                     </li>
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/demo/verify/brad1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
-                        <div class="image-info" style="display: block;">Confidence: <br>28.593%</div>
+                        <div class="image-info" style="display: block;">Confidence: <br>28.583%</div>
                     </li>
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/team/Rajnesah_Belyeu2.jpeg" crossorigin="Anonymous" />
@@ -45,7 +47,7 @@
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/team/Ben_Virdee-Chapman.jpeg" crossorigin="Anonymous" />
                         <div class="image-mask" style="display: block;"></div>
-                        <div class="image-info" style="display: block;">Confidence: <br>88.376%</div>
+                        <div class="image-info" style="display: block;">Confidence: <br>85.821%</div>
                     </li>
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/demo/verify/george1.jpg" crossorigin="Anonymous" />
@@ -60,7 +62,7 @@
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/team/Neil_Pitts.jpeg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
-                        <div class="image-info" style="display: block;">Confidence: <br>55.546%</div>
+                        <div class="image-info" style="display: block;">Confidence: <br>57.566%</div>
                     </li>
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/demo/verify/angelina2.jpg" crossorigin="Anonymous" />
@@ -70,7 +72,7 @@
                     <li class="enrolled-image">
                         <img src="https://media.kairos.com/demo/verify/halle1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
-                        <div class="image-info" style="display: block;">Confidence: <br>10.789%</div>
+                        <div class="image-info" style="display: block;">Confidence: <br>12.894%</div>
                     </li>
                 </ul>
                 <div class="image-left-template"></div>
@@ -95,6 +97,30 @@
             <a href="" class="hide-json">HIDE JSON</a>
             <button class="copy-json-button btn btn-primary" data-clipboard-action="copy" data-clipboard-target=".json-response">COPY</button>
             <div class="json-response"><pre></pre></div>
+        </div>
+        <div class="row options-panel col-md-12">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <h4>Options</h4>
+                <div class="form-group">
+                    <label class="control-label" for="optionMinHeadScale">minHeadScale:</label><span class="prompt">Enter a value between .015 (1:64 scale) and .5 (1:2 scale)</span>
+                    <input class="form-control" type="text" name="optionMinHeadScale" id="optionMinHeadScale" value=".015"><span class="option-error-minheadscale"></span>
+                    <div class="minheadscale-slider"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="optionThreshold">Threshold:</label>
+                    <a href="" data-featherlight="images/threshold_scores.png"><i class="glyphicon glyphicon-question-sign"></i></a>
+                    <span class="prompt">Enter a value between .2 and .8</span>
+                    <input class="form-control" type="text" name="optionThreshold" id="optionThreshold" value=".2"><span class="option-error-threshold"></span>
+                    <div class="threshold-slider"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="optionMaxNumResults">Max Num Results:</label>
+                    <span class="prompt max-num-prompt"></span>
+                    <input class="form-control" type="text" name="optionMaxNumResults" id="optionMaxNumResults" value="1"><span class="option-error-maxnumresults"></span>
+                    <div class="maxnumresults-slider"></div>
+                </div>
+                <div class="payload-display">Payload: <span></span></div>
+            </div>
         </div>
         <div class="col-md-12 ui-buttons">
             <div class="upload col-xs-6 col-sm-6 col-md-6">
@@ -146,15 +172,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
+    <script src="https://cdn.rawgit.com/noelboss/featherlight/1.7.1/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- custom libraries -->
+    <script src="../js/utils.js"></script>
     <script src="js/recognizeDemoApp.js"></script>
     <script src="js/recognizeUi.js"></script>
     <script src="js/jsonData.js"></script>
     <script src="../js/exif.js"></script>
-    <script src="../js/utils.js"></script>
     <script src="../js/transparentImageData.js"></script>
-    
+
     <!-- initialize custom libraries if API credentials are valid -->
     <?php
         if (

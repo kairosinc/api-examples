@@ -3,8 +3,24 @@
 // a collection of javascript functions to enable user interactions
 // dependencies: jquery.js, clipboard.js
 // created: May 2016
+// modified: March 2017
 // author: Steve Rucker
 //------------------------------------
+
+// show/hide UI toolbar containing webcam, upload and URL
+if (utils.getUrlVars()["ui"] && utils.getUrlVars()["ui"] == "no") {
+	$(".ui-buttons").hide();
+}
+else {
+	$(".ui-buttons").show();
+}
+// show/hide options panel
+if (utils.getUrlVars()["option-panel"] && utils.getUrlVars()["option-panel"] == "yes") {
+	$(".options-panel").show();
+}
+else {
+	$(".options-panel").hide();
+}
 
 // show JSON container by default at larger resolutions
 if ($(window).width() > 768) {
@@ -65,14 +81,92 @@ $(document).keydown(function(){
 $('.show-hide-json').click(function(e) {
 	e.preventDefault();
     var s = $(this);
-    $('.json-response-container').slideToggle('fast', function(){
+    $('.json-response').slideToggle('fast', function(){
+    	if ($(window).width() <= 767) {
+	    	$(".copy-json-button").toggle();
+
+	    }
         s.html(s.text() == 'HIDE JSON' ? 'SHOW JSON' : 'HIDE JSON');
     });
+    return false;
+});
+// show/hide JSON (with Ethnicity)
+// $('.show-hide-json').click(function(e) {
+// 	e.preventDefault();
+//     var s = $(this);
+//     $('.json-response').slideToggle('fast', function(){
+//     	if ($(window).width() <= 767) {
+// 	    	$(".copy-json-button").toggle();
+// 	    	// $(".show-hide-ethnicity").show();
+// 	    }
+// 	    if(s.html() == "SHOW JSON/ETHNICITY") {
+// 			$(".show-hide-ethnicity").show();
+// 			s.html("HIDE JSON/ETHNICITY");
+// 		}
+// 		else {
+// 			$(".show-hide-ethnicity").hide();
+// 			$(".ethnicity-graph").hide();
+// 			$('.show-hide-ethnicity').html("ETHNICITY");
+// 			s.html("SHOW JSON/ETHNICITY");
+// 		}
+//     });
+//     return false;
+// });
+// show/hide JSON/ETHNICITY
+$('.show-hide-ethnicity').click(function(e) {
+	e.preventDefault();
+	var s = $(this);
+	if(s.html() == "SHOW JSON") {
+		$(".ethnicity-graph").hide();
+		s.html("ETHNICITY");
+	}
+	else {
+		$(".ethnicity-graph").show();
+		s.html("SHOW JSON");
+	}
     return false;
 });
 $( window ).resize(function() {
   detectDemoApp.setElementDimensions();
 });
+
+// slider
+$(".minheadscale-slider").slider({
+	range: "min",
+    min: 15,
+    max: 500,
+    slide: function( event, ui ) {
+        $("#optionMinHeadScale").val(ui.value / 1000);
+    }
+});
+$("#optionMinHeadScale").click(function(){
+	$(this).val("");
+});
+$("#optionMinHeadScale").keypress(function(event){
+	if (utils.isNumber(event)) {
+		setTimeout(function(){
+			var thisVal = $("#optionMinHeadScale").val();
+			var newVal = "";
+			if (thisVal < .015 || thisVal > .5) {
+				$(".option-error").html("Out of range");
+				$("#optionMinHeadScale").val("");
+				$(".minheadscale-slider").slider("value", 15);
+			}
+			else {
+				$(".option-error").html("");
+				$(".minheadscale-slider").slider("value", thisVal * 1000);
+			}
+			
+		},1500)
+	}
+	else {
+		return false;
+	}
+});
+
+
+
+
 
 
 

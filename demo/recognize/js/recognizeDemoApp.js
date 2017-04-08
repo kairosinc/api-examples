@@ -15,11 +15,15 @@ recognizeDemoApp =  {
     init: function (config) {
         this.thumbnailSize = 141;
         this.recognizeDisplaySize = 475;
-        this.recognizeThreshold = 0.6;
+        this.recognizeThreshold = 0.6; // this is NOT an API parameter, it's for the demo display
         this.radiusDefault = 25;
         this.config = config;
         this.apiCredentials = config.apiCredentials;
         this.galleryId = "gallery-" + Date.now();
+        // options
+        this.minHeadScale = 0.015;
+        this.threshold = 0.01;
+        this.enrolledImages = 1; // 1 is the minimum for max_num_results
         if (this.apiCredentials){
             this.examples();
             this.uploadHandler();
@@ -126,6 +130,16 @@ recognizeDemoApp =  {
                             imageWrapper.append(image);
                             imageWrapper.append("<div class='image-mask'></div><div class='image-mask-unrecognized'></div><div class='image-info'></div>");
                             $('.enrolled-images').append(imageWrapper);
+                            // show in options panel
+                            self.enrolledImages = $(".enrolled-image").length;
+                            $("#optionMaxNumResults").val(self.enrolledImages);
+                            $(".maxnumresults-slider").slider( "option", "max", self.enrolledImages);
+                            $(".maxnumresults-slider").slider("value", self.enrolledImages);
+                            $(".option-error-maxnumresults").html("");
+                            if (self.enrolledImages > 1) {
+                               $(".max-num-prompt").html("Enter a value between 1 and " + self.enrolledImages);
+                            }
+                            
                             $(".left-image-container .user-instructions").hide();
                             var data = {};
                             imgObj = { 
@@ -229,13 +243,33 @@ recognizeDemoApp =  {
                             },100);
                             image.appendTo(".recognize-image-container");
                             var data = {};
+                            // options
+                            var minHeadScale = self.minHeadScale;
+                            if ($("#optionMinHeadScale").val()) {
+                                minHeadScale = $("#optionMinHeadScale").val();
+                            }
+                            var threshold = self.threshold;
+                            if ($("#optionThreshold").val()) {
+                                threshold = $("#optionThreshold").val();
+                            }
+                            var max_num_results = $(".enrolled-image").length;
+                            if ($("#optionMaxNumResults").val()) {
+                                max_num_results = $("#optionMaxNumResults").val();
+                            }
                             imgObj = { 
                                 "image"   : utils.parseImageData(imageData),
                                 "gallery_name" : self.galleryId,
-                                "max_num_results": $(".enrolled-image").length,
-                                "threshold": 0.01,
-                                "minHeadScale": 0.015
+                                "max_num_results": max_num_results,
+                                "threshold": threshold,
+                                "minHeadScale": minHeadScale
                             };
+                            imgObjDisplay = { 
+                                "gallery_name" : self.galleryId,
+                                "max_num_results": max_num_results,
+                                "threshold": threshold,
+                                "minHeadScale": minHeadScale
+                            };
+                            $(".payload-display span").html(JSON.stringify(imgObjDisplay));
                             data.imgObj = JSON.stringify(imgObj);
                             data.process = "recognize";
                             $.ajax({
@@ -317,12 +351,17 @@ recognizeDemoApp =  {
                 // to highest confidence level 
                 $.each(response.images,function(idx, value){
                     if (value.transaction) {
-                        $.each(value.candidates,function(idx, value){
-                            var subjectId = value.subject_id;
-                            if (enrolledImages[subjectId] < value.confidence) {
-                                enrolledImages[subjectId] = value.confidence
-                            }
-                        });
+                        if (value.transaction.status != "failure") {
+                            $.each(value.candidates,function(idx, value){
+                                var subjectId = value.subject_id;
+                                if (enrolledImages[subjectId] < value.confidence) {
+                                    enrolledImages[subjectId] = value.confidence
+                                }
+                            });
+                        }
+                        else {
+                            self.getTemplate("image-right-template","Error: " + utils.toTitleCase(value.transaction.status),"",false);
+                        }
                     }
                 });
                 recognized = false;
@@ -369,7 +408,6 @@ recognizeDemoApp =  {
         var imgHeight = self.recognizeImgHeight;
         // get dimensions of the image as it is displayed in .display-image-container
         var displayImageDimensions = utils.getDisplayImageDimensions(imgWidth, imgHeight, self.canvasWidth);
-        console.log(displayImageDimensions)
         // get dimensions and ratio of image relative to display size
         var newImageInfo = utils.calculateAspectRatioFit(imgWidth,imgHeight,displayImageDimensions.width,displayImageDimensions.height);
         // adjust aspect ratio of feature points relative to resized image
@@ -527,7 +565,7 @@ recognizeDemoApp =  {
             var thumbnail = 134;
             this.thumbnailSize = thumbnail;
             var containerHeight = thumbnail * 3 + 58;
-            $(".json-response-container, .json-response").width(canvasWidth)
+            $(".json-response-container, .json-response").width(canvasWidth - 15)
             $(".json-response pre").height(canvasWidth);
             $(".enrolled-image").height(this.thumbnailSize);
             $(".right-image-container").show();

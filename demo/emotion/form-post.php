@@ -35,12 +35,6 @@ curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
 $response =  curl_exec($request);
 
-// $testRespose = array(
-//       "response" => $response,
-//       "file" => $_FILES["file"]["tmp_name"]
-// );
-// print_r(json_encode($testRespose));
-
 echo $response;
 
 curl_close($request);
