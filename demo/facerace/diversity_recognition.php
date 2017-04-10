@@ -11,8 +11,8 @@ require_once('../vendor/autoload.php');
 
 use Aws\S3\S3Client;
 
-define('AWS_S3_REGION', (getenv('AWS_S3_REGION') ? getenv('AWS_S3_REGION') : 'us-east-1'));
-define('AWS_S3_UPLOAD_BUCKET', (getenv('AWS_S3_UPLOAD_BUCKET') ? getenv('AWS_S3_UPLOAD_BUCKET') : 'kairos-media'));
+define('AWS_S3_REGION', (getenv('AWS_S3_REGION') ? getenv('AWS_S3_REGION') : ''));
+define('AWS_S3_UPLOAD_BUCKET', (getenv('AWS_S3_UPLOAD_BUCKET') ? getenv('AWS_S3_UPLOAD_BUCKET') : ''));
 define('AWS_ACCESS_KEY_ID', getenv('AWS_ACCESS_KEY_ID'));
 define('AWS_SECRET_ACCESS_KEY', getenv('AWS_SECRET_ACCESS_KEY'));
 
