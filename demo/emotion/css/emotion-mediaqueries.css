@@ -197,6 +197,9 @@
 	.emotion .json-response {
 		width: 490px;
 	}
+	.face-overlay {
+		left: 14px;
+	}
 }
 
 @media (min-width: 1200px) {

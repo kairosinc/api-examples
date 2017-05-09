@@ -301,7 +301,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
     position: absolute;
     left: 7px;
     top: 48px;
-    width: 192px;
+    width: 196px;
     height: 20px;
     z-index: 10;
 }

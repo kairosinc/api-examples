@@ -3,7 +3,7 @@
 // javascript object responsible for primary app functionality
 // dependencies: jquery.js, highchartsApp.js, MediaStreamRecorder.js, adapter.js, jquery.form.js, process.php
 // created: March 2016
-// last modified: March 2017
+// last modified: April 2017
 // author: Steve Rucker
 //------------------------------------
 
@@ -39,7 +39,11 @@ emoDemoApp =  {
             $(".webcam").hide();
             $(".ui-buttons .upload").addClass("full-width");
         }
-
+        // hide webcam link from Windows platform until supported
+        if (navigator.platform.indexOf('Win') > -1) {
+            $(".webcam").hide();
+            $(".ui-buttons .upload").addClass("full-width");
+        }
         this.setElementDimensions();
     },
     //------------------------------------
@@ -165,6 +169,12 @@ emoDemoApp =  {
                         var reader = new FileReader();
                         reader.onload = function (e) {
                             $('#video').attr('src', reader.result);
+                            // hack: video must play in order to render length
+                            video.play();
+                            setTimeout(function(){
+                                video.pause();
+                                video.currentTime = 0;
+                            },self.captureInterval)
                         }
                         reader.readAsDataURL(videoFile);
                         if (videoFile.size > self.config.uploadFileSizeVideo) {
@@ -297,6 +307,9 @@ emoDemoApp =  {
                 self.mimeType = response.fileType;
                 // hack for webm issue in php.get-file-data
                 if ($('#upload')[0].files[0].type == "video/webm" && self.mimeType == "application/octet-stream") {
+                    self.mimeType = "video/webm";
+                }
+                if ($('#upload')[0].files[0].type == "video/webm" && self.mimeType == "video/x-matroska") {
                     self.mimeType = "video/webm";
                 }
                 // end hack
@@ -455,6 +468,12 @@ emoDemoApp =  {
                                     var reader = new FileReader();
                                     reader.onload = function (e) {
                                         $('#video').attr('src', e.target.result);
+                                        // hack: video must play in order to render length
+                                        video.play();
+                                        setTimeout(function(){
+                                            video.pause();
+                                            video.currentTime = 0;
+                                        },10000)
                                     }
                                     reader.readAsDataURL($('#upload')[0].files[0]);
                                 }
@@ -528,6 +547,9 @@ emoDemoApp =  {
                     if (urlMediaSrc.split('.').pop() == "webm" && response.fileType == "application/octet-stream") {
                         self.mimeType = "video/webm";
                     }
+                    if (urlMediaSrc.split('.').pop() == "webm" && response.fileType == "video/x-matroska") {
+                        self.mimeType = "video/webm";
+                    }
                     // end hack
                     self.fileSize = response.fileSize;
                     self.fileData = response.fileData;
@@ -577,9 +599,13 @@ emoDemoApp =  {
                     }
                     else {
                         if(self.showUploadedVideo) {
-                            $(".video-wrapper").show();
-                            $(".video-controls").show()
                             $('#video').attr('src', "data:" + self.mimeType + ";base64," + response.fileData);
+                            // hack: video must play in order to render length
+                            video.play();
+                            setTimeout(function(){
+                                video.pause();
+                                video.currentTime = 0;
+                            },10000)
                         }
                         var data = {};
                         data.fname = "url";
@@ -615,11 +641,6 @@ emoDemoApp =  {
                                     $(".display-image-container").show();
                                     image.addClass("display-image");
                                     image.appendTo(".display-image-container");
-                                    // newImageSize = utils.calculateAspectRatioFit(img.width,img.height,self.viewportWidth,self.viewportHeight);
-                                    // $('.show-image')
-                                    //     .attr("src", imageData)
-                                    //     .css("z-index",1)
-                                    //     .css(newImageSize)
                                 }
                                 self.pollApi(mediaId, "url", mediaType);
                             }
@@ -741,6 +762,7 @@ emoDemoApp =  {
                     }
                 }
                 else {
+                    console.log("invalid")
                     clearInterval(self.pollInterval)
                     self.processing = false;
                     self.resetElements();

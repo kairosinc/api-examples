@@ -130,7 +130,41 @@ $( window ).resize(function() {
   detectDemoApp.setElementDimensions();
 });
 
-// slider
+// slider - confidence threshold
+$(".confidencethreshold-slider").slider({
+	range: "min",
+	value: 98,
+    min: 10,
+    max: 100,
+    slide: function( event, ui ) {
+        $("#optionConfidenceThreshold").val(ui.value / 100);
+    }
+});
+$("#optionConfidenceThreshold").click(function(){
+	$(this).val("");
+});
+$("#optionConfidenceThreshold").keypress(function(event){
+	if (utils.isNumber(event)) {
+		setTimeout(function(){
+			var thisVal = $("#optionConfidenceThreshold").val();
+			var newVal = "";
+			if (thisVal < .1 || thisVal > 1) {
+				$(".option-error-confidence").html("Out of range");
+				$("#optionConfidenceThreshold").val("");
+				$(".confidencethreshold-slider").slider("value", .98);
+			}
+			else {
+				$(".option-error-confidence").html("");
+				$(".confidencethreshold-slider").slider("value", thisVal);
+			}
+			
+		},1500)
+	}
+	else {
+		return false;
+	}
+});
+// slider  - minheadscale
 $(".minheadscale-slider").slider({
 	range: "min",
     min: 15,
@@ -148,12 +182,12 @@ $("#optionMinHeadScale").keypress(function(event){
 			var thisVal = $("#optionMinHeadScale").val();
 			var newVal = "";
 			if (thisVal < .015 || thisVal > .5) {
-				$(".option-error").html("Out of range");
+				$(".option-error-minheadscale").html("Out of range");
 				$("#optionMinHeadScale").val("");
 				$(".minheadscale-slider").slider("value", 15);
 			}
 			else {
-				$(".option-error").html("");
+				$(".option-error-minheadscale").html("");
 				$(".minheadscale-slider").slider("value", thisVal * 1000);
 			}
 			

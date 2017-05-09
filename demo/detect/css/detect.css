@@ -278,12 +278,12 @@
 	color: #999;
 	margin-bottom: 5px;
 }
-#optionMinHeadScale {
+#optionConfidenceThreshold, #optionMinHeadScale {
 	width: 60px;
 	height: 30px;
 	display: inline;
 }
-.options-panel .option-error {
+.options-panel .option-error-confidence, .options-panel .option-error-minheadscale {
 	font-size: 11px;
 	display: inline;
 	color: #ff0000;

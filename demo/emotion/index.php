@@ -160,12 +160,13 @@
     <script src="https://code.highcharts.com/4.2.3/highcharts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
-    <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
-    <script src="https://cdn.WebRTC-Experiment.com/gumadapter.js"></script>
+    
 
     <!-- custom libraries -->
     <script src="../js/utils.js"></script>
     <script src="js/MediaStreamRecorder.js"></script>
+    <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
+    <script src="https://cdn.WebRTC-Experiment.com/gumadapter.js"></script>
     <script src="js/featurePoints.js"></script>
     <script src="js/emoDemoApp.js"></script>
     <script src="js/featurePointAnimation.js"></script>

@@ -67,8 +67,13 @@
             <div class="col-xs-12 col-sm-6 col-md-6">
                 <h4>Options</h4>
                 <div class="form-group">
+                    <label class="control-label" for="optionConfidenceThreshold">Confidence threshold:</label><span class="prompt">Enter a value between .1 and 1 (this only affects the face box drawing, not the payload to the API)</span>
+                    <input class="form-control" type="text" name="optionConfidenceThreshold" id="optionConfidenceThreshold" value=".98"><span class="option-error-confidence"></span>
+                    <div class="confidencethreshold-slider"></div>
+                </div>
+                <div class="form-group">
                     <label class="control-label" for="optionMinHeadScale">minHeadScale:</label><span class="prompt">Enter a value between .015 (1:64 scale) and .5 (1:2 scale)</span>
-                    <input class="form-control" type="text" name="optionMinHeadScale" id="optionMinHeadScale" value=".015"><span class="option-error"></span>
+                    <input class="form-control" type="text" name="optionMinHeadScale" id="optionMinHeadScale" value=".015"><span class="option-error-minheadscale"></span>
                     <div class="minheadscale-slider"></div>
                 </div>
                 <label class="control-label" for="optionSelector">Selector:</label>

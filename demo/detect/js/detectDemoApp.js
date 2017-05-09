@@ -27,6 +27,7 @@ detectDemoApp =  {
         }
         // options
         this.minHeadScale = 0.015;
+        this.confidenceThreshold = .98;
         // detect getUserMedia compatibility
         // hide webcam link if not supported
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
@@ -541,6 +542,10 @@ detectDemoApp =  {
     //------------------------------------
     drawMethod: function(image) {
         var self = this;
+        var confidenceThreshold = self.confidenceThreshold;
+        if ($("#optionConfidenceThreshold").val()) {
+            confidenceThreshold = $("#optionConfidenceThreshold").val();
+        }
         var canvas = $("#displayCanvas")[0];
         var context = canvas.getContext('2d');
         adjX   = 1;
@@ -578,7 +583,7 @@ detectDemoApp =  {
                 else if (face.attributes && face.attributes.gender.type == "M") {
                     strokeStyle = '#0033ff';
                 }
-                if (face.confidence >= .989) {
+                if (face.confidence >= confidenceThreshold) {
                     var radius = utils.adjustRadius(face.width * adjX, self.radiusDefault);
 
                     // draw face box

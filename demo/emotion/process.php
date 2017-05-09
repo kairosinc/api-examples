@@ -98,13 +98,12 @@ else {
     //------------------------------------
     // POST REQUEST TO API FOR WEBCAM
     //------------------------------------
-
     
     // pull the raw binary data from the POST array
     $data = substr($_POST['data'], strpos($_POST['data'], ",") + 1);
     // decode it
     $decodedData = base64_decode($data);
-    // print out the raw data,
+
     $filename = $_POST['fname'];
     $fullFilename = $filename . ".webm";
     file_put_contents("media/" . $fullFilename, $decodedData);
@@ -112,45 +111,46 @@ else {
     // check if valid file (mime type and length)
     $validFile = true;
     if (file_mime_type("media/" . $fullFilename) != "application/octet-stream" &&
+        file_mime_type("media/" . $fullFilename) != "video/x-matroska" &&
         file_mime_type("media/" . $fullFilename) != "video/webm") {
         $validFile = false;
     }
-    if (filesize("media/" . $fullFilename) < 200000) {
+    if (filesize("media/" . $fullFilename) < 20000) {
         $validFile = false;
     }
 
     if ($validFile) {
-        function isSSL()
-        {
-            $protocol = "http://";
-            if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) {
-                $protocol = "https://";
-            }
-            return $protocol;
-        }
-        // $mediaPath = "https://steverucker.com/dev/media/emodemo.webm";
-        $mediaPath = isSSL() . $_SERVER['HTTP_HOST'] . "/emotion/media/" . $fullFilename;
 
-        $queryUrl = API_URL . "/v2/media?source=" . $mediaPath . "&landmarks=1&timeout=1";
+        // make curl request
+        $request = curl_init(API_URL . "/v2/media?landmarks=1");
 
-        $request = curl_init($queryUrl);
         // set curl options
         curl_setopt($request, CURLOPT_POST, true);
         curl_setopt($request, CURLOPT_HTTPHEADER, array(
-                "app_id:" . APP_ID,
-                "app_key:" . APP_KEY
+            "app_id:" . APP_ID, 
+            "app_key:" . APP_KEY
             )
         );
-        curl_setopt($request, CURLOPT_TIMEOUT, CURL_API_TIMEOUT);
+        curl_setopt(
+            $request,
+            CURLOPT_POSTFIELDS,
+            array(
+              "source" => new CurlFile("media/" . $fullFilename),
+              // API timeout - timeout can be set to config value:
+              // "timeout" => $configs["apiTimeout"]
+              // or, to use polling, set timout to 1:
+              "timeout" => 1
+            ));
+        // output the response
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 
-        $response = curl_exec($request);
+        $response =  curl_exec($request);
 
         echo $response;
 
-        // close the session
         curl_close($request);
     }
+
     else {
         $response = array (
             "Error" => "Invalid file"
