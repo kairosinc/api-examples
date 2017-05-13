@@ -8,15 +8,15 @@ services:
       - "8080:80"
     environment:
       STAGE: dev
-      AWS_S3_REGION: ""
-      AWS_S3_UPLOAD_BUCKET: ""
-      APP_ID: ""
-      APP_KEY: ""
+      AWS_S3_REGION: "us-east-1"
+      AWS_S3_UPLOAD_BUCKET: "valid-s3-bucket-here"
+      APP_ID: "your-app-id-here"
+      APP_KEY: "your-app-key-here"
       API_URL: "https://api.kairos.com"
       API_TIMEOUT: "10" 
       POLL_TIMEOUT: "300"
-      DEMO1_ID: ""
-      DEMO_SECRET_KEY: ""
+      DEMO1_ID: "x"
+      DEMO_SECRET_KEY: "abc123"
       XDEBUG: "true"
       XDEBUG_CONFIG: "remote_host=10.254.254.254"
     volumes:
