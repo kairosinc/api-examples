@@ -1,10 +1,10 @@
 <html>
     <head>
-    <title>Kairos Emotion Demo - Golang</title>
+    <title>Kairos Detect Demo - Golang</title>
     </head>
     <body>
         <form action="/process" method="post">
-            Video URL:<input type="text" name="videoUrl">
+            Image URL:<input type="text" name="imageUrl">
             <input type="submit" value="Process">
         </form>
     </body>
