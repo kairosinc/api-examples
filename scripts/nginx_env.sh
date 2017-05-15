@@ -2,7 +2,7 @@
 ## Author: Cole Calistra
 
 if [[ $XDEBUG == "true" ]]; then
-    apk --update add php5-xdebug --repository http://nl.alpinelinux.org/alpine/edge/community/
+    apk --update add php5-xdebug --repository http://nl.alpinelinux.org/alpine/latest-stable/community/
     echo "zend_extension="$(find / -name xdebug.so) >/etc/php5/conf.d/xdebug.ini
     echo "xdebug.remote_enable = on" >> /etc/php5/conf.d/xdebug.ini
     echo "xdebug."${XDEBUG_CONFIG} >> /etc/php5/conf.d/xdebug.ini

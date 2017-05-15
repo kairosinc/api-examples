@@ -9,6 +9,12 @@
 /logs/*
 /build
 
+demo/.DS_Store
+demo/composer.lock
+demo/tmp
+demo/vendor
+demo/facerace/tmp
+
 
 # Temporary Ignoring these files 
 #app/assets/less/*
@@ -19,3 +25,7 @@ cache/assetic/*
 # node_modules/*
 
 demo/config-local.php
+
+demo/emotion/.DS_Store
+
+demo/emotion/media/.DS_Store
