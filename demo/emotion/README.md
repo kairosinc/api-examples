@@ -203,7 +203,7 @@ make build
 
 make run
 ```
-You will then be able to access the UI at http://localhost:8080:80 (if running using Docker for Mac or Docker for Windows)
+You will then be able to access the UI at http://localhost:8080 (if running using Docker for Mac or Docker for Windows)
 
 To stop the Docker container:
 
