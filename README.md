@@ -1,4 +1,4 @@
-# API Examples
+# API Examples 
 
 ## What it does
 These demo apps showcase the Kairos APIs by giving the user a means to quickly get up and running with our Emotion Analysis and Facial Recognition / Detection APIs.
