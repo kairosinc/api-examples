@@ -9,7 +9,7 @@ The Emotion API demo app must be hosted, or run locally using a solution stack s
 
 The app is basically a single page application, which is viewed at index.php.
 
-The Emotion API demo app is comprised of three modules:
+The Emotion API demo app is comprised of four modules:
 
 * Examples Module
 * Webcam Module
@@ -203,7 +203,7 @@ make build
 
 make run
 ```
-You will then be able to access the UI at http://localhost:8080:80 (if running using Docker for Mac or Docker for Windows)
+You will then be able to access the UI at http://localhost:8080 (if running using Docker for Mac or Docker for Windows)
 
 To stop the Docker container:
 

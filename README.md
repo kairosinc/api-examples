@@ -1,4 +1,4 @@
-# API Examples
+# API Examples 
 
 ## What it does
 These demo apps showcase the Kairos APIs by giving the user a means to quickly get up and running with our Emotion Analysis and Facial Recognition / Detection APIs.
@@ -31,7 +31,7 @@ The Emotion Demo showcases the Kairos Emotion API by giving the user three metho
 The Face Race Demo showcases the Kairos Face Recognition API by allowing the user to upload a photo and allowing the systme to detect the ethic breakdown of the largest face in the image.
 [Documentation](/demo/facerace/README.md)
 
-### Recognizae
+### Recognize
 The Recognize Demo uses Kairos Face Recognition API to reocgnize human faces from previously enrolled faces by the user.
 [Documentation](/demo/recognize/README.md)
 
