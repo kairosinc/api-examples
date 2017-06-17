@@ -64,6 +64,13 @@ var takepicture = function(video) {
     }).done(function(data){
         $("#showCounter").html("");
         $("#detectResponse").html("Response: " + data);
+        var response = JSON.parse(data);
+        if (response.images) {
+            $("#facesFound").html("Faces Found");
+        }
+        else {
+            $("#facesFound").html("No Faces Found");
+        }
     });
     $(video).hide();
 }
