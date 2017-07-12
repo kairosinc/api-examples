@@ -8,16 +8,31 @@ The demo app can easily be run using Docker with the included Dockerfile and doc
 
 The app is basically a single page application, which is viewed at index.php.
 
-The easiest way to get started is to clone or fork the repo, edit the docker-compose.yml and add your APP_ID and API_KEY after signing up at [developer.kairos.com](https://developer.kairos.com) 
+Sign-up for your API key via [developer.kairos.com](https://developer.kairos.com) and check your inbox for an activation link. You should now have your `APP_ID` and `APP_KEY`:
 
-Then just run these commands to run Docker-Compose and start up the app locally on your machine:
-```
-make build && make run
-```
+#### Steps:
+
+1. clone or fork the repo, and git clone via command-line (CLI):
+   ```
+   cd $HOME/Desktop
+   git clone git@github.com:kairosinc/api-examples.git
+   ```
+2. Edit the `docker-compose.yml` file in the root project directory to add your `APP_ID` and `API_KEY` in the following lines, and save the file:
+  ```
+  APP_ID: "your-app-id-here"
+  APP_KEY: "your-app-key-here"
+  ```
+
+3. Run the following commands, which will build your Docker container and execute Docker-Compose run to start up the app locally on your machine:
+  ```
+  make build && make run
+  ```
+
+Once your app is running, you can visit [http://localhost:8080](http://localhost:8080) on your browser to view the demo examples.
 
 ---
 
-##For more detailed documentation see the individual page for each module:
+## For more detailed documentation see the individual page for each module:
 
 ### Detect 
 The Detect Demo uses Kairos Face Recognition API to detect a human face in an existing photo, or a snapshot from the user's webcam.
