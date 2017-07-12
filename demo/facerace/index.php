@@ -4,6 +4,8 @@ $configs = include('../config.php');
 define('DEMO_ENV', (getenv('STAGE') ? getenv('STAGE') : 'dev'));
 define('DEMO_PREVIEW_IMAGE', (getenv('DEMO_PREVIEW_IMAGE') ? getenv('DEMO_PREVIEW_IMAGE') : ""));
 define('CACHE_BREAKER', (DEMO_ENV == 'dev' ? time() : date('ymd')));
+define('FACEBOOK_ASYNC_ID', (getenv('FACEBOOK_ASYNC_ID') ? getenv('FACEBOOK_ASYNC_ID') : ''));
+define('FACEBOOK_APP_ID', (getenv('FACEBOOK_APP_ID') ? getenv('FACEBOOK_APP_ID') : ''));
 
 function getDiversityImageUrl($default_image_url = null)
 {
@@ -49,6 +51,7 @@ $image = getDiversityImageUrl(DEMO_PREVIEW_IMAGE);
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://www.kairos.com/" />
     <meta property="og:site_name" content="Kairos" />
+    <meta property="fb:app_id" content="<?php echo FACEBOOK_APP_ID; ?>" />
 
     <link href="../images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -57,6 +60,14 @@ $image = getDiversityImageUrl(DEMO_PREVIEW_IMAGE);
     <link rel="stylesheet" href="css/facerace.css?_t=<?php echo CACHE_BREAKER; ?>">
     <link rel="stylesheet" href="css/facerace-mediaqueries.css?_t=<?php echo CACHE_BREAKER; ?>">
 
+    <script>
+    if ((window.self !== window.top) == false && 
+        window.location.href.match(/i=[a-z0-9]{40}/) != null && 
+        window.location.href.match(/v=1/) == null
+    ) {
+        window.location.href = "https://kairos.com/diversity-recognition";
+    }
+    </script>
 </head>
 <body>
 
@@ -66,7 +77,7 @@ window.__enable_share_if_loads = <?php echo $image['enable_share_if_loads']; ?>;
 window.__e = '<?php echo DEMO_ENV; ?>';
 window.fbAsyncInit = function() {
     FB.init({
-      appId      : '',
+      appId      : '<?php echo FACEBOOK_ASYNC_ID; ?>',
       xfbml      : true,
       version    : 'v2.8'
     });
@@ -179,6 +190,10 @@ window.twttr = (function(d, s, id) {
     <?php  
         }
     ?>
+
+<script type="template_text" id="fb_template_text">
+<iframe src="https://www.facebook.com/plugins/share_button.php?href=__URL_ENCODED__&layout=button&size=large&mobile_iframe=true&appId=<?PHP echo FACEBOOK_APP_ID ?>&width=73&height=28" width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+</script>
 
 <script type="template_text" id="fb_button">
 <img id="fb_share_button" src="fb_button.png" rel="__URL__">

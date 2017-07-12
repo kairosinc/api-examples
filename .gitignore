@@ -15,6 +15,7 @@ demo/tmp
 demo/vendor
 demo/facerace/tmp
 
+docker-compose.yml.prod
 
 # Temporary Ignoring these files 
 #app/assets/less/*
