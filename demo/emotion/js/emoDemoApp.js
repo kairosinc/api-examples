@@ -45,6 +45,8 @@ emoDemoApp =  {
             $(".ui-buttons .upload").addClass("full-width");
         }
         this.setElementDimensions();
+        // slow down polling to reduce number of requests per minute
+        this.pollTick = 1000; // in ms
     },
     //------------------------------------
     // EXAMPLES PROCESSING
@@ -683,14 +685,13 @@ emoDemoApp =  {
             pollTimeout = $("#optionPollTimeout").val();
         }
         pollTimeout = pollTimeout * 1000;
-        var pollTick = 1000;
         self.timeRemaining = pollTimeout;
         self.pollInterval = setInterval(function () {
             if (self.processing) {
-                self.timeRemaining -= pollTick;
+                self.timeRemaining -= self.pollTick;
                 getApiResponse(); 
             }
-        },pollTick);
+        },self.pollTick);
         var fd = {};
         fd["fname"] = "polling";
         fd["mediaId"] = mediaId;

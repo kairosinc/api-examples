@@ -15,7 +15,7 @@ Sign-up for your API key via [developer.kairos.com](https://developer.kairos.com
 1. clone or fork the repo, and git clone via command-line (CLI):
    ```
    cd $HOME/Desktop
-   git clone git@github.com:kairosinc/api-examples.git
+   git clone https://github.com/kairosinc/api-examples.git
    ```
 2. Edit the `docker-compose.yml` file in the root project directory to add your `APP_ID` and `API_KEY` in the following lines, and save the file:
   ```

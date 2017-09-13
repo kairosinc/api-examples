@@ -20,14 +20,23 @@ The Emotion API demo app is comprised of four modules:
 
 ## Examples module
 
-Two pre-processed video examples and one pre-processed still image are presented to the user.  
+An example video is presented to the user, and an analysis begins immediately upon page render. 
 
-![Examples](/demo/emotion/docs/examples.png?raw=true)
+In order to render the analysis of the example video, you must enter a Media ID into the config.php file.  To get the Media ID for the example video, run this script at your command prompt:
 
-Upon clicking one of the thumbnails, a GET request is made to the Kairos API with the ID of the selected media using the following endpoint:
-https://api.kairos.com/v2/media/{media_id} 
+`curl -v -X POST -H "app_id: {your app_id}" -H "app_key: {your app_key}" http://api.kairos.com/v2/media?source=https://media.kairos.com/demo/emotion/videos/video_1.mp4`
 
-To accomplish this, an AJAX script in the `emoDemoApp.js` file POSTS to process.php.  This file uses PHP cURL functionality to make a GET request.  curl_exec executes the cURL script, and the JSON response is sent back asynchronously to the `emoDemoApp.js` object.  The postProcessingLayout() function formats the JSON response for viewing and sends the JSON data to `highchartsApp.js`.
+This should return something similar to this:
+
+`{"id":"abcdefghijklmnopqrstuvwxyz","status_code":2,"status_message":"Analyzing"}`
+
+Enter this id value into the DEMO1_ID definition in the config.php file:
+
+`define( 'DEMO1_ID', (getenv('DEMO1_ID') ? getenv('DEMO1_ID') : 'abcdefghijklmnopqrstuvwxyz'));`
+
+Your example video should now render an emotion analysis.
+
+To accomplish this analysis, an AJAX script in the `emoDemoApp.js` file POSTS to process.php.  This file uses PHP cURL functionality to make a GET request.  curl_exec executes the cURL script, and the JSON response is sent back asynchronously to the `emoDemoApp.js` object.  The postProcessingLayout() function formats the JSON response for viewing and sends the JSON data to `highchartsApp.js`.
 <a name="highcharts"></a>
 
 ### Highcharts
@@ -38,8 +47,8 @@ To accomplish this, an AJAX script in the `emoDemoApp.js` file POSTS to process.
 The colors for the indivdual emotion charts are found inside `config.php`.
 
 ### Video display
-At the same time that the highcharts graph is created, the selected video is rendered in an HTML5 tag inside the `#selected-video` div.  The example videos are hosted on S3:
-https://media.kairos.com/emodemo/videos/{video}.mp4
+At the same time that the highcharts graph is created, the selected video is rendered in an HTML5 tag inside the `#selected-video` div.  The example video is hosted on S3:
+https://media.kairos.com/emodemo/videos/video_1.mp4
 
 Tools are provided so that the user can play, pause or scrub the video.  
 
@@ -88,11 +97,16 @@ At this point, the analysis of the emotional data in the video is still in progr
 * "status_code": 3,  "status_message": "Failed", or
 * the polling function times out.  
 
+The polling interval is set to 1000 ms.  This value can be changed in the init function in `emoDemoApp.js`:
+
+`this.pollTick = 1000;`
+
 A message is rendered to the user if pollApi() receives status_code 3 or if a timeout is reached.
 
 Otherwise, the postProcessingLayout() function sends the JSON data to `highchartsApp.js`. 
-
 See [Highcharts](#highcharts)
+
+In addition, when a status_code 3 is received, a request to the 'https://api.kairos.com/v2/analytics' endpoint is made to retrieve gender and age data.
 
 The corresponding JSON display is also rendered.
 
@@ -203,7 +217,7 @@ make build
 
 make run
 ```
-You will then be able to access the UI at http://localhost:8080 (if running using Docker for Mac or Docker for Windows)
+You will then be able to access the UI at http://localhost:8080:80 (if running using Docker for Mac or Docker for Windows)
 
 To stop the Docker container:
 
