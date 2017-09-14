@@ -16,11 +16,11 @@ The app is basically a single page application, which is viewed at index.html.
 
 STEP 1: Enroll one or more JPG or PNG images into a gallery.  
 
-![Enrolled Image](/assets/docs/recognize/images/recognize_step1.png?raw=true)
+![Enrolled Image](/go-demo/assets/docs/recognize/images/recognize_step1.png?raw=true)
 
 This demo limits the number of images to nine, but only because of space considerations.  In your own testing, you can enroll as many images as you'd like.  The images are enrolled by dragging them into the dark grey pane on the left.  A gallery is created automatically for you when the first image is enrolled.
 
-![Enrolled Image](/assets/docs/recognize/images/enrolled_image.png?raw=true)
+![Enrolled Image](/go-demo/assets/docs/recognize/images/enrolled_image.png?raw=true)
 
 * Multi-face images may not be enrolled in the demo.
 
@@ -30,7 +30,7 @@ https://api.kairos.com/enroll
 
 To accomplish this, an AJAX script in the `recognizeDemoApp.js` file POSTS to the route `/detect/send-to-api` which calls the Golang method `SendToApiDetect`, making a POST request to the `https://api.kairos.com/detect` endpoint.  The JSON response is sent back asynchronously to the `recognizeDemoApp.js` object, which calls the `displayResponse()` method, formatting the JSON response.  As each image is enrolled, the JSON response for that image can be viewed by clicking the SHOW JSON link in the right pane.
 
-![JSON Display](/assets/docs/recognize/images/json_display.png?raw=true)
+![JSON Display](/go-demo/assets/docs/recognize/images/json_display.png?raw=true)
 
 The name/value pairs in the JSON object are color-coded using the syntaxHighlight() function in `utils.js`.  The colors are set in main.css (`#json-container` response blocks).  A COPY button is provided, which allows the user to copy the JSON response to the clipboard.
 
@@ -38,7 +38,7 @@ The name/value pairs in the JSON object are color-coded using the syntaxHighligh
 
 Step 2: Drag an image into the pane on the right to be recognized.
 
-![Enrolled Image](/assets/docs/recognize/images/recognize_step2.png?raw=true)
+![Enrolled Image](/go-demo/assets/docs/recognize/images/recognize_step2.png?raw=true)
 
 In a similar manner to the enroll function, the data from the image is extracted and posted to the Kairos API using the following endpoint:
 
@@ -46,15 +46,15 @@ In a similar manner to the enroll function, the data from the image is extracted
 
 If the image matches any of the images that you enrolled on the left, the message "RECOGNIZED" will appear at the top of the panel, and a box will be drawn around the area of the face.
 
-![JSON Display](/assets/docs/recognize/images/recognized_image.png?raw=true)
+![JSON Display](/go-demo/assets/docs/recognize/images/recognized_image.png?raw=true)
 
 If a multi-face image is used, boxes will be drawn around each face in the image that matches any of the enrolled images.
 
-![JSON Display](/assets/docs/recognize/images/recognized_multiface.png?raw=true)
+![JSON Display](/go-demo/assets/docs/recognize/images/recognized_multiface.png?raw=true)
 
 The threshold of the demo is set to a 60% confidence level.  If the image to be recognized matches any of the enrolled images with a confidence level equal to or greater than 60%, the "RECOGNIZED" message will appear.  Otherwise a "NOT RECOGNIZED" message is displayed.  Any enrolled images that are not matched are covered with a dark mask to set them apart from the matches.
 
-![JSON Display](/assets/docs/recognize/images/masking.png?raw=true)
+![JSON Display](/go-demo/assets/docs/recognize/images/masking.png?raw=true)
 
 ---
 ## User Interactions

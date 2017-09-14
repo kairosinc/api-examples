@@ -24,7 +24,7 @@ In order to understand how the verification process works, you must understand t
 
 Five pre-processed pairs of images are presented to the user.  
 
-![Five Pairs of Images](/assets/docs/verify/images/five_example_pairs.png?raw=true)
+![Five Pairs of Images](/go-demo/assets/docs/verify/images/five_example_pairs.png?raw=true)
 
 For each pair, the image on the right is the enrolled image, and the one on the left is compared to it.  So that this example runs quickly, the image data for each image is stored in the imageData.js file, the image analysis (or feature point detection) is stored in the imageAnalysisData.js file, and the JSON responses from running the verify process is contained in the jsonData.js file. 
 
@@ -35,13 +35,13 @@ Upon clicking an image pair, the application does the following:
 
 As you can see, Brad is no match for Angelina:
 
-![Box Around Face](/assets/docs/verify/images/brad_angelina_verify.png?raw=true)
+![Box Around Face](/go-demo/assets/docs/verify/images/brad_angelina_verify.png?raw=true)
 
 ### JSON display
 
 The JSON response for the image which has been verified is displayed in the right panel when the SHOW JSON link is clicked.  
 
-![JSON Display](/assets/docs/verify/images/json_display.png?raw=true)
+![JSON Display](/go-demo/assets/docs/verify/images/json_display.png?raw=true)
 
 The name/value pairs in the JSON object are color-coded using the syntaxHighlight() function in `verifyDemoApp.js`.  The colors are set in emotion.css (`#json-container` response blocks).  A COPY button is provided, which allows the user to copy the JSON response to the clipboard.
 
@@ -50,7 +50,7 @@ The name/value pairs in the JSON object are color-coded using the syntaxHighligh
 
 The user is provided with two upload elements, one for each of the left and right panels.
 
-![Upload Dialog](/assets/docs/verify/images/upload_elements.png?raw=true)
+![Upload Dialog](/go-demo/assets/docs/verify/images/upload_elements.png?raw=true)
 
 These provide the user with the ability to verify images from their local system.  
 
@@ -66,7 +66,7 @@ The API response is sent to the `apiCallback()` method in `verifyDemoApp.js` whi
 
 The URL of a photo on the web can be entered for analysis.
 
-![URL from the Web](/assets/docs/verify/images/url_from_the_web.png?raw=true)
+![URL from the Web](/go-demo/assets/docs/verify/images/url_from_the_web.png?raw=true)
 
 When an URL is entered, the URL source is posted asynchronously to `get-image-data.php` where the image type is determined.  If the image type is allowable, the image is written to Canvas and the image data is retrieved.  This data is posted to the route `/detect/send-to-api`, calling the Golang method `SendToApiVerify`, where a POST request is made to the Kairos API using the https://api.kairos.com/verify endpoint.
 
