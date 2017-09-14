@@ -25,7 +25,7 @@ In order to understand how the verification process works, you must understand t
 
 Five pre-processed pairs of images are presented to the user.  
 
-![Five Pairs of Images](/demo/verify/docs/five_example_pairs.png?raw=true)
+![Five Pairs of Images](/php-demo/verify/docs/five_example_pairs.png?raw=true)
 
 For each pair, the image on the right is the enrolled image, and the one on the left is compared to it.  So that this example runs quickly, the image data for each image is stored in the imageData.js file, the image analysis (or feature point detection) is stored in the imageAnalysisData.js file, and the JSON responses from running the verify process is contained in the jsonData.js file. 
 
@@ -36,13 +36,13 @@ Upon clicking an image pair, the application does the following:
 
 As you can see, Brad is no match for Angelina:
 
-![Box Around Face](/demo/verify/docs/brad_angelina_verify.png?raw=true)
+![Box Around Face](/php-demo/verify/docs/brad_angelina_verify.png?raw=true)
 
 ### JSON display
 
 The JSON response for the image which has been verified is displayed in the right panel when the SHOW JSON link is clicked.  
 
-![JSON Display](/demo/verify/docs/json_display.png?raw=true)
+![JSON Display](/php-demo/verify/docs/json_display.png?raw=true)
 
 The name/value pairs in the JSON object are color-coded using the syntaxHighlight() function in `verifyDemoApp.js`.  The colors are set in emotion.css (`#json-container` response blocks).  A COPY button is provided, which allows the user to copy the JSON response to the clipboard.
 
@@ -51,7 +51,7 @@ The name/value pairs in the JSON object are color-coded using the syntaxHighligh
 
 The user is provided with two upload elements, one for each of the left and right panels.
 
-![Upload Dialog](/demo/verify/docs/upload_elements.png?raw=true)
+![Upload Dialog](/php-demo/verify/docs/upload_elements.png?raw=true)
 
 These provide the user with the ability to verify images from their local system.  
 
@@ -65,7 +65,7 @@ The API response is sent to the `apiCallback()` method in `verifyDemoApp.js` whi
 
 The URL of a photo on the web can be entered for analysis.
 
-![URL from the Web](/demo/verify/docs/url_from_the_web.png?raw=true)
+![URL from the Web](/php-demo/verify/docs/url_from_the_web.png?raw=true)
 
 When an URL is entered, the URL source is posted asynchronously to `get-image-data.php` where the image type is determined.  If the image type is allowable, the image is written to Canvas and the image data is retrieved.  This data is posted to `verify.php' via AJAX, where a PHP cURL POST request is made to the Kairos API with the uploaded file, using the https://api.kairos.com/verify endpoint.
 

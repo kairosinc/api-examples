@@ -15,13 +15,13 @@ The app is basically a single page application, which is viewed at index.php.
 
 Clicking the UPLOAD link opens the upload dialog on the user's local system.
 
-![Upload Dialog](/demo/facerace/docs/upload_dialog.png?raw=true)
+![Upload Dialog](/php-demo/facerace/docs/upload_dialog.png?raw=true)
 
 When a file is selected, Canvas is used to retrieve the image data.  This data is posted to `facerace.php` via AJAX, where a PHP cURL POST request is made to the Kairos API with the uploaded file, using the https://api.kairos.com/detect endpoint.  This file also instantiates DiversityRecognition, which handles S3 image processing and creates a graph with ethnicity data from the API response.
 
 The end result is an image containing a "racerace" display:
 
-![Facerace image](/demo/facerace/docs/facerace_image.png?raw=true)
+![Facerace image](/php-demo/facerace/docs/facerace_image.png?raw=true)
 
 ---
 ## User Interactions

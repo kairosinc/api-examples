@@ -22,19 +22,19 @@ The Emotion API demo app is comprised of three modules:
 
 Five pre-processed image examples are presented to the user.  
 
-![Five Examples](/demo/detect/docs/examples.png?raw=true)
+![Five Examples](/php-demo/detect/docs/examples.png?raw=true)
 
 Upon clicking one of the image thumbnails, a POST request is made to the Kairos API with the ID of the selected video using the following endpoint:
 https://api.kairos.com/detect 
 
 To accomplish this, an AJAX script in the `detectDemoApp.js` file POSTS to process.php.  This file uses PHP cURL functionality to make a POST request.  curl_exec executes the cURL script, and the JSON response is sent back asynchronously to the `detectDemoApp.js` object.  The API response is sent to the `apiCallback()` method, which formats the JSON response for viewing, and draws a box around the detected face, along with various other feature points.
 
-![Box Around Face](/demo/detect/docs/box.png?raw=true)
+![Box Around Face](/php-demo/detect/docs/box.png?raw=true)
 
 ### JSON display
 
 The JSON object for each of the modules is displayed when the API response is received.  
-![JSON Display](/demo/detect/docs/json_display.png?raw=true)
+![JSON Display](/php-demo/detect/docs/json_display.png?raw=true)
 
 The name/value pairs in the JSON object are color-coded using the syntaxHighlight() function in `detectDemoApp.js`.  The colors are set in emotion.css (`#json-container` response blocks).  A COPY button is provided, which allows the user to copy the JSON response to the clipboard.
 
@@ -42,7 +42,7 @@ The name/value pairs in the JSON object are color-coded using the syntaxHighligh
 ## Webcam Module
 The webcam module uses the built-in web camera on the user's device.  When the WEBCAM link is clicked, the user is given 3 seconds to complete the capture.
 
-![Webcam Capture](/demo/detect/docs/webcam_capture.png?raw=true)
+![Webcam Capture](/php-demo/detect/docs/webcam_capture.png?raw=true)
 
 In order to make the capture, getUserMedia() creates a video stream.  After 3 seconds, the `takePicture()` method uses Canvas to draw the image and get the image data.  This data is posted to `detect.php` asynchronously using AJAX, where a PHP cURL POST request is made to the Kairos API, using the following endpoint:
 https://api.kairos.com/detect.
@@ -54,7 +54,7 @@ The API response is sent to the `apiCallback()` method in `detectDemoApp.js` whi
 
 Clicking the UPLOAD link opens the upload dialog on the user's local system.
 
-![Upload Dialog](/demo/detect/docs/upload_dialog.png?raw=true)
+![Upload Dialog](/php-demo/detect/docs/upload_dialog.png?raw=true)
 
 When a file is selected, Canvas is used to retrieve the image data.  This data is posted to `detect.php` via AJAX, where a PHP cURL POST request is made to the Kairos API with the uploaded file, using the https://api.kairos.com/detect endpoint.
 
@@ -66,7 +66,7 @@ The API response is sent to the `apiCallback()` method in `detectDemoApp.js` whi
 
 The URL of a photo on the web can be entered for analysis.
 
-![URL from the Web](/demo/detect/docs/url_from_the_web.png?raw=true)
+![URL from the Web](/php-demo/detect/docs/url_from_the_web.png?raw=true)
 
 When an URL is entered, the URL source is posted asynchronously to `get-image-data.php` where the image type is determined.  If the image type is allowable, the image is written to Canvas and the image data is retrieved.  This data is posted to `detect.php` via AJAX, where a PHP cURL POST request is made to the Kairos API with the uploaded file, using the https://api.kairos.com/detect endpoint.
 

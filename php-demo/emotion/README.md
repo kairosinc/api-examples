@@ -42,7 +42,7 @@ To accomplish this analysis, an AJAX script in the `emoDemoApp.js` file POSTS to
 ### Highcharts
 `highchartsApp.js` compliles the response data, and creates a dataset for each emotion in the JSON response.  The script loops through these datasets, compiling the x-axis, y-axis, and toolip parameters for each emotion.  In addition, all of the emotion charts are synchronized so that the metrics can be viewed in a single tooltip.  This data is then rendered on the screen inside the `#highcharts-wrapper` div.  
 
-![Highcharts Graph](/demo/emotion/docs//graph.png?raw=true)
+![Highcharts Graph](/php-demo/emotion/docs//graph.png?raw=true)
 
 The colors for the indivdual emotion charts are found inside `config.php`.
 
@@ -52,20 +52,20 @@ https://media.kairos.com/emodemo/videos/video_1.mp4
 
 Tools are provided so that the user can play, pause or scrub the video.  
 
-![Video Controls](/demo/emotion/docs/video_controls.png?raw=true)
+![Video Controls](/php-demo/emotion/docs/video_controls.png?raw=true)
 
 These video functions are found in the `videoPlayer.js` object.  When any of these interactions are detected, a white curtain moves across the highcharts graph, showing the user where on the graph the video is currently playing.
 
 ### Feature Points
 49 facial feature points are identified in the analysis, and these points are returned in the JSON object by adding landmarks=1 to the URL used for posting to the API.  The postProcessingLayout() function sends the JSON data with the feature points to `featurePointAnimation.js` where they are drawn on a Canvas panel which is positioned over the top of the video or image.  As the video plays, these feature points animate with the video. 
 
-![Feature Points](/demo/emotion/docs/feature_points.png?raw=true)
+![Feature Points](/php-demo/emotion/docs/feature_points.png?raw=true)
 
 <a name="json-display"></a>
 ### JSON display
 
 The JSON object for each of the modules is displayed by clicking SHOW JSON in the Highcharts graph view.  
-![JSON Display](/demo/emotion/docs/json_display.png?raw=true)
+![JSON Display](/php-demo/emotion/docs/json_display.png?raw=true)
 
 The name/value pairs in the JSON object are color-coded using the syntaxHighlight() function in `emoDemoApp.js`.  The colors are set in emotion.css (`#json-container` response blocks).  A COPY button is provided, which allows the user to copy the JSON response to the clipboard.
 
@@ -75,7 +75,7 @@ The webcam module uses the built-in web camera on the user's device.  A 10 secon
 
 The process is initiated by clicking WEBCAM link is clicked, which starts a 10 second webcam capture.  The app counts down from 10 until 1, when the capture is complete.
 
-![Webcam Capture](/demo/emotion/docs/webcam_capture.png?raw=true)
+![Webcam Capture](/php-demo/emotion/docs/webcam_capture.png?raw=true)
 
 When the WEBCAM button is clicked, the captureUserMedia() function in the `emoDemoApp.js` object is called, which engages the getUserMedia API.  On success, a callback function (`onMediaSuccess`) is fired, which contains the video stream from the webcam.  Subsequently, the `webcamVideo` variable is set, which references the HTML5 `#webcam-video` tag, and its source is set to this video stream.  After the play() function is applied to `webcamVideo`, a mediaRecorder object is instantiated, leveraging the methods inside `MediaStreamRecorder.js`. On mediaRecorder.start(), the webcam capture begins.  When the creation of the BLOB object containing the video is complete, processVideo() is called in `emoDemoApp.js` which POSTS to `process.php` asynchronously using AJAX.  The file is uploaded to the /media/ directory, and a PHP cURL POST request is made to the Kairos API, using the following endpoint:
 https://api.kairos.com/v2/media?source={mediaPath)&landmarks=1&timeout=1
@@ -117,7 +117,7 @@ See [JSON display](#json-display)
 
 Clicking the UPLOAD link opens the upload dialog on the user's local system.
 
-![Upload Dialog](/demo/emotion/docs/upload_dialog.png?raw=true)
+![Upload Dialog](/php-demo/emotion/docs/upload_dialog.png?raw=true)
 
 When a file is selected, the form is posted asynchronously to `form-post.php`.  A PHP cURL POST request is made to the Kairos API with the uploaded file, using the following endpoint:
 https://api.kairos.com/v2/media?source={uploaded_file)&landmarks=1&timeout=1
@@ -141,7 +141,7 @@ See [JSON display](#json-display)
 
 The user can enter a video URL from the web.
 
-![URL from the Web](/demo/emotion/docs/url_from_the_web.png?raw=true)
+![URL from the Web](/php-demo/emotion/docs/url_from_the_web.png?raw=true)
 
 When a URL is entered, the URL source is posted asynchronously to `process.php`.  A PHP cURL POST request is made to the Kairos API with the uploaded file, using the following endpoint:
 https://api.kairos.com/v2/media?source={uploaded_file)&landmarks=1&timeout=1

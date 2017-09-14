@@ -10,15 +10,15 @@ Clone or fork the repo at https://github.com/kairosinc/api-examples
 
 Go to the Kairos website at https://www.kairos.com/ and click GET A FREE API KEY
 
-![Kairos Website](/demo/recognize/docs/kairos_website.png?raw=true)
+![Kairos Website](/php-demo/recognize/docs/kairos_website.png?raw=true)
 
 Fill out the online form.
 
-![Registration Form](/demo/recognize/docs/registration_form.png?raw=true)
+![Registration Form](/php-demo/recognize/docs/registration_form.png?raw=true)
 
 You will receive a confirmation email.  Click on the link in the email, to activate your account.  This will take you to a page with your API ID and Key.
 
-![ID and Key](/demo/recognize/docs/id_and_key.png?raw=true)
+![ID and Key](/php-demo/recognize/docs/id_and_key.png?raw=true)
 
 ## 3. Run the app 
 
@@ -28,7 +28,7 @@ The application must be run from a server, such as MAMP, WAMP, LAMP OR XAMPP, or
 
 Insert your Kairos API ID and Key into the config.php file, which is at the root of the demo directory.
 
-![Config File](/demo/recognize/docs/config_file.png?raw=true)
+![Config File](/php-demo/recognize/docs/config_file.png?raw=true)
 
 The recognize demo should render at the the host that you designated in your stack or virtual machine. 
 
@@ -38,7 +38,7 @@ The recognize demo should render at the the host that you designated in your sta
 
 Go to the Docker website at https://docs.docker.com/, select your platform and install Docker on your system.
 
-![Config File](/demo/recognize/docs/docker_website.png?raw=true)
+![Config File](/php-demo/recognize/docs/docker_website.png?raw=true)
 
 After installation, be sure to run these commands to test if your versions of docker, docker-compose, and docker-machine are up-to-date and compatible with Docker.app.
 
