@@ -3,9 +3,6 @@ $configs = include('../config.php');
 
 define('DEMO_ENV', (getenv('STAGE') ? getenv('STAGE') : 'dev'));
 define('DEMO_PREVIEW_IMAGE', (getenv('DEMO_PREVIEW_IMAGE') ? getenv('DEMO_PREVIEW_IMAGE') : ""));
-define('CACHE_BREAKER', (DEMO_ENV == 'dev' ? time() : date('ymd')));
-define('FACEBOOK_ASYNC_ID', (getenv('FACEBOOK_ASYNC_ID') ? getenv('FACEBOOK_ASYNC_ID') : ''));
-define('FACEBOOK_APP_ID', (getenv('FACEBOOK_APP_ID') ? getenv('FACEBOOK_APP_ID') : ''));
 
 function getDiversityImageUrl($default_image_url = null)
 {
@@ -51,14 +48,14 @@ $image = getDiversityImageUrl(DEMO_PREVIEW_IMAGE);
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://www.kairos.com/" />
     <meta property="og:site_name" content="Kairos" />
-    <meta property="fb:app_id" content="<?php echo FACEBOOK_APP_ID; ?>" />
+    <meta property="fb:app_id" content="" />
 
     <link href="../images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="css/facerace.css?_t=<?php echo CACHE_BREAKER; ?>">
-    <link rel="stylesheet" href="css/facerace-mediaqueries.css?_t=<?php echo CACHE_BREAKER; ?>">
+    <link rel="stylesheet" href="css/facerace.css">
+    <link rel="stylesheet" href="css/facerace-mediaqueries.css">
 
     <script>
     if ((window.self !== window.top) == false && 
@@ -77,7 +74,7 @@ window.__enable_share_if_loads = <?php echo $image['enable_share_if_loads']; ?>;
 window.__e = '<?php echo DEMO_ENV; ?>';
 window.fbAsyncInit = function() {
     FB.init({
-      appId      : '<?php echo FACEBOOK_ASYNC_ID; ?>',
+      appId      : '',
       xfbml      : true,
       version    : 'v2.8'
     });
@@ -158,8 +155,8 @@ window.twttr = (function(d, s, id) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
 
     <!-- custom libraries -->
-    <script src="js/faceraceDemoApp.js?_t=<?php echo CACHE_BREAKER; ?>"></script>
-    <script src="js/faceraceUi.js?_t=<?php echo CACHE_BREAKER; ?>"></script>
+    <script src="js/faceraceDemoApp.js"></script>
+    <script src="js/faceraceUi.js"></script>
     <script src="../js/exif.js"></script>
     <script src="../js/utils.js"></script>
     

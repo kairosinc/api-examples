@@ -6,6 +6,7 @@
     //------------------------------------
 
     $configs = include('../config.php');
+    define('DEMO_ENV', (getenv('STAGE') ? getenv('STAGE') : 'dev'));
 ?>
 <html>
 <html lang="en">
@@ -50,7 +51,7 @@
                         <div class="image-info" style="display: block;">Confidence: <br>85.821%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/demo/verify/george1.jpg" crossorigin="Anonymous" />
+                        <img src="https://media.kairos.com/team/george1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>26.268%</div>
                     </li>

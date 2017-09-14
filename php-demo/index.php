@@ -13,11 +13,11 @@
 	<div class="container">
 		<h2>Kairos Demo Modules</h2>
 		<nav>
-		    <div class="col-xs-6 col-sm-3"><a class="btn btn-kairos" href="/detect/">DETECT</a></div>
-		    <div class="col-xs-6 col-sm-3"><a class="btn btn-kairos" href="/emotion/">EMOTION</a></div>
-		    <div class="col-xs-6 col-sm-3"><a class="btn btn-kairos" href="/facerace/">FACE RACE</a></div>
-		    <div class="col-xs-6 col-sm-3"><a class="btn btn-kairos" href="/recognize/">RECOGNIZE</a></div>
-		    <div class="col-xs-6 col-sm-3"><a class="btn btn-kairos" href="/verify/">VERIFY</a></div>
+		    <div class="col-xs-6 col-sm-3"><a class="btn btn-kairos" href="/php-demo/detect/">DETECT</a></div>
+		    <div class="col-xs-6 col-sm-3"><a class="btn btn-kairos" href="/php-demo/emotion/">EMOTION</a></div>
+		    <div class="col-xs-6 col-sm-3"><a class="btn btn-kairos" href="/php-demo/facerace/">FACE RACE</a></div>
+		    <div class="col-xs-6 col-sm-3"><a class="btn btn-kairos" href="/php-demo/recognize/">RECOGNIZE</a></div>
+		    <div class="col-xs-6 col-sm-3"><a class="btn btn-kairos" href="/php-demo/verify/">VERIFY</a></div>
 		</nav>
 	</div>
 

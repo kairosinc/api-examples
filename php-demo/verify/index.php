@@ -7,6 +7,7 @@
     //------------------------------------
 
     $configs = include('../config.php');
+    define('DEMO_ENV', (getenv('STAGE') ? getenv('STAGE') : 'dev'));
 ?>
 <html>
 <html lang="en">
