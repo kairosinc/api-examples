@@ -1,0 +1,172 @@
+{{define "facerace"}}
+
+<html>
+<html lang="en">
+
+<head>
+    <title>Kairos Facerace Demo</title>   
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="Human Analytics, Emotion Analysis & Face Recognition | Kairos" />
+    <meta property="og:description" content="Kairos is a Human Analytics platform. Our face analysis algorithms recognize & understand how people feel in video, photos & the real-world." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://www.kairos.com/" />
+    <meta property="og:site_name" content="Kairos" />
+    <meta property="fb:app_id" content="154426421321384" />
+
+    <link rel="shortcut icon" href="https://media.kairos.com/demo/images/favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://media.kairos.com/demo/css/fonts.css?t_{{.CacheBuster}}">
+    <link rel="stylesheet" href="https://media.kairos.com/demo/css/main.css?t_{{.CacheBuster}}">
+    <link rel="stylesheet" href="https://media.kairos.com/demo/facerace/css/facerace.css?t_{{.CacheBuster}}">
+    <link rel="stylesheet" href="https://media.kairos.com/demo/facerace/css/facerace-mediaqueries.css?t_{{.CacheBuster}}">
+
+    <script>
+        if ((window.self !== window.top) == false && 
+            window.location.href.match(/i=[a-z0-9]{10,40}/) != null && 
+            window.location.href.match(/v=1/) == null
+        ) {
+            window.location.href = "https://kairos.com/diversity-recognition";
+        }
+    </script>
+
+</head>
+<body>
+
+    <div id="fb-root"></div>
+    <script>
+    window.__enable_share_if_loads = 1;
+    window.__e = "{{.DemoEnv}}";
+    window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1892185954347701',
+          xfbml      : true,
+          version    : 'v2.8'
+        });
+        FB.AppEvents.logPageView();
+    };
+
+    (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <script>
+    window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, "script", "twitter-wjs"));</script>
+
+    <div class="main-container container">
+        <div class="row" id="waiting">
+            <div class="image-container-template"></div>
+        </div>
+
+        <div class="row ui-buttons">
+
+            <div class="col-md-12" id="diversity_image">
+                <img src="{{.PreviewImage}}">
+            </div>
+
+            <div class="upload col-md-12">
+                <form method="post" enctype="multipart/form-data" id="mediaUploadForm"> 
+                    <div class="upload-button btn btn-kairos">
+                        <span id="upload_text">TRY MY PHOTO</span>
+                        <input type="file" id="upload" name="upload">
+                    </div>
+                </form>
+                <div id="uploadError"></div>
+            </div>
+        </div>
+
+        <!-- social plugins -->
+        <div id="social_plugins">
+            <span id="kairos_social_plugin_twitter"></span>
+            <span id="kairos_social_plugin_fb"></span>
+        </div>
+    </div>  
+           
+
+    <!-- hosted libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- custom libraries -->
+    <script src="/js/facerace/faceraceDemoApp.js?t_{{.CacheBuster}}"></script>
+    <script src="/js/facerace/faceraceUi.js?t_{{.CacheBuster}}"></script>
+    <script src="https://media.kairos.com/demo/js/exif.js?t_{{.CacheBuster}}"></script>
+    <script src="/js/utils.js?t_{{.CacheBuster}}"></script>
+
+    <script>
+        if (
+            {{.APP_ID}} != "" &&
+            {{.APP_KEY}} != "" &&
+            {{.API_URL}} != ""
+        ) {
+            faceraceDemoApp.init({
+                "uploadFileSizeImage":10000000,
+                "uploadFileTypesImage":[
+                    ["image/png"],
+                    ["image/jpeg"],
+                    ["image/jpg"]
+                ],
+                "apiCredentials":true
+            });
+        }
+        else {
+            faceraceDemoApp.init({
+                "apiCredentials":false
+            });
+        }
+    </script>
+
+    <script type="template_text" id="fb_template_text">
+    <iframe src="https://www.facebook.com/plugins/share_button.php?href=__URL_ENCODED__&layout=button&size=large&mobile_iframe=true&appId=154426421321384&width=73&height=28" width="73" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+    </script>
+
+    <script type="template_text" id="fb_button">
+    <img id="fb_share_button" src="/fb_button.png" rel="__URL__">
+    </script>
+
+    <script type="template_text" id="twitter_template_text">
+    <a class="twitter-share-button"
+      href="https://twitter.com/share"
+      data-size="large"
+      data-text="custom share text"
+      data-url="__URL__"
+      data-hashtags="DiversityRecognition"
+      data-via="LoveKairos"
+      data-related="LoveKairos">
+    Tweet
+    </a>
+    </script>
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@LoveKairos">
+    <meta name="twitter:creator" content="@LoveKairos">
+    <meta name="twitter:title" content="Kairos celebrates diversity by using face recognition">
+    <meta name="twitter:description" content="@LoveKairos celebrates diversity by using face recognition - Try it kairos.com/you #DiversityRecognition">
+    <meta name="twitter:image" content="https://media.kairos.com/demo/facerace/demo-elizabeth.png">
+    
+</body>
+</html>
+
+{{end}}
