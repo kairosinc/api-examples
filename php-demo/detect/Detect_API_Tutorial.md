@@ -1,6 +1,6 @@
 # How to create a Detect application
 
-Here at Kairos, we've created an application that demonstrates the way our tech can be used to detect a human face in an image.  This Kairos Detect demo contains four modules: Examples, Webcam, Upload and URL from the web.  Any of these modules can be modified, or separated from the main framework and used as standalone applications.  The following is a step by step tutorial designed to get your Kairos Detect application up and running.  Then we'll show you how you can customize these modules to suit your needs.
+Here at Kairos, we've created an application that demonstrates the way our tech can be used to detect a human face in an image.  Our Kairos Detect demo contains four modules: Examples, Webcam, Upload and URL from the web.  Any of these modules can be modified, or separated from the main framework and used as standalone applications.  The following is a step by step tutorial designed to get your Kairos Detect application up and running.  Then we'll show you how you can customize these modules to suit your needs.
 
 ## 1. Get the code
 
@@ -8,17 +8,11 @@ Clone or fork the repo at https://github.com/kairosinc/api-examples
 
 ## 2. Get your keys
 
-Go to the Kairos website at https://www.kairos.com/ and click GET A FREE API KEY
-
-![Kairos Website](/php-demo/detect/docs/kairos_website.png?raw=true)
+Go to the Kairos website at https://www.kairos.com/ and click GET YOUR FREE API KEY
 
 Fill out the online form.
 
-![Registration Form](/php-demo/detect/docs/registration_form.png?raw=true)
-
 You will receive a confirmation email.  Click on the link in the email, to activate your account.  This will take you to a page with your API ID and Key.
-
-![ID and Key](/php-demo/detect/docs/id_and_key.png?raw=true)
 
 ## 3. Run the app 
 
