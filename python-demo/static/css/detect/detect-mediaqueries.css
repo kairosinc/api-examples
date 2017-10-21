@@ -1,0 +1,169 @@
+@media (max-width: 600px) {
+	.image2 {
+		display: none;
+	}
+	.copy-json-button {
+		display: none;
+	}
+	.ethnicity-graph-inner .bar-container {
+		height: 20px;
+	}
+	.face-overlay {
+	    background-position: 50% 50%;
+	}
+}
+
+@media (max-width: 767px) {
+	.image2, .image4 {
+		display: none;
+	}
+	.photo-thumbnail img {
+		width: 31%;
+		margin-right: 3.5%;
+	}
+	.image3 img {
+		float: left;
+	}
+	.image5 img {
+		margin-top: 0;
+	}
+	.json-response, .json-response-template, .copy-json-button {
+		display: none;
+	}
+}
+
+@media (min-width: 768px) {
+	.main-image-container {
+		padding-right: 0;
+	}
+	.image2 {
+		display: none;
+	}
+	.image3 img {
+		margin-top: 0;
+		float: left;
+	}
+	.image4 {
+		display: block;
+	}
+	.image4 img {
+		margin-top: 0;
+		float: left;
+	}
+	.image5 img {
+		margin-top: 0;
+		float: right;
+	}
+	.json-response {
+		display: block;
+		height: 360px;
+	}
+	.photo-thumbnail img {
+	    width: 23%;
+	    margin-right: 2.6%;
+	}
+	.ui-buttons-mask {
+		width: 96%;
+	}
+	.show-hide-ethnicity {
+		display: block;
+	}
+	.ethnicity-graph-inner .bar-container {
+		height: 12px;
+	}
+	.ethnicity-graph-inner .bar-header .percent {
+		font-size: 20px;
+		font-weight: bold;
+	}
+	.ethnicity-graph-inner .bar-header .title {
+		font-size: 11px;
+		font-weight: normal;
+	}
+	#webcamVideo {
+		position: absolute;
+		top: 0;
+	    left: -80px;
+		z-index: 9;
+	}
+	#displayCanvas {
+		left: -80px;
+	}
+}
+
+@media (min-width: 992px) {
+	.main-container {
+	    width: 980px;
+	    margin: 0 auto;
+	    padding: 50px 0;
+	}
+	.main-image-container {
+	    padding-right: 0;
+	    height: 475px;
+	}
+	#previewImage {
+		width: 475px;
+		height: 475px;
+	}
+	.image2, .image4 {
+		display: block;
+	}
+	.photo-thumbnail img {
+		width: 184px;
+		margin-top: 0;
+		margin-right: 15px;
+		opacity: 0.7;
+		float: left;
+	}
+	.canvas-container {
+		width: 475px;
+	    height: 475px;
+	    overflow: hidden;
+	    position: absolute;
+	    top: 0;
+	    left: 15px;
+	    z-index: 9;
+	}
+	.display-image-container {
+		width: 475px;
+		height: 475px;
+	}
+	.image-container-template {
+	    width: 475px;
+	    height: 475px;
+	}
+	.webcam-video-container {
+		width: 475px;
+		height: 475px;
+	}
+	.json-response {
+	    width: 505px;
+		height: 475px;
+		padding-left: 0;
+	}
+	.ui-buttons .upload {
+		padding-left: 0;
+		margin-top: 0;
+	}
+	.show-hide-json {
+		display: none;
+	}
+	.ui-buttons-mask {
+		width: 97%;
+	}
+	.ethnicity-graph-inner .bar-container {
+		height: 35px;
+	}
+	.ethnicity-graph-inner .bar-header .percent {
+		font-size: 22px;
+		font-weight: bold;
+	}
+	.ethnicity-graph-inner .bar-header .title {
+		font-size: 13px;
+		font-weight: normal;
+	}
+}
+
+@media (min-width: 1200px) {
+
+}
+

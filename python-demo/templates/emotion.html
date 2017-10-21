@@ -1,0 +1,196 @@
+<html>
+<html lang="en">
+
+<head>
+    <title>Kairos Emotion Demo</title>   
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://media.kairos.com/demo/images/favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://media.kairos.com/python-demo/css/fonts.css">
+    <link rel="stylesheet" href="https://media.kairos.com/python-demo/css/main.css">
+    <link rel="stylesheet" href="https://media.kairos.com/python-demo/emotion/css/emotion.css">
+    <link rel="stylesheet" href="https://media.kairos.com/python-demo/emotion/css/emotion-mediaqueries.css">
+</head>
+<body>
+    <div class="main-container container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 main-video-container">
+                <div class="video-wrapper">
+                    <video id="video" width="100%" mediaId="video_1" src="https://media.kairos.com/python-demo/emotion/videos/video_1.mp4" muted  playsinline></video>
+                    <div class="video-controls">
+                        <a href="/" class="play" id="play-pause"></a>
+                        <div id="progress">  
+                            <div id="progress-holder">  
+                                <div id="progress-bar">
+                                    <span id="progress-scrubber"></span> 
+                                </div>
+                            </div>  
+                        </div> 
+                        <div id="progress-time">00.00</div>
+                    </div>
+                    <div class="canvas-container-video"></div>
+                </div>
+                <div class="webcam-video-container">
+                    <div class="face-overlay"></div>
+                    <div class="webcam-counter"></div>
+                </div>
+                <div class="display-image-container"></div>
+                <div class="canvas-container-image"></div>
+                <div class="template-background"></div>
+                <div class="video-container-template"></div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 highcharts-container emotion">
+                <div class="highcharts-menu">
+                    <a href="" class="show-json">SHOW JSON</a>
+                    <div class="autoscale-checkbox"><input type="checkbox" id="autoscale" /> Autoscale</div>
+                    <div class="featurepoints-checkbox"><input type="checkbox" id="featurepoints" checked /> Featurepoints</div>
+                </div>
+                <div class="highcharts-wrapper">
+                    <div id="highcharts-curtain-wrapper">
+                        <div id="highcharts-curtain">
+                            <div class="gridlines"></div>
+                            <div class="gridlines"></div>
+                            <div class="gridlines"></div>
+                            <div class="gridlines"></div>
+                            <div class="gridlines"></div>
+                            <div class="gridlines"></div>
+                        </div>
+                    </div>
+                    <div id="highcharts-titles"></div>
+                    <div id="highcharts-containers"></div>
+                </div>
+                <div id="highcharts-container-image"></div>
+                <div class="highcharts-template"></div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 json-response-container emotion">
+                <a href="" class="hide-json">HIDE JSON</a>
+                <button class="copy-json-button btn btn-primary" data-clipboard-action="copy" data-clipboard-target=".json-response">COPY</button>
+                <div class="json-response"><pre></pre></div>
+                <div class="json-template"></div>
+            </div>
+        </div>
+        <div class="row options-panel col-md-12">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <h4>Options</h4>
+                <div class="form-group">
+                    <label class="control-label" for="optionPollTimeout">Poll Timeout:</label><span class="prompt">Time allowed for the demo to poll for a response once a Media ID is returned (in seconds)</span>
+                    <input class="form-control" type="text" name="optionPollTimeout" id="optionPollTimeout"><span class="option-error"></span>
+                    <div class="polltimeout-slider"></div>
+                </div>
+                <div class="polling-display">Polling: <span></span></div>
+            </div>
+        </div>
+        <div class="row ui-buttons">
+            <div class="webcam col-xs-6 col-sm-6 col-md-6">
+                <button class="webcam-button btn btn-kairos">WEBCAM</button>
+            </div>
+            <div class="upload col-xs-6 col-sm-6 col-md-6">
+                <form method="post" enctype="multipart/form-data" id="mediaUploadForm"> 
+                    <div class="upload-button btn btn-kairos">UPLOAD<input type="file" id="upload" name="upload"></div>
+                </form>
+                <div class="upload-error"></div>
+            </div>
+            <div class="url col-xs-6 col-sm-8 col-md-8">
+                <input type="text" class="url-from-web" value="URL from the web" />
+                <div class="url-error"></div>
+            </div>
+            <div class="submit col-xs-6 col-sm-4 col-md-4">
+                <button class="submit-button btn btn-kairos">SUBMIT</button>
+            </div>
+            <div class="ui-buttons-mask"></div>
+        </div>
+    </div>  
+            
+
+    <!-- hosted libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://code.highcharts.com/4.2.3/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
+    
+
+    <!-- custom libraries -->
+    <script src="https://media.kairos.com/python-demo/js/utils.js"></script>
+    <script src="https://media.kairos.com/python-demo/emotion/js/emoDemoApp.js"></script>
+    <script src="https://media.kairos.com/python-demo/emotion/js/emotionUi.js"></script>
+    <script src="https://media.kairos.com/python-demo/emotion/js/MediaStreamRecorder.js"></script>
+
+    <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
+    <script src="https://cdn.WebRTC-Experiment.com/gumadapter.js"></script>
+    <script src="https://media.kairos.com/python-demo/emotion/js/featurePoints.js"></script>
+    <script src="https://media.kairos.com/python-demo/emotion/js/featurePointAnimation.js"></script>
+    <script src="https://media.kairos.com/python-demo/emotion/js/highchartsApp.js"></script>
+    <script src="https://media.kairos.com/python-demo/emotion/js/highchartsAppPhoto.js"></script>
+    <script src="https://media.kairos.com/python-demo/emotion/js/videoPlayer.js"></script>
+
+    
+
+    <!-- initialize custom libraries if API credentials are valid -->
+     <script>
+        if (
+            "{{APP_ID}}" != "" &&
+            "{{APP_KEY}}" != "" &&
+            "{{API_URL}}" != ""
+        ) { 
+            emoDemoApp.init({
+                "uploadFileSizeVideo":100000000,
+                "uploadFileTypesEmotion":[
+                    ["video/mp4"],
+                    ["video/x-flv"],
+                    ["video/webm"],
+                    ["video/quicktime"],
+                    ["video/mov"],
+                    ["video/wmv"],
+                    ["video/mpeg"],
+                    ["video/x-msvideo"],
+                    ["video/x-ms-asf"],
+                    ["image/png"],
+                    ["image/jpeg"],
+                    ["image/jpg"],
+                    ["application/octet-stream"],
+                    ["video/x-matroska"],
+                    ["image/x-ms-bmp"]
+                ],
+                "pollTimeout":300,
+                "mediaPath": "https://media.kairos.com/python-demo/emotion/",
+                "demoMedia":[
+                    {"video_1":"17b62ed9921ab34c7deb9a33"}
+                ],
+                "apiCredentials":true
+            });
+            videoPlayer.init();
+            highchartsApp.init({
+                "colors":[
+                    ["#22B573"],
+                    ["#1175E3"],
+                    ["#FB623E"],
+                    ["#DA0059"],
+                    ["#752673"],
+                    ["#FBB03B"]
+                ]
+            });
+            highchartsAppPhoto.init({
+                "colors":[
+                    ["#22B573"],
+                    ["#1175E3"],
+                    ["#FB623E"],
+                    ["#DA0059"],
+                    ["#752673"],
+                    ["#FBB03B"]
+                ]
+            });
+        }
+        else {
+            emoDemoApp.init({
+                "apiCredentials":false
+            });
+        }
+    </script>
+
+</body>
+
+</html>
+

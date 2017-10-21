@@ -1,0 +1,114 @@
+/* 
+	main CSS 		
+ 	created:; March 2016 
+ 	modified: January 2017;
+	author: Steve Rucker
+*/
+
+body { 
+	font-family: 'ProximaNova-Regular' !important; 
+	color: #333;
+}
+a, a:visited, a:focus  {
+	color: #139C8A;
+	text-decoration: none!important;
+	font-family: 'ProximaNova-Bold';
+}
+a:hover {
+	color: #2C3444;
+	text-decoration: none!important;
+	font-family: 'ProximaNova-Bold';
+}
+.main-container {
+	margin-top: 10px;
+	clear: both;
+}
+.btn-kairos {
+	background-color: #139C8A;
+	color: #FFF!important;
+	border-radius: 0;
+	font-weight: bold;
+	padding: 12px;
+}
+.landing-page nav a {
+	margin-bottom: 20px;
+	width: 100%;
+}
+
+/* JSON DISPLAY */
+.json-response-container {
+	width: 475px;
+	height: 475px;
+	border: 1px solid #333;
+	float: right;
+	overflow: hidden;
+    padding-left: 0;
+	display: none;
+}
+	.emotion.json-response-container {
+		width: 490px;
+		height: 560px;
+		float: inherit;
+		border: none;
+	}
+.copy-json-button {
+	position: absolute;
+    top: 22px;
+    right: 65px;
+    display: none;
+    background-color: #1175E3;
+    border-radius: 0;
+}
+	.copy-json-button:hover {
+		background-color: #3178c5;
+		color: #FFF!important;
+		font-weight: normal;
+	}
+.json-title {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	color: #FFF;
+	font-weight: bold;
+	display: none;
+}
+.json-response {
+	clear: both;
+	width: 475px;
+}
+.json-response pre {
+	background-color: #2c3444;
+	color: #f8f8f8;
+	border: none;
+    border-radius: 0;
+    height: 560px;
+    padding: 50px 5px 5px;
+    font-size: 11px;
+    word-wrap: break-word;
+    white-space: pre-wrap; 
+ 	white-space: -moz-pre-wrap; 
+ 	white-space: -o-pre-wrap;   
+}
+.json-response pre span{
+    word-wrap: break-word;
+}
+.show-json, .hide-json {
+	position: absolute;
+    top: 7px;
+    left: 12px;
+    z-index: 10;
+    cursor: pointer;
+    z-index: 99;
+}
+.show-json {
+    display: none;
+}
+.show-json:hover, .hide-json:hover {
+	color: #247769;
+}
+.json-response .string { color: #65b042; }
+.json-response .number { color: #3387cc; }
+.json-response .key { color: #65b042; }
+.json-response .colon { color: #f8f8f8; }
+
+
