@@ -92,7 +92,7 @@ verifyDemoApp =  {
                     var status = jsonResponse.images[0].transaction.status;
                     var confidence = jsonResponse.images[0].transaction.confidence;
                     if (status == "success") {
-                        if (confidence >= .5) {
+                        if (confidence >= .6) {
                            $(".verify-response").html("MATCH"); 
                         }
                         else {
@@ -391,7 +391,7 @@ verifyDemoApp =  {
                     var status = kairosJSON.images[0].transaction.status;
                     var confidence = kairosJSON.images[0].transaction.confidence;
                     if (status == "success") {
-                        if (confidence >= .5) {
+                        if (confidence >= .6) {
                            $(".verify-response").html("MATCH"); 
                         }
                         else {
