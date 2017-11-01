@@ -1,0 +1,44 @@
+<!-- This is an example of how Fetch can be used to get a response from the Kairos detect API endpoint -->
+
+<!DOCTYPE html>
+<html>
+ <head>
+    <title>Fetch with Kairos detect API endpoint</title>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <p>Fetch with Kairos /detect API endpoint</p>
+  </body>
+  <script>
+    var api_url = "https://api.kairos.com";
+    
+    // Enter your app id and key:
+    var app_id = "YOUR_APP_ID";
+    var app_key = "YOUR_APP_KEY";
+
+    var image_url = "https://s3.amazonaws.com/kairos-media/team/Brain_Brackeen.jpeg";
+
+    // create headers
+    var headers = new Headers();
+    headers.append("app_id", app_id);
+    headers.append("app_key", app_key);
+    var payload = { "image" : image_url};
+
+    var init = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(payload)
+    };
+
+    const request = async () => {
+        const response = await fetch(api_url + "/detect", init);
+        const json = await response.json();
+        console.log(json);
+    }
+    request();
+
+  </script>
+</html>
