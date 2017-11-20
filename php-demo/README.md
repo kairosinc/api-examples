@@ -67,7 +67,7 @@ services:
       XDEBUG: "true"
       XDEBUG_CONFIG: "remote_host=10.254.254.254"
     volumes:
-      - ./demo:/var/www/app/php-demo
+      - .:/var/www/app/php-demo
   ```
 
 3. Run the following commands, which will build your Docker container and execute Docker-Compose run to start up the app locally on your machine:

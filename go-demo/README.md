@@ -26,39 +26,11 @@ Using the Kairos Face Recognition API, the Verify Demo compares two photos, and 
 
 ## Environment Setup and Installation
 
-The demo app can easily be run using Docker with the included Dockerfile and docker-compose.yml.
+The demo app can easily be run locally.
 
 The app is basically a single page application, which is viewed at index.php.
 
 Sign-up for your API key via [developer.kairos.com](https://developer.kairos.com) and check your inbox for an activation link. You should now have your `APP_ID` and `APP_KEY`
-
-Enter your personal keys into the docker-compose.yml file:
-
-    version: '2'
-    services:
-      demo:
-        image: demo
-        expose:
-          - "8080"
-        ports:
-          - "8080:80"
-        environment:
-          STAGE: prod
-          AWS_S3_REGION: "your-aws-s3-region"
-          AWS_S3_UPLOAD_BUCKET: "your-aws-upload-bucket"
-          APP_ID: "your-app-id"
-          APP_KEY: "your-app-key"
-          API_URL: "https://api.kairos.com"
-          API_TIMEOUT: "10" 
-          POLL_TIMEOUT: "300"
-          DEMO1_ID: "leave-blank"
-          DEMO_SECRET_KEY: "leave-blank"
-          XDEBUG: "true"
-          XDEBUG_CONFIG: "remote_host=10.254.254.254"
-        volumes:
-          - ./demo:/var/www/app/demo
-          
-The AWS keys aren't necessary unless you're running the Facerace demo.
 
 To run your app locally, you can install your personal keys into the `getEnvVariables()` function in the handler-functions.go file:
 
@@ -101,17 +73,11 @@ Then, cd to your demo repo, and run:
 ```
 make build
 
-make run
-```
-You will then be able to access the UI at http://localhost:8080:80 (if running using Docker for Mac or Docker for Windows)
-
-To stop the Docker container:
+make install
 
 ```
-docker stop $(docker ps -q)
-```
 
-Note: This will stop all running containers not just this one
+Then, type bin/app, and the site will render at http://localhost:8080
 
 ## Miscellaneous
 
