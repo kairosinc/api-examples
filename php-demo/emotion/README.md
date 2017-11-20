@@ -206,7 +206,7 @@ First, enter your personal keys into the docker-compose.yml file:
           XDEBUG: "true"
           XDEBUG_CONFIG: "remote_host=10.254.254.254"
         volumes:
-          - ./demo:/var/www/app/demo
+          - ./demo:/var/www/app/php-demo
           
 The AWS keys aren't necessary unless you're running the Facerace demo.  For more information about using XDEBUG with PHPStorm, go to: https://gist.github.com/coleca/c227543fbed515e4eb4c058a7455c581
 
