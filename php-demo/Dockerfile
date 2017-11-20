@@ -23,6 +23,6 @@ RUN cp -Rf /tmp/* /var/www/app/                       && \
     sed -i -e "s/memory_limit = 128M/memory_limit = 512M/g" /etc/php5/php.ini && \
     chown -R nginx:nginx /var/log/* /etc/nginx/*      && \
     chown -R nginx:nginx /var/www/* /etc/php5/*       && \
-    cd /var/www/app/demo && composer update
+    cd /var/www/app/ && composer update
 
 WORKDIR /var/log
