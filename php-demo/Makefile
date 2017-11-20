@@ -9,7 +9,7 @@ run:
 stop:
 	docker-compose down
 exec:
-	docker exec -it apiexamples_demo_1 sh
+	docker exec -it phpdemo_demo_1 sh
 logs:
 	docker-compose logs -f
 build-dockerhub:
