@@ -20,4 +20,4 @@ services:
       XDEBUG: "true"
       XDEBUG_CONFIG: "remote_host=10.254.254.254"
     volumes:
-      - ./demo:/var/www/app/php-demo
+      - .:/var/www/app/php-demo
