@@ -1,0 +1,36 @@
+<!-- This is an example of a method in which 
+angular.js can be used to retrieve a response from 
+the Kairos detect API endpoint  -->
+
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+<script>
+	var app = angular.module('myApp', []);
+	app.controller('myCtrl', ['$scope','$http', function($scope,$http) {
+		var headers = {
+			"app_id"    : "YOUR_APP_ID",
+			"app_key"   : "YOUR_APP_KEY"
+		};
+		var payload  = { "image" : "https://media.kairos.com/liz.jpg" };
+		var url = "https://api.kairos.com/detect";
+		// make request
+		$http({
+				url: url,
+				method: "post",
+				data: JSON.stringify(payload),
+			    headers:headers
+			}).then(function successCallback(response) {
+			console.log(response);
+	  	}, function errorCallback(response) {
+			console.log(response);
+	  	});
+	}]);
+</script>
+
+</body>
+</html>
