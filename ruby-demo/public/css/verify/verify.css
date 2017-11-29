@@ -1,0 +1,259 @@
+/* 
+    verify CSS      
+    created: July 2017
+    author: Steve Rucker
+*/
+.thumbnails {
+	margin-top: 15px;
+}
+.thumbnails .image-group {
+	float: left;
+	margin-right: 10px;
+}
+.thumbnails > div:last-child {
+	margin-right: 0;
+}
+.photo-thumbnail img {
+	width: 87px;
+    margin: 0 4px 0 0;
+	opacity: 0.5;
+}
+.photo-thumbnail:last-child img {
+	margin-right: 0;
+}
+.image-group {
+	position: relative;
+}
+.image-group.active img {
+	opacity: 1!important;
+}
+.btn-kairos {
+	background-color: #139C8A;
+	color: #FFF!important;
+	border-radius: 0;
+	font-weight: bold;
+	padding: 12px;
+}
+	.btn:hover {
+		background-color: #0d6f62;
+		color: #FFF!important;
+	}
+
+.left-image-container {
+	overflow: hidden;
+}
+.right-image-container {
+	overflow: hidden;
+	position: relative;
+}
+.display-image-left-container {
+    position: relative;
+    overflow: hidden;
+}
+.display-image-right-container {
+    position: relative;
+    overflow: hidden;
+}
+/* UPLOAD MODULE */
+.upload-form {
+	margin: 0;
+}
+.canvas-container-left, .canvas-container-right {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 15px;
+    display: none;
+    z-index: 9;
+}
+.canvas-container-right {
+    left: -2px;
+}
+.upload-button {
+    position: relative;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff!important;
+    height: 46px;
+    width: 100%;
+    line-height: 45px;
+    cursor: pointer;
+    text-align: center;
+    padding: 0;
+}
+.upload-button input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+    z-index: 9999;
+    margin: 0;
+    padding: 12px;
+}
+.upload-value {
+	position: absolute;
+	top: 7px;
+    left: 104px;
+	color: #fff;
+}
+.url-error {
+	color: #ff0000;
+	padding: 10px 0 0 10px;
+	font-size: 12px;
+}
+.ui-buttons {
+	margin-top: 15px;
+	position: relative;
+}
+.ui-buttons .upload {
+	padding-left: 0;
+}
+.ui-buttons .upload:nth-child(2) {
+	margin-left: -5px;
+}
+.ui-buttons .upload.full-width {
+	padding-left: 15px;
+	width: 100%;
+}
+.ui-buttons .url {
+	padding-left: 0;
+	padding-right: 0;
+}
+.ui-buttons div button {
+	width: 100%;
+}
+.ui-buttons input {
+	border: 2px solid #CCC;
+    height: 46px;
+    width: 100%;
+    padding-left: 10px;
+    color: #333;
+}
+.ui-buttons-mask {
+	position: absolute;
+    top: 0;
+    left: 15px;
+    background-color: #000;
+    opacity: 0.3;
+    width: 97%;
+    height: 100%;
+}
+.submit {
+	padding-left: 0;
+}
+/* HANDLEBAR MESSAGES */
+.image-left-template, .image-right-template {
+	height: 80px;
+    position: absolute;
+    top: 0;
+    left: 2px;
+    z-index: 9;
+}
+.image-left-template {
+	left: 15px;
+}
+.header-bkg-left, .header-bkg-right {
+	background-color: #000;
+    width: 100%;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    left: -2px;
+    opacity: 0.6;
+    z-index: 8;
+}
+.header-bkg-left {
+    left: 0;
+}
+.message-container{
+	position: absolute;
+    z-index: 10;
+    width: 100%;
+    top: 0;
+}
+.message-container .message{
+    font-size: 14px;
+    clear: both;
+    color: #fff;
+    text-align: center;
+    z-index: 10;
+    padding-top: 54px;
+    margin: 0 auto;
+}
+.processing-spinner {
+	margin-top: 5px;
+	width: 50px; 
+	height: 50px; 
+	margin: 5px auto 3px; 
+	background: transparent url('https://media.kairos.com/python-demo/images/spinner.svg') no-repeat;
+	position: relative;
+    z-index: 9;
+}
+.message-container .spinner-message{
+	font-size: 14px;
+	clear: both;
+	color: #fff;
+	text-align: center;
+	z-index: 10;
+}
+.verify-response {
+    border: 1px solid #fff;
+    padding: 4px;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    right: 20px;
+    top: 24px;
+    position: absolute;
+    z-index: 10;
+}
+.verify.json-response-container {
+
+
+}
+/* mask */
+.mask {
+	position: absolute;
+    background-color: #000;
+    opacity: 0.3;
+    z-index: 9999;
+}
+.upload-mask-left, .url-mask-left {
+    display: none;
+}
+.upload-mask-right, .url-mask-right {
+	display: none;
+}
+.hover-title {
+	position: absolute;
+    top: 30px;
+    left: 31px;
+    margin: 0;
+    width: 126px;
+    height: 30px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    box-shadow: 2px 1px 8px #999;
+    z-index: 9999;
+    background-color: #fff;
+    opacity: 0.9;
+    color: #139C8A;
+    text-align: center;
+    padding-top: 8px;
+    display: none; 
+    font-weight: bold;
+    font-size: 10px;
+    cursor: pointer;
+}
+

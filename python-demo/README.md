@@ -4,7 +4,7 @@
 These demo apps showcase the Kairos APIs by giving the user a means to quickly get up and running with our Emotion Analysis and Facial Recognition / Detection APIs.
 
 ## Running the App
-The demo app can easily be run using Docker with the included Dockerfile and docker-compose.yml or locally using a solution stack program such as MAMP or WAMP.
+The demo app can easily be run using Docker with the included Dockerfile and docker-compose.yml or locally from your command prompt.
 
 The app is basically a single page application, which is viewed at index.html.
 

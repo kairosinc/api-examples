@@ -1,0 +1,287 @@
+/* 
+    verify CSS      
+    created: July 2017
+    author: Steve Rucker
+*/
+@media (max-width: 479px) {
+	.left-image-container {
+		padding-right: 7px;
+	}
+	.right-image-container {
+		padding-left: 7px;
+	}
+	.thumbnails .image-group {
+		margin-right: 0;
+		width: 50%;
+	}
+	.photo-thumbnail img {
+		width: 46%;
+    	margin: 0 1px 0 0;
+	}
+	.image-group:first-child a:nth-child(2) img {
+		margin-right: 6px;
+		float: right;
+	}
+	.image-group:nth-child(2) a:first-child img {
+		margin-left: 6px;
+	}
+	.image-group:nth-child(2) a:nth-child(2) img {
+		float: right;
+	}
+	.ui-buttons .upload:first-child {
+		padding-right: 6px;
+	}
+	.ui-buttons .upload:nth-child(3) {
+		padding-left: 8px;
+		padding-right: 0;
+	}
+	.ui-buttons .submit:nth-child(2) {
+		padding-right: 6px;
+	}
+	.ui-buttons .url:nth-child(4) {
+		padding-left: 6px;
+	}
+	.ui-buttons .submit:nth-child(5) {
+		padding-right: 0;
+	}
+	.ui-buttons input {
+		padding-left: 4px;
+		font-size: 12px;
+	}
+	.image-right-template {
+		left: 9px;
+	}
+	.hover-title {
+		top: 20px;
+		left: 15px;
+		font-size: 9px;
+		width: 130px;
+	}
+	.verify.json-response-container {
+	    border: 0;
+	    position: absolute;
+	    left: 15px;
+	    z-index: 9;
+	}
+	.btn {
+		font-size: 12px;
+	}
+}
+
+@media (min-width: 480px) {
+	.left-image-container {
+		padding-right: 7px;
+	}
+	.right-image-container {
+		padding-left: 7px;
+	}
+	.thumbnails .image-group {
+		margin-right: 0;
+		width: 50%;
+	}
+	.photo-thumbnail img {
+		width: 46%;
+    	margin: 0 1px 0 0;
+	}
+	.image-group:first-child a:nth-child(2) img {
+		margin-right: 6px;
+		float: right;
+	}
+	.image-group:nth-child(2) a:first-child img {
+		margin-left: 6px;
+	}
+	.image-group:nth-child(2) a:nth-child(2) img {
+		float: right;
+	}
+	.verify.json-response-container {
+    	border: 0;
+    	position: absolute;
+    	left: 15px;
+    	z-index: 9;
+	}
+	.ui-buttons .upload:first-child {
+		padding-right: 8px;
+	}
+	.ui-buttons .upload:nth-child(3) {
+		padding-left: 8px;
+		padding-right: 0;
+	}
+	.ui-buttons .submit:nth-child(2) {
+		padding-right: 8px;
+	}
+	.ui-buttons .url:nth-child(4) {
+		padding-left: 6px;
+	}
+	.ui-buttons .submit:nth-child(5) {
+		padding-right: 0;
+	}
+	.ui-buttons input {
+		padding-left: 4px;
+		font-size: 12px;
+	}
+	.image-right-template {
+		left: 9px;
+	}
+	
+}
+
+@media (min-width: 600px) {
+	.hover-title {
+		top: 20px;
+		left: 60px;
+		font-size: 10px;
+		width: 200px;
+	}
+	.ui-buttons input {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 767px) {
+	
+}
+
+@media (min-width: 768px) {
+	.photo-thumbnail img {
+		width: 81px;
+		margin: 0 4px 0 0;
+	}
+	.thumbnails .image-group {
+		width: initial;
+		margin-right: 10px;
+	}
+	.image-group:nth-child(3) {
+		margin-right: 9px;
+	}
+	.image-group:nth-child(4) {
+		margin-right: 0;
+	}
+	.image-group:first-child a:nth-child(2) img {
+		margin-right: 4px;
+		float: inherit;
+	}
+	.image-group:nth-child(2) a:first-child img {
+		margin-left: inherit;
+	}
+	.image-group:nth-child(2) a:nth-child(2) img {
+		float: inherit;
+	}
+	.image-group:nth-child(4) a:nth-child(2) img {
+		margin-right: 0;
+	}
+	.verify.json-response-container, .verify .json-response {
+		position: relative;
+	}
+	.verify.json-response-container {
+    	float: left;
+    	left: 7px;
+	}
+	.verify .json-response pre {
+		width: 750px;
+	}
+	.hover-title {
+		top: 30px;
+		left: 31px;
+		font-size: 9px;
+		width: 126px;
+	}
+}
+
+@media (min-width: 992px) {
+	#image-left, #image-right {
+		width: 475px;
+	}
+	.main-container {
+		width: 980px;
+		margin: 0 auto;
+		padding: 50px 0;
+	}
+	.left-image-container {
+		padding-right: 0;
+		height: 475px;
+	}
+	.right-image-container {
+		padding-left: 0;
+		width: 475px;
+		height: 475px;
+	}
+	.display-image-left-container {
+	    width: 475px;
+	    height: 475px;
+	}
+	.display-image-right-container {
+	    width: 475px;
+	    height: 475px;
+	}
+	.canvas-container-left, .canvas-container-right {
+		width: 475px;
+	    height: 475px;
+	}
+	.image-left-template, .image-right-template {
+	    width: 475px;
+	    left: 2px;
+	}
+	.image-left-template {
+	    left: 15px;
+	}
+	.header-bkg-left, .header-bkg-right {
+		background-color: #000;
+	    height: 80px;
+	    position: absolute;
+	    top: 0;
+	    left: -2px;
+	    opacity: 0.6;
+	    z-index: 8;
+	}
+	.header-bkg-left {
+	    left: 0;
+	}
+	.upload-mask-left, .url-mask-left {
+		width: 475px;
+		height: 46px;
+		top: 0;
+	    left: 14px;
+	}
+	.upload-mask-right, .url-mask-right {
+		width: 475px;
+		height: 46px;
+		top: 0;
+		left: 505px;
+	}
+	.verify.json-response-container {
+    	float: left;
+    	left: 0;
+	}
+	.thumbnails .image-group {
+		float: left;
+		margin-right: 10px;
+	}
+	.photo-thumbnail img {
+		width: 87px;
+		margin: 0 4px 0 0;
+	}
+	.ui-buttons .upload:first-child {
+		padding-right: 15px;
+	}
+	.ui-buttons .upload:nth-child(3) {
+		padding-right: 15px;
+		padding-left: 0;
+	}
+	.ui-buttons .submit:nth-child(2) {
+		padding-right: 15px;
+	}
+	.image-group:nth-child(4) a:nth-child(2) img {
+		margin-right: 4px;
+	}
+	.ui-buttons .url:nth-child(4) {
+		padding-left: 0;
+	}
+	.ui-buttons .submit:nth-child(5) {
+		padding-right: 15px;
+	}
+}
+
+@media (min-width: 1200px) {
+
+}
+
