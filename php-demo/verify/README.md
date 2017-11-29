@@ -85,50 +85,8 @@ The functionality for a number of user interactions is contained within the `ver
 ---
 ## Installation
 
-First, enter your personal keys into the docker-compose.yml file:
 
-    version: '2'
-    services:
-      demo:
-        image: demo
-        expose:
-          - "8080"
-        ports:
-          - "8080:80"
-        environment:
-          STAGE: prod
-          AWS_S3_REGION: "your-aws-s3-region"
-          AWS_S3_UPLOAD_BUCKET: "your-aws-upload-bucket"
-          APP_ID: "your-app-id"
-          APP_KEY: "your-app-key"
-          API_URL: "https://api.kairos.com"
-          API_TIMEOUT: "10" 
-          POLL_TIMEOUT: "300"
-          DEMO1_ID: "leave-blank"
-          DEMO_SECRET_KEY: "leave-blank"
-          XDEBUG: "true"
-          XDEBUG_CONFIG: "remote_host=10.254.254.254"
-        volumes:
-          - .:/var/www/app/php-demo
-          
-The AWS keys aren't necessary unless you're running the Facerace demo.  For more information about using XDEBUG with PHPStorm, go to: https://gist.github.com/coleca/c227543fbed515e4eb4c058a7455c581
-
-
-Then, cd to your demo repo, and run:
-```
-make build
-
-make run
-```
-You will then be able to access the UI at http://localhost:8080:80 (if running using Docker for Mac or Docker for Windows)
-
-To stop the Docker container:
-
-```
-docker stop $(docker ps -q)
-```
-
-Note: This will stop all running containers not just this one
+See `INSTALLATION` in the main php-demo README file: [Installation](/php-demo/README.md)
 
 ---
 

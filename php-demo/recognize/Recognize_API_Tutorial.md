@@ -30,9 +30,8 @@ Insert your Kairos API ID and Key into the config.php file, which is at the root
 
 ![Config File](/php-demo/recognize/docs/config_file.png?raw=true)
 
-The recognize demo should render at the the host that you designated in your stack or virtual machine. 
+The recognize demo should render at the the host that you designated in your stack or virtual machine. {host}/recognize/
 
-{host}/recognize/
 
 #### Running the app in Docker
 

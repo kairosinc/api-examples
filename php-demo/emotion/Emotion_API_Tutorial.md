@@ -24,15 +24,15 @@ You will receive a confirmation email.  Click on the link in the email, to activ
 
 #### Running the app on your local system
 
-The application must be run from a server, such as MAMP, WAMP, LAMP OR XAMPP, or another type of virtual machine.
+The application can be run from a server, such as MAMP, WAMP, LAMP OR XAMPP, or another type of virtual machine.
 
 Insert your Kairos API ID and Key into the config.php file, which is at the root of the demo directory.
 
 ![Config File](/php-demo/emotion/docs/config_file.png?raw=true)
 
-The emotion demo should render at the the host that you designated in your stack or virtual machine. 
+The emotion demo should render at the the host that you designated in your stack or virtual machine. {host}/emotion/
 
-{host}/emotion/
+NOTE: The webcam functionality requires that your app has SSL enabled.  To do this, you can create a self-signed certificate and key and add these to your config settings.  MAMP Pro will create the certificate files and then add them to your config automatically.  If you're using Apache, the standard SSL port will be 443, so your demo will render here: https://{host}/demo/emotion  
 
 #### Running the app in Docker
 

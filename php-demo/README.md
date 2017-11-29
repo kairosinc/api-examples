@@ -26,56 +26,70 @@ Using the Kairos Face Recognition API, the Verify Demo compares two photos, and 
 [Documentation](/php-demo/verify/README.md)
 
 
-## Environment Setup and Installation
+## Installation
 
-The demo app can easily be run using Docker with the included Dockerfile and docker-compose.yml.
+The demo app can easily be run either locally or using Docker with the included Dockerfile and docker-compose.yml.
 
 The app is basically a single page application, which is viewed at index.php.
 
 Sign-up for your API key via [developer.kairos.com](https://developer.kairos.com) and check your inbox for an activation link. You should now have your `APP_ID` and `APP_KEY`
 
-#### Steps:
 
-1. clone or fork the repo, and git clone via command-line (CLI):
+#### Clone or fork the repo, and git clone via command-line (CLI):
    ```
    cd $HOME/Desktop
    git clone https://github.com/kairosinc/api-examples.git
    ```
-2. Edit the `docker-compose.yml` file in the root project directory to add your `APP_ID` and `API_KEY` in the following lines, and save the file:
-  ```
-Enter your personal keys into the docker-compose.yml file:
+#### Running the app on your local system
 
-version: '2'
-services:
-  demo:
-    image: demo
-    expose:
-      - "8080"
-    ports:
-      - "8080:80"
-    environment:
-      STAGE: dev
-      AWS_S3_REGION: "us-east-1"
-      AWS_S3_UPLOAD_BUCKET: "valid-s3-bucket-here"
-      APP_ID: "your-app-id-here"
-      APP_KEY: "your-app-key-here"
-      API_URL: "https://api.kairos.com"
-      API_TIMEOUT: "10" 
-      POLL_TIMEOUT: "300"
-      DEMO1_ID: "x"
-      DEMO_SECRET_KEY: "abc123"
-      XDEBUG: "true"
-      XDEBUG_CONFIG: "remote_host=10.254.254.254"
-    volumes:
-      - .:/var/www/app/php-demo
-  ```
+* The application can be run from a server, such as MAMP, WAMP, LAMP OR XAMPP, or another type of virtual machine or solution stack.
+* Insert your Kairos API ID and Key into the config.php file, which is at the root of the demo directory.
+* The demo should render at the the host that you designated in your stack or virtual machine: {host}/demo/emotion/
+* NOTE: The webcam functionality requires that your app has SSL enabled.  To do this, you can create a self-signed certificate and key and add these to your config settings.  MAMP Pro will create the certificate files and then add them to your config automatically.  If you're using Apache, the standard SSL port will be 443, so your demo will render here: https://{host}/demo/emotion/
 
-3. Run the following commands, which will build your Docker container and execute Docker-Compose run to start up the app locally on your machine:
+#### Running the app in a Docker container
+* Enter your personal keys into the docker-compose.yml file:
+```
+    version: '2'
+    services:
+      demo:
+        image: demo
+        expose:
+          - "8080"
+        ports:
+          - "8080:80"
+        environment:
+          STAGE: dev
+          AWS_S3_REGION: "us-east-1"
+          AWS_S3_UPLOAD_BUCKET: "valid-s3-bucket-here"
+          APP_ID: "your-app-id-here"
+          APP_KEY: "your-app-key-here"
+          API_URL: "https://api.kairos.com"
+          API_TIMEOUT: "10" 
+          POLL_TIMEOUT: "300"
+          DEMO1_ID: "x"
+          DEMO_SECRET_KEY: "abc123"
+          XDEBUG: "true"
+          XDEBUG_CONFIG: "remote_host=10.254.254.254"
+        volumes:
+          - .:/var/www/app/php-demo
   ```
-  make build && make run
-  ```
+* The AWS keys aren't necessary unless you're running the Facerace demo.  For more information about using XDEBUG with PHPStorm, go to: https://gist.github.com/coleca/c227543fbed515e4eb4c058a7455c581
 
-Once your app is running, you can visit [http://localhost:8080](http://localhost:8080) on your browser to view the demo examples.
+* Run the following commands, which will build your Docker container and execute Docker-Compose run to start up the app locally on your machine:
+  ```
+  make build
+  make run
+  ```
+* Once your app is running, you can visit `http://localhost:8080` in your browser to view the demo examples.
+
+* To stop the Docker container:
+
+```
+docker stop $(docker ps -q)
+```
+
+Note: This will stop all running containers not just this one
 
 ## Make this better
 
