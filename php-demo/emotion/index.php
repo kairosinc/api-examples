@@ -136,14 +136,14 @@
             <div class="message-container strong">{{message1}}</div>
             <div class="message-container">{{message2}}</div>
         </div>
-        <div class="response-box-container">
+        <!-- <div class="response-box-container">
         {{#if gender}}
             <div class="response-box-gender"></div>
         {{/if}}
         {{#if age}}
             <div class="response-box-age"></div>
         {{/if}}
-        </div>
+        </div> -->
     </script>
     <script id="json-template" type="text/x-handlebars-template">
         <div class="spinner-message-container">

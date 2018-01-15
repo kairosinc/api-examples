@@ -28,13 +28,6 @@ detectDemoApp =  {
         // options
         this.minHeadScale = 0.015;
         this.confidenceThreshold = .98;
-        // detect getUserMedia compatibility
-        // hide webcam link if not supported
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-        if (!navigator.getUserMedia) {
-            $(".webcam").hide();
-            $(".ui-buttons .upload").addClass("full-width");
-        }
         var fileTypeList = [];
         $(this.config.uploadFileTypesImage).each(function(idx, fileType) {
             fileTypeList.push(" ." + fileType.toString().split("/")[1])

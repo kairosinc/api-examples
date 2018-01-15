@@ -32,13 +32,6 @@ emoDemoApp =  {
         }
         this.captureInterval = 10000;
         $("#optionPollTimeout").val(this.config.pollTimeout);
-        // detect getUserMedia compatibility
-        // hide webcam link if not supported
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-        if (!navigator.getUserMedia) {
-            $(".webcam").hide();
-            $(".ui-buttons .upload").addClass("full-width");
-        }
         // hide webcam link from Windows platform until supported
         if (navigator.platform.indexOf('Win') > -1) {
             $(".webcam").hide();

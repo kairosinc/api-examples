@@ -22,6 +22,21 @@ else {
 	$(".options-panel").hide();
 }
 
+// hide webcam link if Safari or mobile
+var hideWebcam = function() {
+	if (utils.isSafari() || $(window).width() < 768) {
+	    $(".webcam").hide();
+	    $(".ui-buttons .upload").addClass("full-width");
+	} else {
+		$(".webcam").show();
+	    $(".ui-buttons .upload").removeClass("full-width");
+	}
+}
+hideWebcam();
+$( window ).resize(function() {
+  hideWebcam();
+});
+
 // show JSON container by default at larger resolutions
 if ($(window).width() > 768) {
 	$(".json-response-container").show();

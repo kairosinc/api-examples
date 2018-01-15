@@ -23,6 +23,21 @@ else {
 	$(".options-panel").hide();
 }
 
+// hide webcam link if Safari or mobile
+var hideWebcam = function() {
+	if (utils.isSafari() || $(window).width() < 768) {
+	    $(".webcam").hide();
+	    $(".ui-buttons .upload").addClass("full-width");
+	} else {
+		$(".webcam").show();
+	    $(".ui-buttons .upload").removeClass("full-width");
+	}
+}
+hideWebcam();
+$( window ).resize(function() {
+  hideWebcam();
+});
+
 $(".video-thumbnail img").eq(0).css("opacity","1");
 
 // show/hide Highcharts tooltip
