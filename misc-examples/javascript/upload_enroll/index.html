@@ -1,0 +1,54 @@
+<!-- This is an example of a method in which 
+an image can be uploaded from the user"s 
+local drive, and the image data 
+can be extracted using FileReader and 
+used in the payload to the enroll endpoint -->
+
+<html>
+
+<head>
+    <title>Kairos Upload - Enroll Example</title>  
+</head>
+<body>
+    
+    <form method="post" enctype="multipart/form-data" id="imageUploadForm"> 
+        <input type="file" id="imageUpload" name="imageUpload">
+        <input type="submit">
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>
+        $("#imageUploadForm").submit(function(e) {
+            e.preventDefault();
+            var input = $("#imageUpload")[0];
+            var file = input.files[0];
+            var reader  = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                var imageData = String(reader.result);
+                // put your keys in the header
+                var headers = {
+                    "Content-type"    : "application/json",
+                    "app_id"          : "APP_ID",
+                    "app_key"         : "APP_KEY"
+                };
+
+                var payload = { "image" : imageData , "gallery_name" : "myGallery", "subject_id" : "mySubjectID"};
+
+                var url = "http://api.kairos.com/enroll";
+
+                // make request 
+                $.ajax(url, {
+                    headers  : headers,
+                    type: "POST",
+                    data: JSON.stringify(payload),
+                    dataType: "text"
+                }).done(function(response){
+                    console.log(JSON.parse(response));
+                });
+            };
+        });
+	</script>
+</body>
+
+</html>
