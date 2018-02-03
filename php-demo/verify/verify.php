@@ -15,6 +15,7 @@ if ($_POST['process'] == "enroll") {
 
 	curl_setopt($request, CURLOPT_POST, true);
 	curl_setopt($request, CURLOPT_HTTPHEADER, array(
+		"Content-type: application/json",
 	    "app_id:" . APP_ID, 
 	    "app_key:" . APP_KEY
 	    )
@@ -37,6 +38,7 @@ if ($_POST['process'] == "verify") {
 
 	curl_setopt($request, CURLOPT_POST, true);
 	curl_setopt($request, CURLOPT_HTTPHEADER, array(
+		"Content-type: application/json",
 	    "app_id:" . APP_ID, 
 	    "app_key:" . APP_KEY
 	    )

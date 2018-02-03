@@ -38,6 +38,8 @@ As you can see, Brad is no match for Angelina:
 
 ![Box Around Face](/php-demo/verify/docs/brad_angelina_verify.png?raw=true)
 
+** Important note:  In order to match your uploaded images against the example images, you'll have to load all of the subjects into a gallery named "verify-demo".  You can do this easily by downloading the https://github.com/kairosinc/Kairos-SDK-PHP repo and directing your browser to https://kairos-sdk-php:8890/examples/methods_test.php.  (Must be hosted, or run locally using a solution stack such as MAMP, WAMP, LAMP or XAMPP)
+
 ### JSON display
 
 The JSON response for the image which has been verified is displayed in the right panel when the SHOW JSON link is clicked.  
