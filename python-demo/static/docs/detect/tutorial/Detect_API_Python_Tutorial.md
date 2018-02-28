@@ -10,25 +10,23 @@ Clone or fork the repo at https://github.com/kairosinc/api-examples
 
 * Go to the Kairos website at http://kairos.com/pricing and click GET YOUR FREE API KEY at the bottom of the page.
 
-* Fill out the online form.
+![Kairos Website](/python-demo/static/docs/detect/kairos_website.png?raw=true)
+
+Fill out the online form.
+
+![Registration Form](/python-demo/static/docs/detect/registration_form.png?raw=true)
 
 * You will receive a confirmation email.  Click on the link in the email, to activate your account.  This will take you to a page with your API ID and Key.
 
-## 3. Run the app 
+![ID and Key](/python-demo/static/docs/detect/id_and_key.png?raw=true)
 
-#### Running the app on your local system
+## 3. Run the app 
 
 Insert your Kairos API ID and Key into the app.py file, which is at the root of the python-demo directory.
 
-    try:
-        app_id = os.environ['APP_ID']
-    except:
-        app_id = "YOUR_APP_ID"
-    
-    try:
-        app_key = os.environ["APP_KEY"]
-    except:
-        app_key = "YOUR_APP_KEY"
+    api_url = "https://api.kairos.com"
+    app_id = "YOUR_APP_ID"
+    app_key = "YOUR_APP_KEY"
         
 * make sure Python 2.7 is installed and accessible
 * install Python Flask `pip install flask`
@@ -41,17 +39,17 @@ Insert your Kairos API ID and Key into the app.py file, which is at the root of 
 * For the following applications, we recommend using the `app.py` file in the repo as a basis.  This file contains more functionality than you'll need, so if you'd like, you can strip out all but the necessary scripts.  
 * This script sends a payload to the Kairos API:
         
-        api_url = 'https://api-dev.kairos.com'
+        api_url = 'https://api.kairos.com'
         headers = {
             "app_id": YOUR_APP_ID,
             "app_key": YOUR_APP_KEY
         }
         @app.route("/detect/send-to-api", methods=['POST'])
-        def sendToApiDetect():
-        url = api_url + "/detect"
-        payload = request.form["imgObj"]
-        r = requests.post(url, data=payload, headers=headers)
-        return r.content
+            def sendToApiDetect():
+            url = api_url + "/detect"
+            payload = request.form["imgObj"]
+            r = requests.post(url, data=payload, headers=headers)
+            return r.content
 
 To use requests, you must import the library:
 `import requests`
@@ -149,7 +147,7 @@ For the Kairos demo, the MediaStreamRecorder.js library is used to capture the v
             // process the data response
         });
 
-* The "detect/send-top-api" route will POST to the script listed in "Create your own custom applications".
+* The "detect/send-to-api" route will POST to the script listed in "Create your own custom applications".
 
         api_url = "https://api.kairos.com"
         headers = {

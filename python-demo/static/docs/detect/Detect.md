@@ -2,15 +2,17 @@
 ## What it does
 The Detect Demo demonstrates the capability of the Kairos Face Recognition API to detect facial features by giving the user four methods for detection.   In each method, image data is passed to the API, which returns a JSON object containing facial feature data.
 
+---
 ## Running the App
-The Detect demo app is run from the command line, using Python 2.7.
 
-The app is basically a single page application, which is viewed at index.html.
+See "Running the App" in the Python Demo README file: [Documentation](/python-demo/README.md)
 
-The Detect API demo app is comprised of three modules:
+You will be able to access the UI for the Detect Demo at https://0.0.0.0:5000/detect
+
+The Emotion API demo app is comprised of four modules:
 
 * Examples Module
-* Webcam Module
+* Webcam Module (not on Safari or mobile)
 * Upload Module
 * URL Module
 
@@ -25,7 +27,7 @@ Five pre-processed image examples are presented to the user.
 Upon clicking one of the image thumbnails, a POST request is made to the Kairos API with the ID of the selected video using the following endpoint:
 https://api.kairos.com/detect 
 
-To accomplish this, an AJAX script in the `detectDemoApp.js` file POSTS to the endpoint `/detect/send-to-api` using Python Flask.  Python makes a POST to the `/detect` endpoint with the proper headers containing the user's Kairos app_id and api_ky values.  The API response is sent to the `apiCallback()` method, which formats the JSON response for viewing, and draws a box around the detected face, along with various other feature points.
+To accomplish this, an AJAX script in the `detectDemoApp.js` file POSTS to the Python route `/detect/send-to-api` using Python Flask.  Python makes a POST to the `/detect` endpoint with the proper headers containing the user's Kairos app_id and api_key values.  The API response is sent to the `apiCallback()` method, which formats the JSON response for viewing, and draws a box around the detected face, along with various other feature points.
 
 ![Box Around Face](/python-demo/static/docs/detect/box.png?raw=true)
 
@@ -87,6 +89,15 @@ The functionality for a number of user interactions is contained within the `det
 
 If `?option-panel=yes` is added to the URL of the demo, a panel is revealed underneath the example images containing a slider/input box where the user can enter values for minHeadScale, and also radio/checkbox buttons for selector.  The payload which is sent to the API is also displayed.  See the docs for detailed information on these arguments: http://kairos.com/docs/api/
 
+
+---
+
+## Environment Variables
+
+* APP_ID - Application ID
+* APP_KEY - Application Key
+* API_URL - URL of the API server 
+* DEMO_ENV - Environment (dev, stage, prod)
 
 ---
 

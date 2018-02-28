@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="https://media.kairos.com/demo/images/favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://media.kairos.com/python-demo/css/fonts.css">
-    <link rel="stylesheet" href="https://media.kairos.com/python-demo/css/main.css">
-    <link rel="stylesheet" href="https://media.kairos.com/python-demo/verify/css/verify.css">
-    <link rel="stylesheet" href="https://media.kairos.com/python-demo/verify/css/verify-mediaqueries.css">
+    <link rel="stylesheet" href="static/css/fonts.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/verify/verify.css">
+    <link rel="stylesheet" href="static/css/verify/verify-mediaqueries.css">
 </head>
 <body>
     <div class="main-container container">
@@ -17,7 +17,7 @@
             <div class="col-xs-6 col-sm-6 col-md-6 left-image-container">
                 <div class="canvas-container-left"></div>
                 <div class="display-image-left-container">
-                    <img id="image-left" src="https://media.kairos.com/python-demo/verify/subjects/george1.jpg" subjectId="george1" galleryId="verify-demo">
+                    <img id="image-left" src="static/subjects/george1.jpg" subjectId="george1" galleryId="verify-demo">
                 </div>
                 <div class="image-left-template">
                 	<div class="header-bkg-left"></div>
@@ -27,7 +27,7 @@
                 <a href="" class="show-json">SHOW JSON</a>
                 <div class="canvas-container-right"></div>
                 <div class="display-image-right-container">
-                    <img id="image-right" src="https://media.kairos.com/python-demo/verify/subjects/george2.jpg" subjectId="george2" galleryId="verify-demo">
+                    <img id="image-right" src="static/subjects/george2.jpg" subjectId="george2" galleryId="verify-demo">
                 </div>
                 <div class="image-right-template">
                 	<div class="header-bkg-right"></div>
@@ -43,46 +43,46 @@
             <div class="col-md-12 thumbnails container">
                 <div class="image-group">
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/george1.jpg" subjectId="george1" galleryId="verify-demo" />
+                        <img src="static/subjects/george1.jpg" subjectId="george1" galleryId="verify-demo" />
                     </a>
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/george2.jpg" subjectId="george2" galleryId="verify-demo" />
+                        <img src="static/subjects/george2.jpg" subjectId="george2" galleryId="verify-demo" />
                     </a>
                     <span class="hover-title">GEORGE AND GEORGE</span>
                 </div>
                 <div class="image-group">
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/angelina1.jpg" subjectId="angelina1" galleryId="verify-demo" />
+                        <img src="static/subjects/angelina1.jpg" subjectId="angelina1" galleryId="verify-demo" />
                     </a>
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/bradley1.jpg" subjectId="bradley1" galleryId="verify-demo" />
+                        <img src="static/subjects/bradley1.jpg" subjectId="bradley1" galleryId="verify-demo" />
                     </a>
                     <span class="hover-title">ANGELINA AND BRADLEY</span>
                 </div>
                 <div class="image-group hidden-xs">
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/brad1.jpg" subjectId="brad1" galleryId="verify-demo" />
+                        <img src="static/subjects/brad1.jpg" subjectId="brad1" galleryId="verify-demo" />
                     </a>
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/angelina2.jpg" subjectId="angelina2" galleryId="verify-demo" />
+                        <img src="static/subjects/angelina2.jpg" subjectId="angelina2" galleryId="verify-demo" />
                     </a>
                     <span class="hover-title">BRAD AND ANGELINA</span>
                 </div>
                 <div class="image-group hidden-xs">
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/halle1.jpg" subjectId="halle1" galleryId="verify-demo" />
+                        <img src="static/subjects/halle1.jpg" subjectId="halle1" galleryId="verify-demo" />
                     </a>
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/halle2.jpg" subjectId="halle2" galleryId="verify-demo" />
+                        <img src="static/subjects/halle2.jpg" subjectId="halle2" galleryId="verify-demo" />
                     </a>
                     <span class="hover-title">HALLE AND HALLE</span>
                 </div>
                 <div class="image-group hidden-xs hidden-sm">
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/bradley2.jpg" subjectId="bradley2" galleryId="verify-demo" />
+                        <img src="static/subjects/bradley2.jpg" subjectId="bradley2" galleryId="verify-demo" />
                     </a>
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/brad2.jpg" subjectId="brad2" galleryId="verify-demo" />
+                        <img src="static/subjects/brad2.jpg" subjectId="brad2" galleryId="verify-demo" />
                     </a>
                     <span class="hover-title">BRADLEY AND BRAD</span>
                 </div>
@@ -135,14 +135,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
 
     <!-- custom libraries -->
-    <script src="https://media.kairos.com/python-demo/js/utils.js"></script>
-    <script src="https://media.kairos.com/python-demo/verify/js/verifyDemoApp.js"></script>
-    <script src="https://media.kairos.com/python-demo/verify/js/verifyUi.js"></script>
-    <script src="https://media.kairos.com/python-demo/verify/js/imageData.js"></script>
-    <script src="https://media.kairos.com/python-demo/verify/js/imageAnalysisData.js"></script>
-    <script src="https://media.kairos.com/python-demo/verify/js/jsonData.js"></script>
-    <script src="https://media.kairos.com/python-demo/js/exif.js"></script>
-    <script src="https://media.kairos.com/python-demo/js/transparentImageData.js"></script>
+    <script src="static/js/utils.js"></script>
+    <script src="static/js/verify/verifyDemoApp.js"></script>
+    <script src="static/js/verify/verifyUi.js"></script>
+    <script src="static/js/verify/imageData.js"></script>
+    <script src="static/js/verify/imageAnalysisData.js"></script>
+    <script src="static/js/verify/jsonData.js"></script>
+    <script src="static/js/exif.js"></script>
+    <script src="static/js/transparentImageData.js"></script>
     
     <!-- initialize custom libraries if API credentials are valid -->
      <script>
