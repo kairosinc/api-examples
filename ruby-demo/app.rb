@@ -4,11 +4,14 @@ require "rest-client"
 require "base64"
 require "httparty"
 
+# set variables (currently dev version)
 api_url = "https://api.kairos.com"
 app_id = "YOUR_APP_ID"
 app_key = "YOUR_APP_KEY"
+demo1_id = "GENERATE_VIDEO_ID" # see documentation
 
 headers = {
+	"Content-type" => "application/json",
     "app_id" => app_id,
     "app_key" => app_key
 }
@@ -34,6 +37,7 @@ get "/emotion" do
 	@API_URL = api_url
 	@APP_ID = app_id
 	@APP_KEY = app_key
+	@DEMO1_ID = demo1_id
   	erb :emotion
 end
 

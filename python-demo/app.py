@@ -9,26 +9,17 @@ from urllib2 import urlopen
 from flask import Flask, render_template, request, json
 app = Flask(__name__)
 
-# get environment variables
-try:
-	demo_env = os.environ["STAGE"]
-except:
-	demo_env = "dev"
+# set variables (currently dev version)
+api_url = "https://api.kairos.com"
+app_id = "YOUR_APP_ID"
+app_key = "YOUR_APP_KEY"
+demo1_id = "GENERATE_VIDEO_ID" # see documentation
 
-try:
-	api_url = os.environ["API_URL"]
-except:
-	api_url = "https://api.kairos.com"
-
-try:
-	app_id = os.environ["APP_ID"]
-except:
-	app_id = "YOUR_APP_ID"
-
-try:
-	app_key = os.environ["APP_KEY"]
-except:
-	app_key = "YOUR_APP_KEY"
+headers = {
+	# "Content-Type": "application/json",
+    "app_id": app_id,
+    "app_key": app_key
+}
 
 headers = {
 	# "Content-Type": "application/json",
@@ -43,7 +34,7 @@ def RenderMainIndex():
 
 @app.route('/detect')
 def renderDetect():
-	return render_template("detect.html", APP_ID=app_id, APP_KEY=app_key, API_URL=api_url, CACHE_BUSTER=CacheBuster())
+	return render_template("detect.html", APP_ID=app_id, APP_KEY=app_key, API_URL=api_url)
 
 @app.route('/detect/send-to-api', methods=['POST'])
 def sendToApiDetect():
@@ -54,7 +45,7 @@ def sendToApiDetect():
 
 @app.route('/emotion')
 def renderEmotion():
-	return render_template("emotion.html", APP_ID=app_id, APP_KEY=app_key, API_URL=api_url, CACHE_BUSTER=CacheBuster())
+	return render_template("emotion.html", APP_ID=app_id, APP_KEY=app_key, API_URL=api_url, DEMO1_ID=demo1_id)
 
 @app.route('/emotion/send-to-api', methods=['POST'])
 def sendToApiEmotion():
@@ -115,7 +106,7 @@ def sendToApiEmotion():
 		return fileUpload.content
 @app.route('/recognize')
 def renderRecognize():
-	return render_template("recognize.html", APP_ID=app_id, APP_KEY=app_key, API_URL=api_url, CACHE_BUSTER=CacheBuster())
+	return render_template("recognize.html", APP_ID=app_id, APP_KEY=app_key, API_URL=api_url)
 
 @app.route('/recognize/send-to-api', methods=['POST'])
 def sendToApiRecognize():
@@ -132,7 +123,7 @@ def sendToApiRecognize():
 
 @app.route('/verify')
 def renderVerify():
-	return render_template("verify.html", APP_ID=app_id, APP_KEY=app_key, API_URL=api_url, CACHE_BUSTER=CacheBuster())
+	return render_template("verify.html", APP_ID=app_id, APP_KEY=app_key, API_URL=api_url)
 
 @app.route('/verify/send-to-api', methods=['POST'])
 def sendToApiVerify():

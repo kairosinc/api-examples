@@ -176,7 +176,7 @@
 	width: 50px; 
 	height: 50px; 
 	margin: 0 auto; 
-	background: transparent url('../images/spinner.svg') no-repeat;
+	background: transparent url('../../images/icons/spinner.svg') no-repeat;
 	position: relative;
 }
 .message-container .spinner-message{

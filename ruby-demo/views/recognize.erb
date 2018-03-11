@@ -7,8 +7,8 @@
     <link rel="shortcut icon" href="https://media.kairos.com/demo/images/favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://media.kairos.com/demo/css/fonts.css">
-    <link rel="stylesheet" href="https://media.kairos.com/demo/css/main.css">
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/recognize/recognize.css">
     <link rel="stylesheet" href="/css/recognize/recognize-mediaqueries.css">
     <link rel="stylesheet" href="https://cdn.rawgit.com/noelboss/featherlight/1.7.1/release/featherlight.min.css" type="text/css"  />
@@ -21,47 +21,47 @@
                 <div class="user-instructions"></div>
                 <ul class="enrolled-images">
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/Brain_Brackeen.jpeg" crossorigin="Anonymous" />
+                        <img src="/images/team/Brian_Brackeen.jpg" crossorigin="Anonymous" />
                         <div class="image-mask" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>84.226%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/brad1.jpg" crossorigin="Anonymous" />
+                        <img src="/images/subjects/brad1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>28.583%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/Rajnesah_Belyeu2.jpeg" crossorigin="Anonymous" />
+                        <img src="/images/team/Rajnesah_Belyeu.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>37.351%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/Ben_Virdee-Chapman.jpeg" crossorigin="Anonymous" />
+                        <img src="/images/team/Ben_Virdee-Chapman.jpg" crossorigin="Anonymous" />
                         <div class="image-mask" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>85.821%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/george1.jpg" crossorigin="Anonymous" />
+                        <img src="/images/subjects/george1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>26.268%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/Cole_Calistra.jpeg" crossorigin="Anonymous" />
+                        <img src="/images/team/Cole_Calistra.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>29.426%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/Neil_Pitts.jpeg" crossorigin="Anonymous" />
+                        <img src="/images/team/Neil_Pitts.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>57.566%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/angelina2.jpg" crossorigin="Anonymous" />
+                        <img src="/images/subjects/angelina2.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>16.633%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/python-demo/verify/subjects/halle1.jpg" crossorigin="Anonymous" />
+                        <img src="/images/subjects/halle1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>12.894%</div>
                     </li>
@@ -81,7 +81,7 @@
             </div>
             <div class="recognize-image-container"></div>
             <div class="right-image-example">
-                <img src="https://media.kairos.com/python-demo/recognize/images/kairos_team.jpg" />
+                <img src="/images/team/kairos_team.jpg" />
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 json-response-container">
@@ -99,7 +99,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="optionThreshold">Threshold:</label>
-                    <a href="" data-featherlight="https://media.kairos.com/python-demo/recognize/images/threshold_scores.png"><i class="glyphicon glyphicon-question-sign"></i></a>
+                    <a href="" data-featherlight="/images/threshold_scores.png"><i class="glyphicon glyphicon-question-sign"></i></a>
                     <span class="prompt">Enter a value between .2 and .8</span>
                     <input class="form-control" type="text" name="optionThreshold" id="optionThreshold" value=".2"><span class="option-error-threshold"></span>
                     <div class="threshold-slider"></div>
@@ -142,8 +142,8 @@
     <script src="/js/recognize/recognizeDemoApp.js"></script>
     <script src="/js/recognize/recognizeUi.js"></script>
     <script src="/js/recognize/jsonData.js"></script>
-    <script src="https://media.kairos.com/demo/js/exif.js"></script>
-    <script src="https://media.kairos.com/demo/js/transparentImageData.js"></script>
+    <script src="/js/exif.js"></script>
+    <script src="/js/transparentImageData.js"></script>
 
     <!-- initialize custom libraries if API credentials are valid -->
      <script>

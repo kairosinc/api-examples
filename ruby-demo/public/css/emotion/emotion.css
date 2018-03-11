@@ -50,10 +50,10 @@
 	margin: 10px 30px;
 }
 #play-pause.play{
-	background: transparent url("/images/play.png") no-repeat 0 0;
+	background: transparent url("../../images/icons/play.png") no-repeat 0 0;
 }
 #play-pause.pause{
-	background: transparent url("/images/pause.png") no-repeat 0 0;
+	background: transparent url("../../images/icons/pause.png") no-repeat 0 0;
 }
 #progress {
 	background-color: #464d5b;
@@ -81,7 +81,7 @@
 	width: 28px;
     height: 28px;
     background-size: 28px 28px;
-    background: transparent url("/images/scrubber.png") no-repeat right 0;
+    background: transparent url("../../images/icons/scrubber.png") no-repeat right 0;
     cursor: pointer;
     position: absolute;
     display: block;
@@ -94,7 +94,7 @@ only screen and (-moz-min-device-pixel-ratio: 1.5),
 only screen and (-o-min-device-pixel-ratio: 3/2),
 only screen and (min-device-pixel-ratio: 1.5) {
 	#progress-scrubber {
-	    background: transparent url("/images/scrubber-2x.png") no-repeat right 0;
+	    background: transparent url("../../images/icons/scrubber-2x.png") no-repeat right 0;
 	    background-size: 28px 28px;
 	}
 }
@@ -288,7 +288,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
     width: 100%;
     height: 100%;
     margin: 0 auto;
-    background: transparent url('/images/face_overlay.png') no-repeat;
+    background: transparent url('../../images/icons/face_overlay.png') no-repeat;
     background-size: 50%;
     background-position: 45% 45%;
     z-index: 10;
@@ -375,19 +375,19 @@ only screen and (min-device-pixel-ratio: 1.5) {
 	width: 50px; 
 	height: 50px; 
 	margin: 0 auto; 
-	background: transparent url('/images/spinner.gif') no-repeat;
+	background: transparent url('../../images/icons/spinner.gif') no-repeat;
 }
 .processing-spinner-transparent {
 	width: 50px; 
 	height: 50px; 
 	margin: 0 auto; 
-	background: transparent url('/images/spinner_transparent.gif') no-repeat;
+	background: transparent url('../../images/icons/spinner_transparent.gif') no-repeat;
 }
 .sad-face {
 	width: 50px; 
 	height: 50px; 
 	margin: 0 auto; 
-	background: transparent url('/images/sad_face.png') no-repeat;
+	background: transparent url('../../images/icons/sad_face.png') no-repeat;
 }
 .message-container{
 	font-size: 14px;

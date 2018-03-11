@@ -24,7 +24,7 @@ An example video is presented to the user, and an analysis begins immediately up
 
 In order to render the analysis of the example video, you must enter a Media ID into the config.php file.  To get the Media ID for the example video, run this script at your command prompt:
 
-`curl -v -X POST -H "app_id: {your app_id}" -H "app_key: {your app_key}" http://api.kairos.com/v2/media?source=https://media.kairos.com/demo/emotion/videos/video_1.mp4`
+`curl -v -X POST -H "app_id: {your app_id}" -H "app_key: {your app_key}" http://api.kairos.com/v2/media?source=https://media.kairos.com/demo/videos/video_1.mp4`
 
 This should return something similar to this:
 
@@ -47,8 +47,7 @@ To accomplish this analysis, an AJAX script in the `emoDemoApp.js` file POSTS to
 The colors for the indivdual emotion charts are found inside `config.php`.
 
 ### Video display
-At the same time that the highcharts graph is created, the selected video is rendered in an HTML5 tag inside the `#selected-video` div.  The example video is hosted on S3:
-https://media.kairos.com/emodemo/videos/video_1.mp4
+At the same time that the highcharts graph is created, the selected video is rendered in an HTML5 tag inside the `#selected-video` div.  
 
 Tools are provided so that the user can play, pause or scrub the video.  
 

@@ -46,8 +46,7 @@ The colors for the indivdual emotion charts are found on the emotion.html page:
     });
 ```
 ### Video display
-At the same time that the highcharts graph is created, the selected video is rendered in an HTML5 tag inside the `#selected-video` div.  The example video is hosted on S3:
-`https://media.kairos.com/emodemo/videos/video_1.mp4`
+At the same time that the highcharts graph is created, the selected video is rendered in an HTML5 tag inside the `#selected-video` div.  
 
 Tools are provided so that the user can play, pause or scrub the video.  
 

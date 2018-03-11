@@ -305,6 +305,13 @@ utils =  {
                 return false;
             }
         return true;
+    },
+    isSafari: function(){
+        is_safari = false;
+        if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+            is_safari = true;
+        }
+        return is_safari;
     }
 
 }

@@ -10,7 +10,7 @@
 var detectDemoApp = detectDemoApp || {};
 detectDemoApp =  {
     //------------------------------------
-    // INITIALIZE - detect.html
+    // INITIALIZE - detect.erb
     //------------------------------------
     init: function (config) {
         this.setElementDimensions();
@@ -28,13 +28,6 @@ detectDemoApp =  {
         // options
         this.minHeadScale = 0.015;
         this.confidenceThreshold = .98;
-        // detect getUserMedia compatibility
-        // hide webcam link if not supported
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-        if (!navigator.getUserMedia) {
-            $(".webcam").hide();
-            $(".ui-buttons .upload").addClass("full-width");
-        }
         // hide webcam until ssl is implemented
         $(".webcam").hide();
         $(".ui-buttons .upload").addClass("full-width");
@@ -299,7 +292,7 @@ detectDemoApp =  {
                 return false;
             } 
             // asynchronous script to check for mime type
-            // NEEDS TO BE WRITTEN IN PYTHON
+            // NEEDS TO BE WRITTEN IN RUBY
             //utils.checkMimeType(self.config, input, "upload", self.showMimetypeError);
             var fileSizeAllowed = false;
             var fsize = input.files[0].size;          

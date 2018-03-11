@@ -985,13 +985,13 @@ emoDemoApp =  {
         msg += message;
         msg += "</div></div>";
         templateObj.append(msg);
-        $(".highcharts-template").append("<div class='response-box-container' />")
-        if(gender){
-            $(".response-box-container").append("<div class='response-box-gender'></div>")
-        }
-        if(age){
-            $(".response-box-container").append("<div class='response-box-age'></div>")
-        }
+        // $(".highcharts-template").append("<div class='response-box-container' />")
+        // if(gender){
+        //     $(".response-box-container").append("<div class='response-box-gender'></div>")
+        // }
+        // if(age){
+        //     $(".response-box-container").append("<div class='response-box-age'></div>")
+        // }
     },
     getAnalyticsFromJson: function(response) {
         var maleCount = 0;
