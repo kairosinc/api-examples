@@ -28,7 +28,7 @@
             <div class="col-xs-6 col-sm-6 col-md-6 left-image-container">
                 <div class="canvas-container-left"></div>
                 <div class="display-image-left-container">
-                    <img id="image-left" src="https://media.kairos.com/demo/verify/george1.jpg" subjectId="george1" galleryId="verify-demo">
+                    <img id="image-left" src="/images/subjects/george1.jpg" subjectId="george1" galleryId="verify-demo">
                 </div>
                 <div class="image-left-template"></div>
             </div>
@@ -36,7 +36,7 @@
                 <a href="" class="show-json">SHOW JSON</a>
                 <div class="canvas-container-right"></div>
                 <div class="display-image-right-container">
-                    <img id="image-right" src="https://media.kairos.com/demo/verify/george2.jpg" subjectId="george2" galleryId="verify-demo">
+                    <img id="image-right" src="/images/subjects/george2.jpg" subjectId="george2" galleryId="verify-demo">
                 </div>
                 <div class="image-right-template"></div>
             </div>
@@ -50,46 +50,46 @@
             <div class="col-md-12 thumbnails container">
                 <div class="image-group">
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/demo/verify/george1.jpg" subjectId="george1" galleryId="verify-demo" />
+                        <img src="/images/subjects/george1.jpg" subjectId="george1" galleryId="verify-demo" />
                     </a>
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/demo/verify/george2.jpg" subjectId="george2" galleryId="verify-demo" />
+                        <img src="/images/subjects/george2.jpg" subjectId="george2" galleryId="verify-demo" />
                     </a>
                     <span class="hover-title">GEORGE AND GEORGE</span>
                 </div>
                 <div class="image-group">
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/demo/verify/angelina1.jpg" subjectId="angelina1" galleryId="verify-demo" />
+                        <img src="/images/subjects/angelina1.jpg" subjectId="angelina1" galleryId="verify-demo" />
                     </a>
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/demo/verify/bradley1.jpg" subjectId="bradley1" galleryId="verify-demo" />
+                        <img src="/images/subjects/bradley1.jpg" subjectId="bradley1" galleryId="verify-demo" />
                     </a>
                     <span class="hover-title">ANGELINA AND BRADLEY</span>
                 </div>
                 <div class="image-group hidden-xs">
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/demo/verify/brad1.jpg" subjectId="brad1" galleryId="verify-demo" />
+                        <img src="/images/subjects/brad1.jpg" subjectId="brad1" galleryId="verify-demo" />
                     </a>
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/demo/verify/angelina2.jpg" subjectId="angelina2" galleryId="verify-demo" />
+                        <img src="/images/subjects/angelina2.jpg" subjectId="angelina2" galleryId="verify-demo" />
                     </a>
                     <span class="hover-title">BRAD AND ANGELINA</span>
                 </div>
                 <div class="image-group hidden-xs">
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/demo/verify/halle1.jpg" subjectId="halle1" galleryId="verify-demo" />
+                        <img src="/images/subjects/halle1.jpg" subjectId="halle1" galleryId="verify-demo" />
                     </a>
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/demo/verify/halle2.jpg" subjectId="halle2" galleryId="verify-demo" />
+                        <img src="/images/subjects/halle2.jpg" subjectId="halle2" galleryId="verify-demo" />
                     </a>
                     <span class="hover-title">HALLE AND HALLE</span>
                 </div>
                 <div class="image-group hidden-xs hidden-sm">
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/demo/verify/bradley2.jpg" subjectId="bradley2" galleryId="verify-demo" />
+                        <img src="/images/subjects/bradley2.jpg" subjectId="bradley2" galleryId="verify-demo" />
                     </a>
                     <a href="" class="photo-thumbnail">
-                        <img src="https://media.kairos.com/demo/verify/brad2.jpg" subjectId="brad2" galleryId="verify-demo" />
+                        <img src="/images/subjects/brad2.jpg" subjectId="brad2" galleryId="verify-demo" />
                     </a>
                     <span class="hover-title">BRADLEY AND BRAD</span>
                 </div>

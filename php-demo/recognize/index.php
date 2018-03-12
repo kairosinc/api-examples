@@ -31,47 +31,47 @@
                 <div class="user-instructions"></div>
                 <ul class="enrolled-images">
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/Brain_Brackeen.jpeg" crossorigin="Anonymous" />
+                        <img src="/images/team/Brian_Brackeen.jpg" crossorigin="Anonymous" />
                         <div class="image-mask" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>84.226%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/demo/verify/brad1.jpg" crossorigin="Anonymous" />
+                        <img src="/images/subjects/brad1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>28.583%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/Rajnesah_Belyeu2.jpeg" crossorigin="Anonymous" />
+                        <img src="/images/team/Rajnesah_Belyeu.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>37.351%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/Ben_Virdee-Chapman.jpeg" crossorigin="Anonymous" />
+                        <img src="/images/team/Ben_Virdee-Chapman.jpg" crossorigin="Anonymous" />
                         <div class="image-mask" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>85.821%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/george1.jpg" crossorigin="Anonymous" />
+                        <img src="/images/subjects/george1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>26.268%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/Cole_Calistra.jpeg" crossorigin="Anonymous" />
+                        <img src="/images/team/Cole_Calistra.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>29.426%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/team/Neil_Pitts.jpeg" crossorigin="Anonymous" />
+                        <img src="/images/team/Neil_Pitts.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>57.566%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/demo/verify/angelina2.jpg" crossorigin="Anonymous" />
+                        <img src="/images/subjects/angelina2.jpg"" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>16.633%</div>
                     </li>
                     <li class="enrolled-image">
-                        <img src="https://media.kairos.com/demo/verify/halle1.jpg" crossorigin="Anonymous" />
+                        <img src="/images/subjects/halle1.jpg" crossorigin="Anonymous" />
                         <div class="image-mask-unrecognized" style="display: block;"></div>
                         <div class="image-info" style="display: block;">Confidence: <br>12.894%</div>
                     </li>
@@ -91,7 +91,7 @@
             </div>
             <div class="recognize-image-container"></div>
             <div class="right-image-example">
-                <img src="images/kairos_team.jpg" />
+                <img src="/images/kairos_team.jpg" />
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 json-response-container">

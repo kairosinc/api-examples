@@ -103,7 +103,7 @@
     width: 500px;
     height: 500px;
     margin: 0 auto;
-    background: transparent url('../images/face_overlay.png') no-repeat;
+    background: transparent url('/images/face_overlay.png') no-repeat;
     background-size: 50%;
     background-position: 45% 45%;
     z-index: 10;
@@ -179,13 +179,13 @@
 	width: 50px; 
 	height: 50px; 
 	margin: 0 auto; 
-	background: transparent url('../images/spinner.gif') no-repeat;
+	background: transparent url('/images/spinner.gif') no-repeat;
 }
 .sad-face {
 	width: 50px; 
 	height: 50px; 
 	margin: 0 auto; 
-	background: transparent url('../images/sad_face.png') no-repeat;
+	background: transparent url('/images/sad_face.png') no-repeat;
 }
 .message-container{
 	font-size: 14px;

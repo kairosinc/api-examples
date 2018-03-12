@@ -21,7 +21,7 @@
     <div class="main-container container">
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-6 main-image-container">
-                <img id="previewImage" width="100%" src="images/Brain_Brackeen.jpeg">
+                <img id="previewImage" width="100%" src="/images/team/Brian_Brackeen.jpg">
                 <div class="webcam-video-container">
                     <div class="face-overlay"></div>
                     <div class="webcam-counter"></div>
@@ -48,19 +48,19 @@
         <div class="row">
             <div class="col-md-12 thumbnails container">
                 <a href="image1" class="photo-thumbnail image1">
-                    <img src="images/Brain_Brackeen.jpeg" crossorigin="Anonymous" />
+                    <img src="/images/team/Brian_Brackeen.jpg" crossorigin="Anonymous" />
                 </a>
                 <a href="image2" class="photo-thumbnail image2">
-                    <img src="https://media.kairos.com/team/Ben_Virdee-Chapman.jpeg" crossorigin="Anonymous" />
+                    <img src="/images/team/Ben_Virdee-Chapman.jpg" crossorigin="Anonymous" />
                 </a>
                 <a href="image3" class="photo-thumbnail image3">
-                    <img src="https://media.kairos.com/team/Rajnesah_Belyeu2.jpeg" crossorigin="Anonymous" />
+                    <img src="/images/team/Rajnesah_Belyeu.jpg" crossorigin="Anonymous" />
                 </a>
                 <a href="image4" class="photo-thumbnail image4">
-                    <img src="https://media.kairos.com/team/Neil_Pitts.jpeg" crossorigin="Anonymous" />
+                    <img src="/images/team/Neil_Pitts.jpg" crossorigin="Anonymous" />
                 </a>
                 <a href="image5" class="photo-thumbnail image5">
-                    <img src="https://media.kairos.com/team/ben_allison.jpeg" crossorigin="Anonymous" />
+                    <img src="/images/team/ben_allison.jpg" crossorigin="Anonymous" />
                 </a>
             </div>
         </div>

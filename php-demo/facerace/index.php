@@ -2,7 +2,7 @@
 $configs = include('../config.php');
 
 define('DEMO_ENV', (getenv('STAGE') ? getenv('STAGE') : 'dev'));
-define('DEMO_PREVIEW_IMAGE', (getenv('DEMO_PREVIEW_IMAGE') ? getenv('DEMO_PREVIEW_IMAGE') : ""));
+define('DEMO_PREVIEW_IMAGE', '/images/demo_elizabeth.png');
 
 function getDiversityImageUrl($default_image_url = null)
 {

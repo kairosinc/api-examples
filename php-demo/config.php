@@ -19,7 +19,7 @@ return array(
         ["#752673"],
         ["#FBB03B"]
     ]',
-    "mediaPath" => "https://media.kairos.com/demo/emotion/",
+    "mediaPath" => "/emotion/",
     "uploadFileSizeImage" => "10000000",
     "uploadFileTypesImage" => '[
         ["image/gif"],
@@ -42,6 +42,7 @@ return array(
         ["image/jpeg"],
         ["image/jpg"],
         ["application/octet-stream"],
+        ["video/x-matroska"],
         ["image/x-ms-bmp"]
     ]',
     "apiTimeout" => API_TIMEOUT,
