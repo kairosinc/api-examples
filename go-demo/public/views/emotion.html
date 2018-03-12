@@ -9,8 +9,8 @@
     <link rel="shortcut icon" href="https://media.kairos.com/demo/images/favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://media.kairos.com/demo/css/fonts.css?t_{{.CacheBuster}}">
-    <link rel="stylesheet" href="https://media.kairos.com/demo/css/main.css?t_{{.CacheBuster}}">
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/emotion/emotion.css?">
     <link rel="stylesheet" href="/css/emotion/emotion-mediaqueries.css">
 </head>
@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-6 main-video-container">
                 <div class="video-wrapper">
-                    <video id="video" width="100%" mediaId="video_1" src="https://media.kairos.com/demo/videos/video_1.mp4" muted  playsinline></video>
+                    <video id="video" width="100%" mediaId="video_1" src="/videos/video_1.mp4" muted  playsinline></video>
                     <div class="video-controls">
                         <a href="/" class="play" id="play-pause"></a>
                         <div id="progress">  
@@ -116,17 +116,17 @@
     
 
     <!-- custom libraries -->
-    <script src="/js/utils.js?t_{{.CacheBuster}}"></script>
-    <script src="/js/emotion/emoDemoApp.js?t_{{.CacheBuster}}"></script>
-    <script src="/js/emotion/emotionUi.js?t_{{.CacheBuster}}"></script>
-    <script src="https://media.kairos.com/demo/emotion/js/MediaStreamRecorder.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/emotion/emoDemoApp.js"></script>
+    <script src="/js/emotion/emotionUi.js"></script>
+    <script src="/js/emotion/MediaStreamRecorder.js"></script>
     <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
     <script src="https://cdn.WebRTC-Experiment.com/gumadapter.js"></script>
-    <script src="https://media.kairos.com/demo/emotion/js/featurePoints.js"></script>
-    <script src="/js/emotion/featurePointAnimation.js?t_{{.CacheBuster}}"></script>
-    <script src="https://media.kairos.com/demo/emotion/js/highchartsApp.js"></script>
-    <script src="https://media.kairos.com/demo/emotion/js/highchartsAppPhoto.js"></script>
-    <script src="https://media.kairos.com/demo/emotion/js/videoPlayer.js"></script>
+    <script src="/js/emotion/featurePoints.js"></script>
+    <script src="/js/emotion/featurePointAnimation.js"></script>
+    <script src="/js/emotion/highchartsApp.js"></script>
+    <script src="/js/emotion/highchartsAppPhoto.js"></script>
+    <script src="/js/emotion/videoPlayer.js"></script>
 
     <!-- initialize custom libraries if API credentials are valid -->
      <script>
@@ -155,9 +155,9 @@
                     ["image/x-ms-bmp"]
                 ],
                 "pollTimeout":300,
-                "mediaPath": "https://media.kairos.com/demo/emotion/",
+                "mediaPath": "/",
                 "demoMedia":[
-                    {"video_1":"17b62ed9921ab34c7deb9a33"}
+                    {"video_1":"{{.DEMO1_ID}}"}
                 ],
                 "apiCredentials":true
             });

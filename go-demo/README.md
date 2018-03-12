@@ -36,26 +36,15 @@ To run your app locally, you can install your personal keys into the `getEnvVari
 
 ```
 func getEnvVariables() envVariables {
-  demo_env := os.Getenv("STAGE")
-  if os.Getenv("STAGE") == "" {
-    demo_env = "dev"
-  }
-  var api_url string = os.Getenv("API_URL")
-  if os.Getenv("API_URL") == "" {
-    api_url = "api.kairos.com"
-  }
-  var app_id string = os.Getenv("APP_ID")
-  if os.Getenv("APP_ID") == "" {
-    app_id = "your-app-id"
-  }
-  var app_key string = os.Getenv("APP_KEY")
-  if os.Getenv("APP_KEY") == "" {
-    app_key = "your-app-key"
-  }
+  api_url = "https://api.kairos.com"
+  app_id = "YOUR_APP_ID"
+  app_key = "YOUR_APP_KEY"
+  demo1_id = "GENERATE_VIDEO_ID" // see documentation
 
-  envVars := envVariables{api_url, app_id, app_key, demo_env}
+  envVars := envVariables{api_url, app_id, app_key}
   return envVars
 }
+
 ```
 
 * Download and install Go `brew install golang`

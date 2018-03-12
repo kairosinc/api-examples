@@ -27,14 +27,12 @@ import (
 )
 
 type PageVarsDetect struct {
-	CacheBuster string
 	APP_ID      string
 	APP_KEY     string
 	API_URL     string
 }
 
 type PageVarsFacerace struct {
-	CacheBuster  string
 	DemoEnv      string
 	PreviewImage string
 	APP_ID       string
@@ -43,24 +41,22 @@ type PageVarsFacerace struct {
 }
 
 type PageVarsRecognize struct {
-	CacheBuster string
 	APP_ID      string
 	APP_KEY     string
 	API_URL     string
 }
 
 type PageVarsVerify struct {
-	CacheBuster string
 	APP_ID      string
 	APP_KEY     string
 	API_URL     string
 }
 
 type PageVarsEmotion struct {
-	CacheBuster string
 	APP_ID      string
 	APP_KEY     string
 	API_URL     string
+	DEMO1_ID 	string
 }
 
 type Image struct {
@@ -79,7 +75,7 @@ type envVariables struct {
 	API_URL string
 	APP_ID  string
 	APP_KEY string
-	ENV_VAR string
+	DEMO1_ID string
 }
 
 type S3Data struct {
@@ -92,24 +88,13 @@ var (
 )
 
 func getEnvVariables() envVariables {
-	demo_env := os.Getenv("STAGE")
-	if os.Getenv("STAGE") == "" {
-		demo_env = "dev"
-	}
-	var api_url string = os.Getenv("API_URL")
-	if os.Getenv("API_URL") == "" {
-		api_url = "api.kairos.com"
-	}
-	var app_id string = os.Getenv("APP_ID")
-	if os.Getenv("APP_ID") == "" {
-		app_id = ""
-	}
-	var app_key string = os.Getenv("APP_KEY")
-	if os.Getenv("APP_KEY") == "" {
-		app_key = ""
-	}
+	// set variables
+	api_url = "https://api.kairos.com"
+	app_id = "YOUR_APP_ID"
+	app_key = "YOUR_APP_KEY"
+	demo1_id = "GENERATE_VIDEO_ID" // see documentation
 
-	envVars := envVariables{api_url, app_id, app_key, demo_env}
+	envVars := envVariables{api_url, app_id, app_key, demo1_id}
 	return envVars
 }
 
@@ -120,7 +105,6 @@ func RenderMainIndex(c echo.Context) error {
 // Detect Damo
 func RenderDetect(c echo.Context) error {
 	pageVars := PageVarsDetect{
-		cacheBuster(),
 		getEnvVariables().API_URL,
 		getEnvVariables().APP_ID,
 		getEnvVariables().APP_KEY,
@@ -165,16 +149,9 @@ func SendToApiDetect(c echo.Context) error {
 
 // facerace demo
 func RenderFacerace(c echo.Context) error {
-	demo_env := os.Getenv("STAGE")
-	if os.Getenv("STAGE") == "" {
-		demo_env = "dev"
-	}
-	demo_preview_image := os.Getenv("DEMO_PREVIEW_IMAGE")
-	if os.Getenv("DEMO_PREVIEW_IMAGE") == "" {
-		demo_preview_image = "https://media.kairos.com/demo/facerace/demo-elizabeth.png"
-	}
+	demo_env := "dev"
+	demo_preview_image := "/images/demo_elizabeth.png"
 	pageVars := PageVarsFacerace{
-		cacheBuster(),
 		demo_env,
 		demo_preview_image,
 		getEnvVariables().API_URL,
@@ -322,7 +299,6 @@ func SendToApiFacerace(c echo.Context) error {
 // Recognize Damo
 func RenderRecognize(c echo.Context) error {
 	pageVars := PageVarsRecognize{
-		cacheBuster(),
 		getEnvVariables().API_URL,
 		getEnvVariables().APP_ID,
 		getEnvVariables().APP_KEY,
@@ -402,7 +378,6 @@ func SendToApiRecognize(c echo.Context) error {
 // Verify Damo
 func RenderVerify(c echo.Context) error {
 	pageVars := PageVarsVerify{
-		cacheBuster(),
 		getEnvVariables().API_URL,
 		getEnvVariables().APP_ID,
 		getEnvVariables().APP_KEY,
@@ -483,10 +458,10 @@ func SendToApiVerify(c echo.Context) error {
 // Emotion Damo
 func RenderEmotion(c echo.Context) error {
 	pageVars := PageVarsEmotion{
-		cacheBuster(),
 		getEnvVariables().API_URL,
 		getEnvVariables().APP_ID,
 		getEnvVariables().APP_KEY,
+		getEnvVariables().DEMO1_ID,
 	}
 	return c.Render(http.StatusOK, "emotion", &pageVars)
 }
@@ -983,15 +958,3 @@ func ConvertBase64StringToVideoFile(base64Data string, saveToFilePath string) (b
 
 }
 
-func cacheBuster() string {
-	t := time.Now()
-	cache_buster := t.Format("20060102")
-	demo_env := os.Getenv("STAGE")
-	if os.Getenv("STAGE") == "" {
-		demo_env = "dev"
-	}
-	if demo_env == "dev" {
-		cache_buster = strconv.Itoa(int(t.Unix()))
-	}
-	return cache_buster
-}

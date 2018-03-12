@@ -24,6 +24,20 @@ The Emotion API demo app is comprised of four modules:
 
 An example video is presented to the user, and an analysis begins immediately upon page render. 
 
+In order to render the analysis of the example video, you must enter a demo1_id into the app.py file.  To get an ID for the example video, run this script at your command prompt:
+
+`curl -v -X POST -H "app_id: {your app_id}" -H "app_key: {your app_key}" http://api.kairos.com/v2/media?source=https://media.kairos.com/python-demo/videos/video_1.mp4`
+
+This should return something similar to this:
+
+`{"id":"abcdefghijklmnopqrstuvwxyz","status_code":2,"status_message":"Analyzing"}`
+
+Enter this id value into the demo1_id definition in the app.py file:
+
+`demo1_id = "abcdefghijklmnopqrstuvwxyz"`
+
+Your example video should now render an emotion analysis.
+
 To accomplish this analysis, an AJAX script in the `emoDemoApp.js` file POSTS to the route `/emotion/send-to-api` (the routes for the demos are in the main.go file).  This route calls the Golang method `SendToApiEmotion` which makes a POST request to the `https://api.kairos.com/emotion` endpoint.  The JSON response is sent back asynchronously to the `emoDemoApp.js` object.  The postProcessingLayout() function formats the JSON response for viewing and sends the JSON data to `highchartsApp.js`.
 
 <a name="highcharts"></a>

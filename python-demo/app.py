@@ -9,7 +9,7 @@ from urllib2 import urlopen
 from flask import Flask, render_template, request, json
 app = Flask(__name__)
 
-# set variables (currently dev version)
+# set variables
 api_url = "https://api.kairos.com"
 app_id = "YOUR_APP_ID"
 app_key = "YOUR_APP_KEY"
