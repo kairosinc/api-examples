@@ -15,6 +15,8 @@ emoDemoApp =  {
     init: function (config) { 
         this.config = config;
         this.apiCredentials = config.apiCredentials;
+        // slow down polling to reduce number of requests per minute
+        this.pollTick = 1000; // in ms
         if (this.apiCredentials){
             // if example video id is not provided, 
             // bypass example processing
@@ -38,8 +40,6 @@ emoDemoApp =  {
             $(".ui-buttons .upload").addClass("full-width");
         }
         this.setElementDimensions();
-        // slow down polling to reduce number of requests per minute
-        this.pollTick = 1000; // in ms
     },
     //------------------------------------
     // EXAMPLES PROCESSING
@@ -1052,6 +1052,5 @@ emoDemoApp =  {
         });
     }
 }
-
 
 
