@@ -8,7 +8,7 @@ The Recognize Demo demonstrates the capability of the Kairos Face Recognition AP
 
 See "Running the App" in the Python Demo README file: [Documentation](/python-demo/README.md)
 
-You will be able to access the UI for the Recognize Demo at https://0.0.0.0:5000/recognize
+You will be able to access the UI for the Recognize Demo at http://0.0.0.0:5000/recognize
 
 ---
 

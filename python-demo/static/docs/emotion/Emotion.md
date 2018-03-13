@@ -8,7 +8,7 @@ The Emotion Demo showcases the Kairos Emotion API by giving the user four method
 
 See "Running the App" in the Python Demo README file: [Documentation](/python-demo/README.md)
 
-You will be able to access the UI for the Emotion Demo at https://0.0.0.0:5000/emotion
+You will be able to access the UI for the Emotion Demo at http://0.0.0.0:5000/emotion
 
 The Emotion API demo app is comprised of four modules:
 
@@ -72,6 +72,23 @@ The name/value pairs in the JSON object are color-coded using the syntaxHighligh
 
 ---
 ## Webcam Module
+
+NOTE:
+
+The webcam functionality requires that your site is secure (https).  In order to run your local install using https, you will need to generate a certificate and a key.  To to this, run this command:
+
+```openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365```
+
+Follow the prompts, and this will generate two files: `cert.pem` and `key.pem`.  These files are used so that the app will spin up a secure browser.  If you want to run in ssl, use this script in the `app.py` file:
+
+`if __name__ == "__main__":
+    app.run(debug=True,host='0.0.0.0',ssl_context=('cert.pem', 'key.pem'))`
+
+ Otherwise, use this script to run non-ssl:
+
+ `if __name__ == "__main__":
+	app.run(debug=True,host='0.0.0.0')`
+
 The webcam module uses the built-in web camera on the user's device.  A 10 second video is captured from the webcam, is sent to the Kairos API, and an emotional analysis of the video is returned.
 
 The process is initiated by clicking WEBCAM link is clicked, which starts a 10 second webcam capture.  The app counts down from 10 until 1, when the capture is complete.

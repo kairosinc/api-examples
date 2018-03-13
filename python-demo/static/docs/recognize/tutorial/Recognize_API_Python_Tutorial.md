@@ -32,7 +32,7 @@ Insert your Kairos API ID and Key into the app.py file, which is at the root of 
 * install Python Flask `pip install flask`
 * cd into the python-demo repo
 * run `python app.py`
-* point your browser to `https://127.0.0.1:5000/recognize`
+* point your browser to `http://0.0.0.0:5000/recognize`
 
 ## 4. Create your own custom applications
 

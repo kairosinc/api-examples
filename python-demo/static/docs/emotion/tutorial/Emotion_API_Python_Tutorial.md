@@ -32,7 +32,24 @@ Insert your Kairos API ID and Key into the app.py file, which is at the root of 
 * install Python Flask `pip install flask`
 * cd into the python-demo repo
 * run `python app.py`
-* point your browser to `https://127.0.0.1:5000/emotion`
+
+The webcam functionality requires that your site is secure (https).  In order to run your local install using https, you will need to generate a certificate and a key.  To to this, run this command:
+
+```openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365```
+
+Follow the prompts, and this will generate two files: `cert.pem` and `key.pem`.  These files are used so that the app will spin up a secure browser.  If you want to run in ssl, use this script in the `app.py` file:
+
+`if __name__ == "__main__":
+    app.run(debug=True,host='0.0.0.0',ssl_context=('cert.pem', 'key.pem'))`
+
+* point your browser to `https://0.0.0.0:5000/emotion`
+
+ Otherwise, use this script to run non-ssl:
+
+ `if __name__ == "__main__":
+    app.run(debug=True,host='0.0.0.0')`
+
+* point your browser to `http://0.0.0.0:5000/emotion`
 
 ## 4. Create your own custom applications
 

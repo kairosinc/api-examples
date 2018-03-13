@@ -40,6 +40,23 @@ The name/value pairs in the JSON object are color-coded using the syntaxHighligh
 
 ---
 ## Webcam Module
+
+NOTE:
+
+The webcam functionality requires that your site is secure (https).  In order to run your local install using https, you will need to generate a certificate and a key.  To to this, run this command:
+
+```openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365```
+
+Follow the prompts, and this will generate two files: `cert.pem` and `key.pem`.  These files are used so that the app will spin up a secure browser.  If you want to run in ssl, use this script in the `app.py` file:
+
+`if __name__ == "__main__":
+    app.run(debug=True,host='0.0.0.0',ssl_context=('cert.pem', 'key.pem'))`
+
+ Otherwise, use this script to run non-ssl:
+
+ `if __name__ == "__main__":
+	app.run(debug=True,host='0.0.0.0')`
+	
 The webcam module uses the built-in web camera on the user's device.  When the WEBCAM link is clicked, the user is given 3 seconds to complete the capture.
 
 ![Webcam Capture](/python-demo/static/docs/detect/webcam_capture.png?raw=true)
