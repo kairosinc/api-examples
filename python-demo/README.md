@@ -31,9 +31,8 @@ Follow the prompts, and this will generate two files: `cert.pem` and `key.pem`. 
 ### Run the app locally from your command prompt 
 * make sure Python 2.7 is installed and accessible
 * if PIP is not installed: `sudo easy_install pip`
-* install Python Flask `sudo pip install flask`
-* install requests `sudo pip install requests`
 * cd into the python-demo repo
+* run `sudo pip install -r requirements.txt`
 * run `python app.py`
 * point your browser to `https://0.0.0.1:5000`
 
